@@ -30,7 +30,7 @@
 #++
 
 Rails.application.routes.draw do
-  get '/tml/upgrade' => 'tml_client_sdk/tools#upgrade'
-  get '/tml/on' => 'tml_client_sdk/tools#enable'
-  get '/tml/off' => 'tml_client_sdk/tools#disable'
+  get '/tml/upgrade' => 'tml_rails/tools#upgrade'
+  get '/tml/on' => 'tml_rails/tools#enable'
+  get '/tml/off' => 'tml_rails/tools#disable'
 end
