@@ -40,7 +40,7 @@ Gem::Specification.new do |s|
   s.version     = TmlRails::VERSION
   s.authors     = ['Michael Berkovich']
   s.email       = %w(michael@translationexchange.com)
-  s.homepage    = 'https://github.com/tml/tml_rails_clientsdk'
+  s.homepage    = 'https://github.com/translationexchange/tml-rails'
   s.summary     = 'Tml Client SDK for Ruby on Rails'
   s.description = 'Client SDK for Translation Exchange.'
 
