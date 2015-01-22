@@ -35,7 +35,8 @@ require 'tml_rails/railtie'
 require 'tml_rails/engine'
 require 'tml/cache_adapters/rails'
 require 'i18n/backend/tml'
+require 'pp'
 
-module TmlClientSdk
+module TmlRails
 
 end

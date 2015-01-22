@@ -29,7 +29,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-module TmlClientSdk
+module TmlRails
   module ActionViewExtension
     extend ActiveSupport::Concern
 

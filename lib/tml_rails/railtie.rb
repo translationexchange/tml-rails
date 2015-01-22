@@ -30,22 +30,21 @@
 #++
 
 require 'rails'
-require 'pp'
 
 # Rails Extensions
 require File.join(File.dirname(__FILE__), 'extensions/action_common_methods')
 require File.join(File.dirname(__FILE__), 'extensions/action_view_extension')
 require File.join(File.dirname(__FILE__), 'extensions/action_controller_extension')
 
-module TmlClientSdk
+module TmlRails
   class Railtie < ::Rails::Railtie #:nodoc:
     initializer 'tml-rails' do |app|
       ActiveSupport.on_load(:action_view) do
-        ::ActionView::Base.send :include, TmlClientSdk::ActionCommonMethods
-        ::ActionView::Base.send :include, TmlClientSdk::ActionViewExtension
+        ::ActionView::Base.send :include, TmlRails::ActionCommonMethods
+        ::ActionView::Base.send :include, TmlRails::ActionViewExtension
       end
       ActiveSupport.on_load(:action_controller) do
-        include TmlClientSdk::ActionControllerExtension
+        include TmlRails::ActionControllerExtension
       end      
     end
   end

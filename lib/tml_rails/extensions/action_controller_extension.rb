@@ -29,11 +29,11 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-module TmlClientSdk
+module TmlRails
   module ActionControllerExtension
 
     def self.included(base)
-      base.send(:include, TmlClientSdk::ActionCommonMethods)
+      base.send(:include, TmlRails::ActionCommonMethods)
       base.send(:include, InstanceMethods) 
       base.before_filter :tml_init_client_sdk
       base.after_filter :tml_reset_client_sdk

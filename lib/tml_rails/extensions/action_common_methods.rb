@@ -29,7 +29,7 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-module TmlClientSdk
+module TmlRails
   module ActionCommonMethods
     ############################################################
     # There are three ways to call the tr method
