@@ -1,0 +1,341 @@
+<div style="background:white;padding-top:10px;margin-bottom:20px; border-radius:10px;">
+<div class="row">
+
+<div class="span3">
+  <div id="toc"></div>
+</div>
+<div class="span9">
+<div class="hero-unit" style="margin-right:10px;">
+  <div class="text-center">
+    <img class="trex_logo" src="" alt="" />
+  </div>
+  <h2 class="text-center"><%= tr("Documentation & Samples") %></h2>
+</div>
+
+<%
+   @michael = User.new("Michael", "male")
+   @alex = User.new("Alex", "male")
+   @anna = User.new("Anna", "female")
+   @jenny = User.new("Jenny", "female")
+   @peter = User.new("Peter", "male")
+   @karen = User.new("Karen", "female")
+   @thomas = User.new("Thomas", "male")
+%>
+
+
+
+<%= render :partial => "intro" %>
+
+<%= render :partial => "tml" %>
+
+<h1><%=tr("Context Rules") %></h1>
+<p>
+  <%=tr("Context rules are used to provide translations based on a specific value of one or more tokens in a sentence.") %>
+</p>
+
+<h2><%=tr("Numbers") %></h2>
+<p>
+  <%=tr('Languages may have simple or complex numeric rules. For example, in English, there are only two rules for "one" and "other". Slovak languages, like Russian, have 3 rules.') %>
+  <%=tr("Translator can provide a translation for each rule or rule combination based on the token values.") %>
+</p>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">1.upto(10) do |i|
+  tr("You have {count || message}", :count => i)
+end</code></pre>
+  <div class="content">
+    <% 1.upto(10) do |i| %>
+      <%=tr("You have {count||message}", :count => i) %><br>
+    <% end %>
+  </div>
+</div>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">1.upto(5) do |i|
+  tr("Displaying [bold: {start_num}]-[bold: {end_num}] of [bold: {count}] people",
+          :start_num => i,
+          :end_num => i+25,
+          :count => i*100 + i)
+end</code></pre>
+  <div class="content">
+    <% 1.upto(5) do |i| %>
+      <%=tr("Displaying [bold: {start_num}]-[bold: {end_num}] of [bold: {count}] people", :start_num => i, :end_num => i+25, :count => i*100 + i) %><br>
+    <% end %>
+  </div>
+</div>
+
+<h2><%=tr("Genders") %></h2>
+<p>
+  <%=tr("Similarly to the numeric rules, some language have dependencies on the gender.") %>
+</p>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">[@michael, @anna].each do |user|
+  tr("{user} uploaded {user | his, her} photo", :user => user)
+end</code></pre>
+  <div class="content">
+    <% [@michael, @anna].each do |user| %>
+      <%=tr("{user} uploaded {user|his,her} photo", :user => user) %><br>
+    <% end %>
+  </div>
+</div>
+
+<p>
+  <%=tr("Sometimes tokens need to be implied:") %>
+</p>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">[@michael, @anna].each do |user|
+  tr("{user | Registered} on:", :user => user)
+end</code></pre>
+  <div class="content">
+    <% [@michael, @anna].each do |user| %>
+      <%=tr("{user | Registered} on:", :user => user) %><br>
+    <% end %>
+  </div>
+</div>
+
+<h2><%=tr("Dates") %></h2>
+<p><%=tr("Dates can also be used for contextual evaluation.") %> <%=tr("Consider the following example:") %></p>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">[Date.today, Date.today - 1.day, Date.today+1.day].each do |date|
+
+  if date == Date.today
+    tr("{user} is celebrating {user| his, her} birthday today", {:user => @michael})
+  elsif date < Date.today
+    tr("{user} celebrated {user| his, her} birthday on {date}", {:user => @michael})
+  else
+    tr("{user} will celebrate {user| his, her} birthday on {date}", {:user => @michael})
+  end
+
+end </code></pre>
+
+  <div class="content">
+    <% [Date.today, Date.today - 1.day, Date.today+1.day].each do |date| %>
+      <% if date == Date.today %>
+        <%= tr("{user} is celebrating {user| his, her} birthday today", {:user => @michael}) %><br>
+      <% elsif date < Date.today %>
+        <%=  tr("{user} celebrated {user| his, her} birthday on {date}", {:user => @michael, :date => [date, date.tr]}) %><br>
+      <% else %>
+        <%=  tr("{user} will celebrate {user| his, her} birthday on {date}", {:user => @michael, :date => [date, date.tr]}) %><br>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<p><%=tr("You can encode the entire structure in one sentence:") %></p>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">[Date.today, Date.today - 1.day, Date.today+1.day].each do |date|
+
+  tr("{user} {date| past: celebrated, present: celebrates, future: will celebrate} {user| his, her} birthday {date | on #date#, today, on #date#}", {
+    :user => @michael, :date => date
+  })
+
+end</code></pre>
+
+  <div class="content">
+    <% [Date.today, Date.today - 1.day, Date.today+1.day].each do |date| %>
+      <%=tr("{user} {date| past: celebrated, present: celebrates, future: will celebrate} {user| his, her} birthday {date | on #date#, today, on #date#}", :user => @michael, :date => date) %><br>
+    <% end %>
+  </div>
+</div>
+
+<h2><%=tr("Lists") %></h2>
+<p><%=tr("In languages like Hebrew, the list rules may include cases such as when all members of the list are male, female or have mixed genders. In Russian, the list rules may include cases for single member male, female, unknown or multiple members.") %></p>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">[[@michael], [@michael, @anna]].each do |users|
+  tr("{users || likes, like} this post", :users => users)
+end</code></pre>
+  <div class="content">
+    <% [[@michael], [@anna], [@karen, @jenny], [@thomas, @michael, @peter]].each do |users| %>
+      <%=tr("{users||likes, like} this post", :users => [users, lambda{|user| tr(user.name)}]) %><br>
+    <% end %>
+  </div>
+</div>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">[[@michael], [@anna], [@karen, @jenny], [@thomas, @michael, @peter]].each do |users|
+  tr("{users||has, have} arrived at {users|his, her, their} destination.",
+          :users => [users, lambda{|user| tr(user.name)}]
+  )
+end</code></pre>
+  <div class="content">
+    <% [[@michael], [@anna], [@karen, @jenny], [@thomas, @michael, @peter]].each do |users| %>
+      <%=tr("{users||has, have} arrived at {users|his, her, their} destination.", :users => [users, lambda{|user| tr(user.name)}]) %><br>
+    <% end %>
+  </div>
+</div>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">[[@michael], [@anna], [@anna, @michael, @alex, @jenny]].each do |users|
+  1.upto(3) do |count|
+    ["Los Angeles", "Paris"].each do |city|
+      tr("{users || перебрался, перебралась, перебрались} в {city} {count || месяц, месяца, месяцев} назад", {
+          :users => [users, lambda{|user| tr(user.name)}],
+          :city => tr(city),
+          :count => count
+        },
+        {:locale => 'ru'}
+      )
+    end
+  end
+end</code></pre>
+  <div class="content">
+    <% [[@michael], [@anna], [@anna, @michael, @alex, @jenny]].each do |users| %>
+      <% 1.upto(3) do |count| %>
+        <% ["Los Angeles", "Paris"].each do |city| %>
+          <%=tr("{users || перебрался, перебралась, перебрались} в {city} {count || месяц, месяца, месяцев} назад", {:users => [users, lambda{|user| tr(user.name)}], :city => tr(city), :count => count}, {:locale => 'ru'}) %><br>
+        <% end %>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<h1><%=tr("Language Cases") %></h1>
+
+<p><%=tr("Language cases allow you to manipulate the values of the data passed through tokens.")%></p>
+
+<%= render :partial => "english" %>
+
+<%= render :partial => "russian" %>
+
+
+<h1><%=tr("Extensions") %></h1>
+
+<h2><%=tr("Blocks") %></h2>
+
+<p>
+  <%= tr("Blocks allow you to apply a set of options to all translation keys within the block.") %>
+  <%= tr("One of the main uses cases for the blocks are grouping keys into sources.") %>
+  <%= tr("Sources are used for caching and management of translation keys.") %>
+</p>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">
+&lt;%= tml_with_options_tag(:source => :sample_source) do %&gt;
+  &lt;%= tr("Hello World") %&gt;
+&lt;% end %&gt;
+  </code></pre>
+  <div class="content">
+    <%= tml_with_options_tag(:source => :sample_source) do %>
+      <%= tr("Hello World") %>
+    <% end %>
+  </div>
+</div>
+
+<p>
+  <%= tr("You can use blocks to indicate the source language of all of the items inside.") %>
+</p>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">
+&lt;%= tml_with_options_tag(:locale => 'ru') do %&gt;
+  &lt;%= tr("Привет Мир") %&gt;
+&lt;% end %&gt;
+  </code></pre>
+  <div class="content">
+    <%= tml_with_options_tag(:locale => 'ru') do %>
+      <%= tr("Привет Мир") %>
+    <% end %>
+  </div>
+</div>
+
+<p>
+  <%= tr("You can also indicate what translator level is allowed to translate those translation keys.") %>
+</p>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">
+&lt;%= tml_with_options_tag(:level => 1000) do %&gt;
+  &lt;%= tr("Terms of Service") %&gt;
+&lt;% end %&gt;
+  </code></pre>
+  <div class="content">
+    <%= tml_with_options_tag(:level => 1000) do %>
+      <%= tr("Terms of Service") %>
+    <% end %>
+  </div>
+</div>
+
+
+
+</div>
+</div>
+</div>
+
+<%= stylesheet_link_tag('jquery.tocify.css') %>
+<%= javascript_include_tag('jquery.tocify.min.js') %>
+
+<%= stylesheet_link_tag('prism.css') %>
+<%= stylesheet_link_tag('prism_rails.css') %>
+<%= javascript_include_tag('prism.js') %>
+<%= javascript_include_tag('prism_rails.js') %>
+
+<style>
+  .example {
+    background: #eee;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    margin-bottom:15px;
+  }
+  .example .title {
+    color: white;
+    width: 80px;
+    text-align:center;
+    padding:3px;
+    background: #ccc;
+    border-bottom: 1px solid #ccc;
+    border-right: 1px solid #ccc;
+    border-top-left-radius:5px;
+    border-bottom-right-radius:5px;
+  }
+
+  .example .content {
+    padding:10px;
+  }
+
+  h1 {
+    margin-top: 30px;
+    padding-bottom: 5px;
+    border-bottom: 2px solid #eee;
+  }
+
+  h2 {
+    margin-top: 35px;
+  }
+
+  h4 {
+    margin-top: 35px;
+  }
+
+  #toc {
+    width:240px;
+  }
+
+  .code {
+    margin: 10px !important;
+  }
+</style>
+
+<script>
+  $(function() {
+    $("#toc").tocify({
+      "selectors": "h1,h2,h3"
+    });
+  });
+</script>

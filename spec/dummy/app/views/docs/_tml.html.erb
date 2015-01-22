@@ -1,0 +1,490 @@
+<h1><%= tr("Translation Markup Language") %></h1>
+
+<p>
+  <%=tr("Translation Markup Language (TML) is used to identify the non-translatable or dynamic data within the labels. It provides a way to mark data and decoration tokens within the strings that need to be translated. There are different types of applications that can use TML - web, mobile and desktop. Some use HTML, others use Wiki-Like syntax for decorating the labels. TML aims at abstracting out the decoration mechanisms of the string used by the applications and instead provides its own simple, but powerful syntax. This allows for translation sharing across multiple applications.") %>
+</p>
+
+<h2><%=tr("Basics") %></h2>
+
+<%= tr("Tml Client SDK extends Controller and View helpers by providing a translation function, called \"tr\".") %>
+
+<%= tr("The function can be called using any of the following ways:") %>
+
+<pre><code class="language-ruby">tr(label, description, tokens = {}, options = {})</code></pre>
+
+<%= tr("You can skip description:") %>
+
+<pre><code class="language-ruby">tr(label, tokens = {}, options = {})</code></pre>
+
+<%= tr("You can also pass parameters as a hash:") %>
+
+<pre><code class="language-ruby">tr(params = {:label => LABEL, :tokens => TOKENS, :options => OPTIONS})</code></pre>
+
+<%= tr("Alternatively, you can use string extensions:") %>
+
+<pre><code class="language-ruby">"some text".translate(tokens = {}, options = {}, language = Tml.session.current_language)
+"some text".translate(description, tokens = {}, options = {}, language = Tml.session.current_language)
+</code></pre>
+
+
+<%= tr("Tml provides a number of helper methods that are available in views and controllers:") %>
+
+<pre><code class="language-ruby">tml_current_language.translate(label, description, tokens = {}, options = {})
+tml_application.language('ru').translate(label, description, tokens = {}, options = {})
+</code></pre>
+
+<p>
+<ul>
+  <li><%= tr("[bold: label] is the only required parameter.") %>
+  <li><%= tr("[bold: description] is an optional parameter, but should always be used if the label by itself is not sufficient enough to provide the meaning of the phrase.") %>
+  <li><%= tr("[bold: tokens] is an optional parameter that contains a hash (or a dictionary) of token values to be substituted in the label.") %>
+  <li><%= tr("[bold: options] provides a mechanism for passing additional directives to the translation engine. ") %>
+</ul>
+</p>
+
+<p><%= tr("Let's start with a simple phrase:")%></p>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">tr("Hello World")</code></pre>
+
+  <div class="content">
+    <%=tr("Hello World") %>
+  </div>
+</div>
+
+<p>
+  <%=tr("The description of a phrase is not mandatory, but it should be used in cases when the label alone is not sufficient enough to determine the meaning of the sentence being translated.") %>
+  <%=tr("As a general rule, you should always provide description to words, phrases and sentences that are only meaningful within a specific context.") %>
+  <%=tr("Tml uses label and description together to create a unique key for each phrase.") %>
+  <%=tr("The description serves two purposes: it creates a unique key for each label and it also gives a hint to the translators for the context in which the label is used.") %>
+</p>
+
+<p>
+  <%=tr("For example, the following two phrases will be registered as two independent entries in a database even though the have the same label, but a different description. The user will have to translate each one of them separately as they will have different translated labels in other languages.") %>
+</p>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">tr("Invite", "Link to invite your friends to join the site")
+tr("Invite", "An invitation you received from your friend")</code></pre>
+
+  <div class="content">
+    <%= tr("Invite", "Link to invite your friends to join the site") %><br>
+    <%= tr("Invite", "An invitation you received from your friend")  %>
+  </div>
+</div>
+
+<p>
+  <%=tr("It is important to provide the best possible description for each phrase from the start. Keep in mind that changing a description in the future, after it has already been translated, will register a new phrase in the database and invalidate all of its translations. On the other hand, labels that are complete sentences may not need a description as they are fully self-contained.") %>
+</p>
+
+
+<h2><%= tr("Data Tokens") %></h2>
+
+<p><%= tr("In many cases your tokens would be string objects that get substituted directly into the translated sentence.")%></p>
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">tr("Hello {user}", :user => "Michael")</code></pre>
+
+  <div class="content">
+    <%=tr("Hello {user}", :user => "Michael") %>
+  </div>
+</div>
+
+<p><%= tr("Translations can be nested.")%></p>
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">tr("Welcome to {city}", :city => tr("Los Angeles"))</code></pre>
+
+  <div class="content">
+    <%=tr("Welcome to {city}", :city => tr("Los Angeles")) %>
+  </div>
+</div>
+
+<p><%= tr("But make sure that you don't take translations out of context.")%>
+</p>
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">tr("Please visit our {registration} to join our site.", :registration => link_to(tr("registration page"), ""))</code></pre>
+  <div class="content">
+    <%=tr("Please visit our {registration} to join our site.", :registration => link_to(tr("registration page"))) %>
+  </div>
+</div>
+
+<p>
+  <%= tr("The problem with the above example, is that the \"registration page\" link text would be translated differently based on the context where it appears.")%>
+  <%= tr("You must keep the two parts together to make sure the translations are accurate. You will later see how you can use decoration tokens to fix the above problem.")%>
+</p>
+
+<p>
+  <%= tr("If your translation key needs to use context rules, you can pass the object and the substitution value as an array.")%>
+</p>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">tr("Dear {user}", :user => [@michael, "Michael B."])</code></pre>
+  <div class="content">
+    <%=tr("Dear {user}", :user => [@michael, "Michael B."]) %>
+  </div>
+</div>
+
+
+<p>
+  <%= tr("You can also get the substitution value by invoking a method of the object by using a symbol in the second parameter.")%>
+</p>
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">tr("Dear {user}", :user => [@michael, :name])</code></pre>
+  <div class="content">
+    <%=tr("Dear {user}", :user => [@michael, :name]) %>
+  </div>
+</div>
+
+<p><%= tr("You can use hashes for the token values as well.")%></p>
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">tr("Hello {user}", :user => {:object => @michael, :attribute => :name})</code></pre>
+  <div class="content">
+    <%=tr("Hello {user}", :user => {:object => @michael, :attribute => :name}) %>
+  </div>
+</div>
+
+<p>T<%= tr("he object itself may be a hash too. But since hashes don't provide a mechanism to extract a meaningful string value, make sure that you indicate what the substitution value should be. You can pass it as a value attribute.")%>
+</p>
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">tr("Hello {user}", :user => {:object => {:gender => :@michael}, :value => "Alex"})</code></pre>
+  <div class="content">
+    <%=tr("Hello {user}", :user => {:object => {:gender => :@michael}, :value => "Alex"}) %>
+  </div>
+</div>
+
+<p>
+  <%= tr("Or you can pass an attribute name of an attribute in the hash.")%>
+</p>
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">tr("Hello {user}", :user => {:object => {:name => "Alex"}, :attribute => :name})</code></pre>
+  <div class="content">
+    <%=tr("Hello {user}", :user => {:object => {:name => "Alex"}, :attribute => :name}) %>
+  </div>
+</div>
+
+<h2><%= tr("Method Tokens") %></h2>
+
+<p>
+  <%= tr("Method tokens allow you to invoke methods on the object you are passing to get the substitution value.")%>
+</p>
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">tr("Hello {user.name}, you are a {user.gender}", :user => @michael)</code></pre>
+  <div class="content">
+    <%=tr("Hello {user.name}, you are a {user.gender}", :user => @michael) %>
+  </div>
+</div>
+
+<h2><%= tr("Piped Tokens") %></h2>
+
+<p>
+  <%= tr("Piped tokens work in conjunction with context rules and allow you to provide substitution values based on the object values.")%>
+</p>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">tr("You have {count || one: message, other: messages}", :count => 1)</code></pre>
+  <div class="content">
+    <%=tr("You have {count || one: message, other: messages}", :count => 1) %>
+  </div>
+</div>
+
+<p>
+  <%= tr('Double pipe "||" means that the value would be displayed, followed by the word that depends on the value. In this case, if the count value meets the criteria for the rule "one", then it will display the word set to the rule. For all other cases it would display the "other" value.')%>
+</p>
+
+<p><%= tr('Since the sequence of parameters is mapped to the sequence of rules, you can omit naming the parameters.')%></p>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">tr("You have {count || message, messages}", :count => 2)</code></pre>
+  <div class="content">
+    <%=tr("You have {count || message, messages}", :count => 2) %>
+  </div>
+</div>
+
+<p><%= tr("Since the library comes with default pluralizers, you don't even need to provide the plural form. It will be automagically generated for you.")%></p>
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">tr("You have {count || message}", :count => 5)</code></pre>
+  <div class="content">
+    <%=tr("You have {count || message}", :count => 5) %>
+  </div>
+</div>
+
+
+<p><%= tr('The same exact concept applies to other token types and context rules.')%></p>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">tr("{user} updated {user | his, her} profile.", :user => @michael)</code></pre>
+  <div class="content">
+    <%=tr("{user} updated {user | his, her} profile.", :user => @michael) %>
+  </div>
+</div>
+
+<p>
+  <%= tr('Single pipe "|" means to not display the actual token value, but display the value that follows based on the context rules.')%>
+</p>
+
+
+<p>
+  <%= tr("The context rules are specific for each language. But you don't have to worry about it, translators will provide the rules and the values.")%>
+</p>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+        <pre class="code"><code class="language-ruby">tr("{user|| @michael: родился, @anna: родилась, other: родился/лась} в Ленинграде.",
+          {:user => @michael}, {:locale => 'ru'}
+)</code></pre>
+  <div class="content">
+    <%=tr("{user|| @michael: родился, @anna: родилась, other: родился/лась} в Ленинграде.", {:user => @michael}, {:locale => 'ru'}) %>
+  </div>
+</div>
+
+
+<h2><%= tr("Implied Tokens") %></h2>
+<p>
+  <%= tr("Implied tokens use a single pipe since the value does not need to be displayed.") %>
+</p>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">tr("{user| male: He, female: She} likes this movie.", :user => @michael)</code></pre>
+  <div class="content">
+    <%=tr("{user| male: He, female: She} likes this movie.", :user => @michael) %>
+  </div>
+</div>
+
+<p>
+  <%=tr("Similar to the previous examples, you don't have to provide the named parameter values.")%>
+</p>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">tr("{user| He, She} likes this movie.", :user => @michael)</code></pre>
+  <div class="content">
+    <%=tr("{user| He, She } likes this movie.", :user => @michael) %>
+  </div>
+</div>
+
+<p>
+  <%=tr("Even though the base language does not have a gender specific dependency in some cases, it is always good to wrap it with an implied token.")%>
+</p>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">tr("{user| Born on}: ", :user => @michael)</code></pre>
+  <div class="content">
+    <%=tr("{user| Born on}: ", :user => @michael) %>
+  </div>
+</div>
+
+<p><%=tr("As a general rule, if any of the words of your translation keys depend on a user, use implied tokens. It won't affect default translations, yet it would give translators an option make the translation accurate.") %></p>
+
+<h2><%=tr("Decoration Tokens") %></h2>
+<p>
+  <%=tr("Decoration tokens are used to inject HTML styling into translations.") %>
+  <%= tr('In other libraries, like in iOS or Android, the tokens can be substituted with a native decoration framework.') %>
+</p>
+
+<p><%=tr("The token values can be passed as lambdas.") %></p>
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">tr("Hello [link: World]", :bold => lambda{|value| link_to(value, "")})</code></pre>
+  <div class="content">
+    <%=tr("Hello [bold: World]", :bold => lambda{|value| link_to(value, "")}) %>
+  </div>
+</div>
+
+<p>
+  <%= tr('Or they can be defined as strings, where [bold: {$0}] indicates the translated value being passed in.', {"$0" => "{$0}"})%>
+</p>
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">tr("Hello [bold: World]", :bold => "&lt;strong&gt;{$0}&lt;/strong&gt;")</code></pre>
+  <div class="content">
+    <%=tr("Hello [bold: World]", :bold => "<strong>{$0}</strong>") %>
+  </div>
+</div>
+
+<p>
+  <%= tr("You can also pre-define all your tokens in the configuration. Then you don't need to pass them at all. In the following example, [bold: bold] is already pre-defined in the framework.") %>
+</p>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">Tml.configure do |config|
+  config.set_default_token(:custom, "&lt;span style='font-size:larger'&gt;{$0}&lt;/span&gt;", :decoration)
+end</code></pre>
+  <%
+     Tml.configure do |config|
+      config.set_default_token(:custom, "<span style='font-size:larger'>{$0}</span>", :decoration)
+     end
+  %>
+
+  <pre class="code"><code class="language-ruby">tr("Hello [custom: World]")</code></pre>
+  <div class="content">
+    <%=tr("Hello [custom: World]") %>
+  </div>
+</div>
+
+<p><%=tr("The default tokens can also use named parameters:") %></p>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">Tml.configure do |config|
+  config.set_default_token(:link, "&lt;a href='{$href}'&gt;{$0}&lt;/a&gt;", :decoration)
+  config.set_default_token(:font, "&lt;span style='font-size:{$size};font-family:{$family};color:{$color}'&gt;{$0}&lt;/span&gt;", :decoration)
+end</code></pre>
+  <%
+     Tml.configure do |config|
+       config.set_default_token(:link, "<a href='{$href}'>{$0}</a>", :decoration)
+       config.set_default_token(:font, "<span style='font-family:{$family};font-size:{$size}pt;color:{$color}'>{$0}</span>", :decoration)
+     end
+  %>
+
+  <pre class="code"><code class="language-ruby">tr("[link: Click here] to [font: create a new account].", {
+    :link => {:href => "/"},
+    :font => {:family => "Arial", :size => 16, :color => "green"}
+})</code></pre>
+  <div class="content">
+    <%=tr("[link: Click here] to [font: create a new account].", :link => {:href => "/"}, :font => {:family => "Arial", :size => 16, :color => "green"}) %>
+  </div>
+</div>
+
+<p><%= tr("You can also use the long notation of the decoration token.") %></p>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">tr("[link] Click here [/link] to view this section of the document", :link => {:href => "/docs"})</code></pre>
+  <div class="content">
+    <%=tr("[link] Click here [/link] to view this section of the document", :link => {:href => "/docs"}) %>
+  </div>
+</div>
+
+<p>
+  <%= tr("Decoration tokens can be nested.") %>
+</p>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+        <pre class="code"><code class="language-ruby">tr("[link] [bold: Click here] to view [underline: this section] of the document [/link]", {
+  :link => {:href => "/docs"},
+  :underline => lambda{|value| "&lt;span style='text-decoration: underline'&gt;#{value}&lt;/span&gt;"}
+})</code></pre>
+  <div class="content">
+    <%=tr("[link] [bold: Click here] to view [underline: this section] of the document [/link]", {
+        :link => {:href => "/docs"},
+        :underline => lambda{|value| "<span style='text-decoration: underline'>#{value}</span>"}
+    })
+    %>
+  </div>
+</div>
+
+<h2><%=tr("Nested Tokens") %></h2>
+
+<p>
+  <%= tr("Decoration tokens can be nested and they may contain data tokens as well.") %>
+</p>
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+        <pre class="code"><code class="language-ruby">tr("You have [link: {count||message}]", {
+  :count => 10,
+  :link => lambda{|value| link_to(value, "")}
+})</code></pre>
+  <div class="content">
+    <%=tr("You have [link: {count||message}]", :count => 10, :link => lambda{|value| link_to(value, "")}) %>
+  </div>
+</div>
+
+
+<p>
+  <%= tr("Notice that all of the nested tokens are still translated in-context and allow for very accurate translations.") %>
+</p>
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+        <pre class="code"><code class="language-ruby">tr("You have [link: [indent: {count}] {count|message}]", {
+  :count => 10,
+  :indent => "&lt;span style='font-size:larger'>{$0}&lt;/span>",
+  :link => lambda{|value| link_to(value.html_safe, "")}
+})</code></pre>
+  <div class="content">
+    <%=tr("You have [link: [indent: {count}] {count|message}]", :count => 10, :indent => "<span style='font-size:larger'>{$0}</span>", :link => lambda{|value| link_to(value.html_safe, "")}) %>
+  </div>
+</div>
+
+
+<h2><%=tr("Array Tokens") %></h2>
+
+<%=tr("Default options:") %>
+
+<pre><code class="language-ruby">tr("{users} joined the site", {:users => [[user1, user2, user3], :name, {
+  :limit => 4,
+  :separator => ', ',
+  :joiner => 'and',
+  :remainder => lambda{|elements| tr("#{count||other}", :count => elements.size)},
+  :expandable => true,
+  :collapsable => true
+})</code></pre>
+
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">tr("{users} joined the site.", :users => [[@michael, @anna]])</code></pre>
+  <div class="content">
+    <%=tr("{users} joined the site.", :users => [[@michael, @anna], :name]) %>
+  </div>
+</div>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">tr("{users} joined the site.", :users => [[@michael, @anna], :name, {:joiner => "or"}])</code></pre>
+  <div class="content">
+    <%=tr("{users} joined the site.", :users => [[@michael, @anna], :name, {:joiner => "or"}]) %>
+  </div>
+</div>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+        <pre class="code"><code class="language-ruby">tr("{users} joined the site.", {
+  :users => [[@michael, @anna, @jenny, @alex, @peter, @thomas, @karen], :name]
+})</code></pre>
+  <div class="content">
+    <%=tr("{users} joined the site.", :users => [[@michael, @anna, @jenny, @alex, @peter, @thomas, @karen], :name]) %>
+  </div>
+</div>
+
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+        <pre class="code"><code class="language-ruby">tr("{users} joined the site.", {
+  :users => [[@michael, @anna, @jenny, @alex, @peter, @thomas, @karen], :name, {:limit => 4, :expandable => false}]
+})</code></pre>
+  <div class="content">
+    <%=tr("{users} joined the site.", :users => [[@michael, @anna, @jenny, @alex, @peter, @thomas, @karen], :name, {:expandable => false}]) %>
+  </div>
+</div>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+        <pre class="code"><code class="language-ruby">tr("{users} joined the site.", {
+  :users => [
+    [@anna, @jenny, @alex, @peter, @thomas, @karen],
+    :name,
+    {:limit=>3, :expandable => true, :collapsable => false}
+  ]
+})</code></pre>
+  <div class="content">
+    <%=tr("{users} joined the site.", :users => [[@anna, @jenny, @alex, @peter, @thomas, @karen], :name, {:limit=>3, :expandable => true, :collapsable => false}]) %>
+  </div>
+</div>

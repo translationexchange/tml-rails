@@ -1,0 +1,68 @@
+<h1><%= tr("Introduction") %></h1>
+<p>
+  <%= tr("This document demonstrates how to use TML (Translation Markup Language) in a Rails application.") %>
+</p>
+
+<h2><%= tr("Integration") %></h2>
+
+<p>
+  <%= tr("Add the following gem to your [bold: Gemfile]:")%>
+</p>
+
+<pre><code class="language-ruby">gem 'tml_client_sdk'</code></pre>
+
+<p>
+  <%= tr("Install the gem by running the bundle command:") %>
+</p>
+
+<pre><code class="language-ruby">$ bundle</code></pre>
+
+<%= tr("Create an initializer [bold: tml.rb] and add the following configuration:") %>
+
+<pre><code class="language-ruby">Tml.configure do |config|
+  config.application = {
+    :key => YOUR_APP_KEY,
+    :secret => YOUR_APP_SECRET
+  }
+
+  config.cache = {
+    :enabled  => true,
+    :adapter  => 'memcache',
+    :host     => 'localhost:11211',
+    :version  => 2,
+    :timeout  => 3600
+  }
+end</code></pre>
+
+<p>
+  <%= tr("In the [bold: head] section of your layout, add:") %>
+</p>
+
+<pre><code class="language-ruby">&lt;%= tml_scripts_tag %&gt;</code></pre>
+
+<p><%= tr("You are done, tml is now running in your app.") %></p>
+
+<p><%= tr("Now you can simply add the default language selector anywhere on your page using:") %></p>
+
+<pre><code class="language-ruby">&lt;%= tml_language_selector_tag %&gt;</code></pre>
+
+
+<h2><%= tr("Setup") %></h2>
+
+<%= tr("Before we proceed to the next section, we need to setup a few users that we will be using in our examples.") %>
+
+<pre><code class="language-ruby">@michael = User.new("Michael", "male")
+@anna    = User.new("Anna", "female")
+@alex    = User.new("Alex", "male")
+@jenny   = User.new("Jenny", "female")
+@peter   = User.new("Peter", "male")
+@karen   = User.new("Karen", "female")
+@thomas  = User.new("Thomas", "male")
+</code></pre>
+
+<%= tr("Alternatively, you can use hashes to represent objects.") %>
+
+<pre><code class="language-ruby">@michael = {:name => "Michael", :gender => "michael"}
+@anna = {:name => "Anna", :gender => "anna"}
+...
+</code></pre>

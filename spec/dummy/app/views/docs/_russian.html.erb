@@ -1,0 +1,220 @@
+<h2><%=tr("Russian Examples") %></h2>
+
+<%=tr("Let's use Russian language to see some more advanced language cases in action.") %>
+
+<%=tr("We will also be translating the names of our users, in order to get a better picture of how the names get adjusted.") %>
+
+<h4>Nominative Case - Именительный Падеж</h4>
+<p>
+  <%= tr("No real change to the values here.") %>
+</p>
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+        <pre class="code"><code class="language-ruby">tr("{actor::nom} тестирует это приложение", {:actor => [@anna, tr(@anna.name)]}, {:locale => 'ru'})
+        </code></pre>
+  <div class="content">
+    <%=tr("{actor::nom} тестирует это приложение", {:actor => [@anna, tr(@anna.name)]}, {:locale => 'ru'}) %><br>
+  </div>
+</div>
+
+<h4>Genitive Case - Родительный Падеж</h4>
+<p><%=tr("In grammar, genitive (abbreviated gen; also called the possessive case or second case) is the grammatical case that marks a noun as modifying another noun. ") %></p>
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+        <pre class="code"><code class="language-ruby">tr("{actor|| пригласил, пригласила} {target::gen} на вечеринку",
+  {:actor => [@anna, tr(@anna.name)], :target => [@michael, tr(@michael.name)]},
+  {:locale => 'ru'}
+)</code></pre>
+  <div class="content">
+    <%=tr("{actor|| пригласил, пригласила} {target::gen} на вечеринку", {:actor => [@anna, tr(@anna.name)], :target => [@michael, tr(@michael.name)]}, {:locale => 'ru'}) %><br>
+  </div>
+</div>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+        <pre class="code"><code class="language-ruby">[@michael, @anna].each do |actor|
+  [[@michael, @anna], [@thomas, @peter, @jenny, @karen]].each do |target|
+    tr("{actor} следит за фотоальбомами {targets::gen}", {
+        :actor => [actor, tr(actor.name)],
+        :target => [target, tr(target.name)]
+      }, {:locale => 'ru'})
+  end
+end</code></pre>
+  <div class="content">
+    <% [@michael, @anna].each do |actor|
+      [[@michael, @anna], [@thomas, @peter, @jenny, @karen]].each do |targets|
+    %>
+        <%= tr("{actor} следит за фотоальбомами {targets::gen}", {
+            :actor => [actor, tr(actor.name)],
+            :targets => [targets, lambda{|user| tr(user.name)}, :joiner => tr("and")]
+        }, {:locale => 'ru'}) %><br>
+      <%
+         end
+         end %>
+  </div>
+</div>
+
+
+<h4>Dative Case - Дательный Падеж</h4>
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+        <pre class="code"><code class="language-ruby">[@michael, @anna].each do |actor|
+  [@michael, @anna, @thomas, @peter, @jenny, @karen].each do |target|
+    tr("{actor|| подарил, подарила} подарок {target::dat}", {
+            :actor => [actor, tr(actor.name)],
+            :target => [target, tr(target.name)]
+          }, {:locale => 'ru'})
+  end
+end</code></pre>
+  <div class="content">
+    <% [@michael, @anna].each do |actor| %>
+      <% [@michael, @anna, @thomas, @peter, @jenny, @karen].each do |target| %>
+        <%=tr("{actor|| подарил, подарила} подарок {target::dat}", {:actor => [actor, tr(actor.name)], :target => [target, tr(target.name)]}, {:locale => 'ru'}) %><br>
+      <% end %>
+    <% end %>
+  </div>
+</div>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+        <pre class="code"><code class="language-ruby">[@michael, @anna].each do |actor|
+  [[@michael, @anna], [@thomas, @peter, @jenny, @karen]].each do |target|
+    tr("{actor|| подарил, подарила} подарок {target::dat}", {
+        :actor => [actor, tr(actor.name)],
+        :target => [target, tr(target.name)]
+      }, {:locale => 'ru'})
+  end
+end</code></pre>
+  <div class="content">
+    <% [@michael, @anna].each do |actor|
+      [[@michael, @anna], [@thomas, @peter, @jenny, @karen]].each do |targets|
+    %>
+        <%= tr("{actor|| подарил, подарила} подарок {targets::dat}", {
+            :actor => [actor, tr(actor.name)],
+            :targets => [targets, lambda{|user| tr(user.name)}, :joiner => tr("and")]
+        }, {:locale => 'ru'}) %><br>
+    <%
+      end
+    end %>
+  </div>
+</div>
+
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+        <pre class="code"><code class="language-ruby">[@michael, @anna].each do |actor|
+  [[@michael, @anna], [@thomas, @peter, @jenny, @karen]].each do |target|
+    tr("{actor::dat} нравится сообщение от {targets::gen}", {
+        :actor => [actor, tr(actor.name)],
+        :target => [target, tr(target.name)]
+      }, {:locale => 'ru'})
+  end
+end</code></pre>
+  <div class="content">
+    <% [@michael, @anna].each do |actor|
+      [[@michael, @anna], [@thomas, @peter, @jenny, @karen]].each do |targets|
+    %>
+        <%= tr("{actor::dat} нравится сообщение от {targets::gen}", {
+            :actor => [actor, tr(actor.name)],
+            :targets => [targets, lambda{|user| tr(user.name)}, :joiner => tr("and")]
+        }, {:locale => 'ru'}) %><br>
+      <%
+         end
+         end %>
+  </div>
+</div>
+
+
+<h4>Accusative Case - Винительный Падеж</h4>
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+        <pre class="code"><code class="language-ruby">tr("{actor|| увидел, увидела} {target::acc} на вечеринке",
+  {:actor => [@anna, tr(@anna.name)], :target => [@michael, tr(@michael.name)]},
+  {:locale => 'ru'}
+)</code></pre>
+  <div class="content">
+    <%=tr("{actor|| увидел, увидела} {target::acc} на вечеринке", {:actor => [@anna, tr(@anna.name)], :target => [@michael, tr(@michael.name)]}, {:locale => 'ru'}) %><br>
+  </div>
+</div>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+        <pre class="code"><code class="language-ruby">[@michael, @anna].each do |actor|
+  [[@michael, @anna], [@thomas, @peter, @jenny, @karen]].each do |target|
+    tr("{actor|| пригласил, пригласила} {targets::acc} на вечеринку", {
+        :actor => [actor, tr(actor.name)],
+        :target => [target, tr(target.name)]
+      }, {:locale => 'ru'})
+  end
+end</code></pre>
+  <div class="content">
+    <% [@michael, @anna].each do |actor|
+      [[@michael, @anna], [@thomas, @peter, @jenny, @karen]].each do |targets|
+    %>
+        <%= tr("{actor|| пригласил, пригласила} {targets::acc} на вечеринку", {
+            :actor => [actor, tr(actor.name)],
+            :targets => [targets, lambda{|user| tr(user.name)}, :joiner => tr("and")]
+        }, {:locale => 'ru'}) %><br>
+      <%
+         end
+         end %>
+  </div>
+</div>
+
+
+
+<h4>Instrumental Case - Творительный Падеж</h4>
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+        <pre class="code"><code class="language-ruby">tr("{actor} гордится {target::ins}",
+  {:actor => [@anna, tr(@anna.name)], :target => [@michael, tr(@michael.name)]},
+  {:locale => 'ru'}
+)</code></pre>
+  <div class="content">
+    <%=tr("{actor} гордится {target::ins}", {:actor => [@anna, tr(@anna.name)], :target => [@michael, tr(@michael.name)]}, {:locale => 'ru'}) %><br>
+  </div>
+</div>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+        <pre class="code"><code class="language-ruby">[@michael, @anna].each do |actor|
+  [[@michael, @anna], [@thomas, @peter, @jenny, @karen]].each do |target|
+    tr("{actor} теперь дружит с {targets::ins}", {
+        :actor => [actor, tr(actor.name)],
+        :target => [target, tr(target.name)]
+      }, {:locale => 'ru'})
+  end
+end</code></pre>
+  <div class="content">
+    <% [@michael, @anna].each do |actor|
+      [[@michael, @anna], [@thomas, @peter, @jenny, @karen]].each do |targets|
+    %>
+        <%= tr("{actor} теперь дружит с {targets::ins}", {
+            :actor => [actor, tr(actor.name)],
+            :targets => [targets, lambda{|user| tr(user.name)}, :joiner => tr("and")]
+        }, {:locale => 'ru'}) %><br>
+      <%
+         end
+         end %>
+  </div>
+</div>
+
+<h4>Prepositional Case - Предложный Падеж</h4>
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+      <pre class="code"><code class="language-ruby">
+tr("{actor} думает {target::pre::about}",
+  {:actor => [@anna, tr(@anna.name)], :target => [@michael, tr(@michael.name)]},
+  {:locale => 'ru'}
+)
+
+tr("{actor} думает {target::pre::about}",
+  {:actor => [@michael, tr(@michael.name)], :target => [@anna, tr(@anna.name)]},
+  {:locale => 'ru'}
+)
+      </code></pre>
+  <div class="content">
+    <%=tr("{actor} думает {target::pre::about}", {:actor => [@anna, tr(@anna.name)], :target => [@michael, tr(@michael.name)]}, {:locale => 'ru'}) %><br>
+    <%=tr("{actor} думает {target::pre::about}", {:actor => [@michael, tr(@michael.name)], :target => [@anna, tr(@anna.name)]}, {:locale => 'ru'}) %><br>
+  </div>
+</div>

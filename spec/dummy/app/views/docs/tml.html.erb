@@ -1,0 +1,135 @@
+<%= stylesheet_link_tag(tml_url_tag("/tml/console.css")) %>
+<%= javascript_include_tag("chosen.jquery.js") %>
+
+<div class="tml tml_container" <%=tml_dir_attribute_tag%>>
+
+  <%=form_tag("/docs/tml_content", :method => :get, :id => :tml_form, :target => :tml_translations) do %>
+    <input type="hidden" id="tml_label" name="tml_label" value="">
+    <input type="hidden" id="tml_context" name="tml_context" value="">
+    <input type="hidden" id="tml_tokens" name="tml_tokens" value="">
+    <input type="hidden" id="tml_options" name="tml_options" value="">
+
+    <div style="padding-top:15px;">
+      <div style="float:right; padding-top:10px;">
+        <%= select_tag(:tml_locale, options_for_select(tml_application.languages.collect{|lang| [lang.english_name, lang.locale]}, tml_current_language.locale)) %>
+      </div>
+
+      <h4 style="display:inline-block;"><%= tr("Label") %></h4>
+      <div class="dropdown" style="display:inline-block; padding-left:10px;">
+        <a id="user_menu_trigger" href="#" class="dropdown-toggle" data-toggle="dropdown">
+          <%= tr("try some examples") %><b class="caret"></b>
+        </a>
+        <div class="dropdown-menu">
+          <table class="tml_examples_table">
+            <tr>
+              <td class="tml_sections_container" id="tml_example_sections">
+              </td>
+              <td class="tml_examples_container">
+                <div id="tml_examples" class="tml_examples">
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="tml_ace_editor" id="tml_label_editor" style="height:80px;"></div>
+    </div>
+
+    <div style="padding-top:15px;">
+      <div style="float:right;padding-top:15px;color:#888"><%= tr("optional")%></div>
+      <h4><%= tr("Context") %></h4>
+      <div class="tml_ace_editor" id="tml_context_editor" style="height:50px;"></div>
+    </div>
+
+    <table style="width:100%">
+      <tr>
+        <td style="width:50%">
+          <div style="float:right;padding-top:15px;color:#888"><%= tr("optional")%></div>
+          <h4><%= tr("Tokens") %></h4>
+          <div class="tml_ace_editor" id="tml_tokens_editor" style="height:250px;">{}</div>
+        </td>
+        <td>&nbsp;</td>
+        <td style="width:50%">
+          <div style="float:right;padding-top:15px;color:#888"><%= tr("optional")%></div>
+          <h4><%= tr("Options") %></h4>
+          <div class="tml_ace_editor" id="tml_options_editor" style="height:250px;">{}</div>
+        </td>
+      </tr>
+    </table>
+
+    <div style="padding-top:10px;">
+      <div style="float:right">
+      </div>
+      <div>
+        <button type="button" class="btn btn-primary" onClick="submitTml()">
+          <%= tr("Translate") %>
+        </button>
+        <button type="button" class="btn" onClick="newSample()">
+          <%= tr("Clear") %>
+        </button>
+      </div>
+    </div>
+  <% end %>
+
+  <hr>
+  <div style="text-align:center;font-size:50px;color:#ccc;padding-bottom:30px;">
+    &#9660;
+  </div>
+
+  <iframe id="tml_translations" name="tml_translations" src="/docs/tml_content" style="width:100%;height:500px;background:white;border:1px solid #eee;"></iframe>
+
+  <%= javascript_include_tag("ace/ace.js") %>
+  <%= javascript_include_tag("ace/theme-chrome.js") %>
+  <%= javascript_include_tag("ace/mode-html.js") %>
+  <%= javascript_include_tag("ace/mode-json.js") %>
+
+  <script>
+    var label_editor = ace.edit("tml_label_editor");
+    label_editor.setTheme("ace/theme/chrome");
+    label_editor.getSession().setMode("ace/mode/text");
+
+    var context_editor = ace.edit("tml_context_editor");
+    context_editor.setTheme("ace/theme/chrome");
+    context_editor.getSession().setMode("ace/mode/text");
+
+    var tokens_editor = ace.edit("tml_tokens_editor");
+    tokens_editor.setTheme("ace/theme/chrome");
+    tokens_editor.getSession().setMode("ace/mode/json");
+
+    var options_editor = ace.edit("tml_options_editor");
+    options_editor.setTheme("ace/theme/chrome");
+    options_editor.getSession().setMode("ace/mode/json");
+
+    var currentLocale = "<%=tml_current_language.locale%>";
+  </script>
+
+</div>
+
+<%=javascript_include_tag(tml_url_tag("/tml/console.js")) %>
+<% ["en-US", "ru"].each do |locale| %>
+  <%=javascript_include_tag(tml_url_tag("/tml/samples/#{locale}.js")) %>
+<% end %>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

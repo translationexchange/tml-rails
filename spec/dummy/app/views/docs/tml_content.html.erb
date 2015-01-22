@@ -1,0 +1,35 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="<%= tml_current_language.locale %>" lang="<%= tml_current_language.locale %>">
+<html>
+<head>
+  <%=render :partial => "/layouts/head" %>
+  <style>
+    body {
+      padding:0px;
+      margin:0px;
+    }
+  </style>
+</head>
+<body>
+
+<%
+   label = params[:tml_label]
+   description = params[:tml_context]
+
+   tokens = params[:tml_tokens].blank? ? "{}" : params[:tml_tokens]
+   tokens = JSON.parse(tokens)
+
+   options = params[:tml_options].blank? ? "{}" : params[:tml_options]
+   options = JSON.parse(options)
+
+   options[:locale] = params[:tml_locale] || tml_current_language.locale
+%>
+
+<div style="padding:15px;">
+  <% unless params[:tml_label].blank? %>
+    <%=tr(label, description, tokens, options) %>
+  <% end %>
+</div>
+
+</body>
+</html>

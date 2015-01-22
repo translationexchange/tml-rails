@@ -1,0 +1,60 @@
+<h2><%=tr("English Examples") %></h2>
+
+<h4><%=tr("Possessives") %></h4>
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+  <pre class="code"><code class="language-ruby">tr("This is {user::pos} post", :user => @michael)</code></pre>
+  <div class="content">
+    <%=tr("This is {user::pos} post", :user => @michael) %>
+  </div>
+</div>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+        <pre class="code"><code class="language-ruby">[[@anna], [@karen, @jenny], [@thomas, @jenny, @peter]].each do |users|
+  tr("{actor} updated {users::pos} profile", :actor => @michael, :users => [users, lambda{|user| tr(user.name)}])
+end</code></pre>
+  <div class="content">
+    <% [[@anna], [@karen, @jenny], [@thomas, @jenny, @peter]].each do |users| %>
+      <%=tr("{actor} updated {users::pos} profile", :actor => @michael, :users => [users, lambda{|user| tr(user.name)}]) %><br>
+    <% end %>
+  </div>
+</div>
+
+<h4><%=tr("Counters") %></h4>
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+          <pre class="code"><code class="language-ruby">1.upto(5) do |index|
+  tr("You have already sent this message {count::times}", :count => index)
+end</code></pre>
+  <div class="content">
+    <% 1.upto(5) do |index| %>
+      <%=tr("You have already sent this message {count::times}", :count => index) %><br>
+    <% end %>
+  </div>
+</div>
+
+<h4><%=tr("Ordinals") %></h4>
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+          <pre class="code"><code class="language-ruby">1.upto(5) do |index|
+  tr("This is your {count::ord} warning", :count => index)
+end</code></pre>
+  <div class="content">
+    <% 1.upto(5) do |index| %>
+      <%=tr("This is your {count::ord} warning", :count => index) %><br>
+    <% end %>
+  </div>
+</div>
+
+<div class="example">
+  <div class="title"><%=tr('example')%></div>
+          <pre class="code"><code class="language-ruby">1.upto(10) do |index|
+  tr("This is your {count::ordinal} warning", :count => index)
+end</code></pre>
+  <div class="content">
+    <% 1.upto(10) do |index| %>
+      <%=tr("This is your {count::ordinal} warning", :count => index) %><br>
+    <% end %>
+  </div>
+</div>

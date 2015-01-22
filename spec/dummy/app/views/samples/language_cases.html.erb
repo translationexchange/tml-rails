@@ -1,0 +1,17 @@
+<p>
+
+  <%= tr("This is your {count::ordinal} warning", :count => 1) %>
+  <br><br><br>
+
+  <%= tr("you have [bold: {count} [i: {count|message}]]", :count => 1) %>
+
+  <br><br><br>
+
+  <%= tr("{actor} loved {target}",  :actor => {:object => {:name => "Михаил", :gender => "male"}, :attribute => :name},
+         :target => {:object => {:name => "Анна", :gender => "female"}, :attribute => :name}) %>
+
+  <br><br>
+  <%= tr("{actor} loved {target}",  :target => {:object => {:name => "Михаил", :gender => "male"}, :attribute => :name},
+         :actor => {:object => {:name => "Анна", :gender => "female"}, :attribute => :name}) %>
+
+</p>

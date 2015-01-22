@@ -1,0 +1,20 @@
+<% if Tml.config.enabled? %>
+  <% featured_languages = tml_application.featured_languages %>
+  <% if featured_languages.any? %> 
+    <style>
+    .tml_language_strip                            {text-align:center; color:#777;}
+    .tml_language_strip a                          {text-decoration:none; color:#777; outline:none; border:0px; font-size:10px;}
+    .tml_language_strip a img                      {border:0px;}
+    .tml_language_strip a:hover                    {text-decoration:underline}
+    </style>
+    <div class="tml_language_strip" style="font-size:12px;">
+      <% featured_languages.each do |lang| %>
+          <%= tml_language_name_tag(lang, opts) %> &nbsp;
+      <% end %>
+      
+      <% if featured_languages.size > 0 %>
+          <%=link_to_function("&raquo;".html_safe, "Tml.UI.LanguageSelector.show()") %>
+      <% end %> 
+    </div>
+  <% end %>
+<% end %>
