@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.github.com/tml/tml/master/doc/screenshots/tmllogo.png">
+  <img src="https://avatars0.githubusercontent.com/u/1316274?v=3&s=200">
 </p>
 
 Tml for Ruby on Rails
