@@ -1,2 +1,2 @@
 gem build tml-rails.gemspec
-gem install tml-rails-4.3.3.gem --no-ri --no-rdoc
+gem install tml-rails-4.3.4.gem --no-ri --no-rdoc
