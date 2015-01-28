@@ -81,14 +81,6 @@ module TmlRails
         not session[:tml_tools_disabled]
       end
 
-      def tml_locale
-        self.send(Tml.config.current_locale_method) if Tml.config.current_locale_method
-      rescue
-        session[:locale] = tml_user_preferred_locale unless session[:locale]
-        session[:locale] = params[:locale] if params[:locale]
-        session[:locale] || Tml.config.default_locale
-      end
-
       def tml_init_client_sdk
         return if Tml.config.disabled?
 
@@ -112,10 +104,22 @@ module TmlRails
           end
         end
 
-        if tml_tools_enabled? # gets translator and locale from the cookie
-          tml_session_params.merge!(:cookies => request.cookies)
-        else # uses default locale
-          tml_session_params.merge!(:locale => tml_locale)
+        if Tml.config.current_locale_method
+          begin
+            tml_session_params.merge!(:locale => self.send(Tml.config.current_locale_method))
+          rescue
+            # Tml.logger.error('Current locale method is specified but not provided')
+          end
+        end
+
+        unless tml_session_params[:locale]
+          if tml_tools_enabled? # gets translator and locale from the cookie
+            tml_session_params.merge!(:cookies => request.cookies)
+          else
+            session[:locale] = tml_user_preferred_locale unless session[:locale]
+            session[:locale] = params[:locale] if params[:locale]
+            tml_session_params.merge!(:locale => session[:locale] || Tml.config.default_locale)
+          end
         end
 
         Tml.session.init(tml_session_params)

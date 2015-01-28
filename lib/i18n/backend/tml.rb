@@ -31,6 +31,7 @@
 
 require 'i18n/backend/base'
 require 'tml'
+require 'pp'
 
 module I18n
   module Backend
@@ -47,10 +48,32 @@ module I18n
           application.locales
         end
 
+        def translate(locale, key, options = {})
+          super(locale, key, options).html_safe
+        end
+
         def lookup(locale, key, scope = [], options = {})
+          #pp ''
+          #pp [locale, key, scope, options]
+
           default_key = super(application.default_locale, key, scope, options)
+
+          #pp default_key
+
           default_key ||= key
-          application.language(locale.to_s).translate(default_key)
+          if default_key.is_a?(String)
+            translated_key = default_key.gsub('%{', '{')
+            translated_key = application.language(locale.to_s).translate(translated_key, options, options)
+          elsif default_key.is_a?(Hash)
+            translated_key = {}
+            default_key.each do |key, value|
+              value = value.gsub('%{', '{')
+              translated_key[key] =  application.language(locale.to_s).translate(value, options, options)
+            end
+          end
+
+          #pp translated_key
+          translated_key
         end
 
       end
