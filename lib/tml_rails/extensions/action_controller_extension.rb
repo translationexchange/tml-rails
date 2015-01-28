@@ -120,7 +120,9 @@ module TmlRails
 
         Tml.session.init(tml_session_params)
 
-        I18n.enforce_available_locales = false
+        if defined? I18n.enforce_available_locales
+          I18n.enforce_available_locales = false
+        end
         I18n.locale = Tml.session.current_language.locale
       end
 
