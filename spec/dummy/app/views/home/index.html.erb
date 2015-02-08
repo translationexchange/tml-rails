@@ -6,7 +6,10 @@
 </style>
 
 <div class="hero-unit">
-    <div class="text-center">
+  <%= tml_language_selector_tag(:bootstrap, :language => :native, :flags => true, :toggle => true, :style => "font-size:12px;") %>
+
+
+  <div class="text-center">
       <img class="trex_logo" src="" alt="" />
       <br><br>
     </div>
@@ -20,7 +23,7 @@
     <br>
     <% unless tml_current_translator %>
         <p class="text-center">
-            <a href="<%=tml_application.host%>/signup" class="btn btn-large"><%= tr('Sign up to get started now!') %></a>
+            <a href="https://dashboard.translationexchange.com/signup" class="btn btn-large"><%= tr('Sign up to get started now!') %></a>
         </p>
     <% end %>
 </div>

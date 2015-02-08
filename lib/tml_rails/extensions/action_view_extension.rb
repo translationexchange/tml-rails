@@ -56,36 +56,42 @@ module TmlRails
     end
 
     def tml_language_flag_tag(lang = tml_current_language, opts = {})
-      return "" unless tml_application.feature_enabled?(:language_flags)
-      html = image_tag(lang.flag_url, :style => "vertical-align:middle;", :title => lang.native_name)
-      html << "&nbsp;".html_safe 
+      return '' unless tml_application.feature_enabled?(:language_flags)
+      html = image_tag(lang.flag_url, :style => (opts[:style] || 'vertical-align:middle;'), :title => lang.native_name)
+      html << '&nbsp;&nbsp;'.html_safe
       html.html_safe
     end
 
     def tml_language_name_tag(lang = tml_current_language, opts = {})
       show_flag = opts[:flag].nil? ? true : opts[:flag]
-      name_type = opts[:name].nil? ? :full : opts[:name] # :full, :native, :english, :locale
-      linked = opts[:linked].nil? ? true : opts[:linked] 
+      name_type = opts[:language].nil? ? :english : opts[:language] # :full, :native, :english, :locale
 
-      html = "<span style='white-space: nowrap'>"
+      html = []
+      html << "<span style='white-space: nowrap'>"
       html << tml_language_flag_tag(lang, opts) if show_flag
       html << "<span dir='ltr'>"
 
       name = case name_type
         when :native  then lang.native_name
-        when :english then lang.english_name
+        when :full then lang.full_name
         when :locale  then lang.locale
-        else lang.full_name
+        else lang.english_name
       end
 
-      html << name
-      html << "</span></span>"
-      html.html_safe
+      html << name.to_s
+      html << '</span></span>'
+      html.join().html_safe
     end
 
     def tml_language_selector_tag(type = nil, opts = {})
       return unless Tml.config.enabled?
-      render(:partial => '/tml_rails/tags/language_selector', :locals => {:type => type, :opts => opts})
+
+      type ||= :default
+      unless [:bootstrap, :default, :inline, :select].include?(type.to_sym)
+        return "Unsupported language selector #{type}"
+      end
+
+      render(:partial => "/tml_rails/tags/language_selector_#{type}", :locals => {:opts => opts})
     end
 
     def tml_language_strip_tag(opts = {})

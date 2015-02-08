@@ -113,16 +113,17 @@ module TmlRails
         end
 
         unless tml_session_params[:locale]
-          if tml_tools_enabled? # gets translator and locale from the cookie
-            tml_session_params.merge!(:cookies => request.cookies)
-          else
-            session[:locale] = tml_user_preferred_locale unless session[:locale]
-            session[:locale] = params[:locale] if params[:locale]
-            tml_session_params.merge!(:locale => session[:locale] || Tml.config.default_locale)
-          end
+          tml_session_params.merge!(:cookies => cookies)
+          tml_session_params.merge!(:change_locale => true) if params[:locale]
+          tml_session_params.merge!(:locale => params[:locale] || tml_user_preferred_locale)
         end
 
         Tml.session.init(tml_session_params)
+
+        # if user sets locale manually, update the cookie for future use
+        if tml_session_params[:change_locale]
+          cookies[Tml.session.cookie_name] = Tml::Utils.encode(Tml.session.cookie_params)
+        end
 
         if defined? I18n.enforce_available_locales
           I18n.enforce_available_locales = false

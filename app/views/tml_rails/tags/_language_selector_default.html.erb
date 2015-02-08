@@ -1,0 +1,17 @@
+<%= link_to('#',
+      :onclick => opts[:method] || 'Tml.UI.LanguageSelector.show(); return false;',
+      :style => (opts[:style] || 'padding-right:5px;text-decoration:none'),
+      :class => opts[:class]
+    ) do %>
+  <% unless opts[:hide_flag] %>
+    <%= image_tag(tml_current_language.flag_url, :style => "align:middle") %>
+    &nbsp;
+  <% end %>
+  <% if opts[:language] == :native %>
+    <%= tml_current_language.native_name %>
+  <% elsif opts[:language] == :english %>
+    <%= tml_current_language.english_name %>
+  <% else %>
+    <%= tml_current_language.english_name %>
+  <% end %>
+<% end %>

@@ -27,7 +27,13 @@ Dummy::Application.configure do
   # number of complex assets.
   config.assets.debug = true
 
-  config.cache_store = :mem_cache_store, Dalli::Client.new('localhost:11211', {:namespace => 'dummy'})
-  config.identity_cache_store = :mem_cache_store, Dalli::Client.new('localhost:11211', {:namespace => 'dummy'})
+  #config.identity_cache_store = config.cache_store = :mem_cache_store, Dalli::Client.new('localhost:11211', {
+  #    :namespace => 'dummy'
+  #})
+
+  config.identity_cache_store = config.cache_store = :redis_store, {
+    :url => 'redis://localhost:6379/0',
+    :namespace => 'translations1'
+  }
 
 end

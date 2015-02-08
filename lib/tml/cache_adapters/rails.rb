@@ -33,7 +33,6 @@
 class Tml::CacheAdapters::Rails < Tml::Cache
 
   def initialize
-    Tml.logger.info('Initializing Rails cache...')
     @cache = Rails.cache
   end
 
@@ -91,7 +90,7 @@ class Tml::CacheAdapters::Rails < Tml::Cache
   end
 
   def clear(opts = {})
-    info("Cache clear")
+    info('Cache clear')
   rescue Exception => ex
     warn("Failed to clear cache: #{ex.message}")
   end

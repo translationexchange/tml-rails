@@ -69,3 +69,7 @@ end
 group :assets do
   gem 'sass-rails'
 end
+
+gem 'redis-store'
+gem 'redis-rails'
+gem 'redis'

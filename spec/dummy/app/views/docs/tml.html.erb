@@ -1,4 +1,4 @@
-<%= stylesheet_link_tag(tml_url_tag("/tml/console.css")) %>
+<%= stylesheet_link_tag("tml/console.css") %>
 <%= javascript_include_tag("chosen.jquery.js") %>
 
 <div class="tml tml_container" <%=tml_dir_attribute_tag%>>
@@ -105,9 +105,9 @@
 
 </div>
 
-<%=javascript_include_tag(tml_url_tag("/tml/console.js")) %>
+<%=javascript_include_tag("tml/console.js") %>
 <% ["en-US", "ru"].each do |locale| %>
-  <%=javascript_include_tag(tml_url_tag("/tml/samples/#{locale}.js")) %>
+  <%=javascript_include_tag("tml/samples/#{locale}.js") %>
 <% end %>
 
 

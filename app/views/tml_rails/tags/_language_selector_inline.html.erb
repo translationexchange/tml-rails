@@ -1,0 +1,15 @@
+<div style="<%=opts[:style]%>" class="<%=opts[:class]%>">
+  <% tml_application.languages.each_with_index do |lang, index| %>
+    <% next if opts[:limit] and index >= opts[:limit] %>
+
+
+    <%= link_to(params.merge(:locale => lang.locale), :style => (opts[:style] || 'padding-right:5px;text-decoration:none'), :class => opts[:class]) do %>
+      <% if opts[:flags_only] or opts[:flags] %>
+        <%= image_tag(lang.flag_url) %>
+      <% else %>
+        <%= tml_language_name_tag(lang, opts) %>
+      <% end %>
+    <% end %>
+
+  <% end %>
+</div>

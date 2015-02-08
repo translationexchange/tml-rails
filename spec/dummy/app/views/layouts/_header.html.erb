@@ -12,9 +12,7 @@
       </ul>
     
       <ul class="nav pull-right">
-          <li>
-            <%= tml_language_selector_tag(:list, :flags_only => true) %>
-          </li>
+          <%= tml_language_selector_tag(:bootstrap, :language => :native, :flags => true, :toggle => true, :element => 'li') %>
           <% if tml_session.tools_enabled? %>
             <% if tml_current_translator %>
               <li class="dropdown">

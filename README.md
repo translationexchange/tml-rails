@@ -53,11 +53,44 @@ Tml must be used with caching enabled.
 
 If you are already using Rails caching, you probably already specify it in your production file, like the following:
 
+Memcache
+
 config/environments/production.rb
 
 ```ruby
-config.cache_store = :mem_cache_store, Dalli::Client.new('localhost:11211', {:namespace => 'myapplication'})
-config.identity_cache_store = :mem_cache_store, Dalli::Client.new('localhost:11211', {:namespace => 'myapplication'})
+config.cache_store = :mem_cache_store, { :namespace => 'my_cache' }
+```
+
+Memcache for multiple servers
+
+```ruby
+config.cache_store = :mem_cache_store, '123.456.78.9:1001', '123.456.78.9:1002'
+```
+
+Memcache with Dalli
+
+```ruby
+config.cache_store = :mem_cache_store, Dalli::Client.new('localhost:11211', {
+  :namespace => 'my_cache'
+})
+```
+
+Redis
+
+```ruby
+config.cache_store = :redis_store, {
+  :host => 'localhost',
+  :port => 6379,
+  :db => 0,
+  :namespace => 'my_cache',
+  :expires_in => 90.minutes
+}
+```
+
+Tip: to clear up Redis cache
+
+```sh
+$ redis-cli FLUSHALL
 ```
 
 Then all you need to do is specify that you want to use the Rails cache adapter:
@@ -76,11 +109,12 @@ Alternatively, you can provide a separate memcache server to store your translat
 
 ```ruby
 config.cache = {
-    :enabled  => true,
-    :adapter  => 'memcache',
-    :host     => 'localhost:11211',
-    :version  => 1,
-    :timeout  => 3600
+    :enabled    => true,
+    :adapter    => 'memcache',
+    :host       => 'localhost:11211',
+    :namespace  => 'translations',
+    :version    => 1,
+    :timeout    => 3600
 }
 ```
 
@@ -88,11 +122,14 @@ You can also use Redis to persist your translations cache:
 
 ```ruby
 config.cache = {
-    :enabled  => true,
-    :adapter  => 'redis',
-    :host     => 'localhost:6379',
-    :version  => 1,
-    :timeout  => 3600
+    :enabled    => true,
+    :adapter    => 'redis',
+    :host       => 'localhost',
+    :port       => 6379,
+    :password   => 'password',
+    :namespace  => 'translations',
+    :version    => 1,
+    :timeout    => 3600
 }
 ```
 

@@ -1,0 +1,15 @@
+<%= render(:partial => '/tml_rails/tags/language_selector_js') %>
+
+<select id="tml_language_selector" onchange="tml_change_locale(this.options[this.selectedIndex].value)" style="<%=opts[:style]%>" class="<%=opts[:class]%>">
+  <% tml_application.languages.each do |lang| %>
+    <option dir='ltr' value="<%=lang.locale%>" <%="selected" if lang.locale == tml_current_locale %>>
+      <% if opts[:language] == :native %>
+        <%= lang.native_name %>
+      <% elsif opts[:language] == :english %>
+        <%= lang.english_name %>
+      <% else %>
+        <%= lang.english_name %>
+      <% end %>
+    </option>
+  <% end %>
+</select>

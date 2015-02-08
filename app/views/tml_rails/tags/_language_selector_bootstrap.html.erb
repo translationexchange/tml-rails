@@ -1,0 +1,46 @@
+<%
+   opts[:element] ||= 'div'
+   opts[:class] ||= 'dropdown'
+%>
+
+<<%= opts[:element] %> class="<%= opts[:class] %>" style="<%= opts[:style] %>">
+  <a href="#" role="button" class="<%= opts[:class] || 'dropdown' %>-toggle" data-toggle="dropdown">
+    <%= tml_language_name_tag(tml_current_language, opts) %>
+  </a>
+
+  <ul class="dropdown-menu" role="menu">
+
+    <% tml_application.languages.each do |lang| %>
+
+      <li role="presentation">
+        <%=link_to({:locale => lang.locale}) do %>
+
+          <%= tml_language_name_tag(lang, opts) %>
+
+        <% end %>
+      </li>
+
+    <% end %>
+
+    <% if opts[:toggle] %>
+      <li role='presentation' class='divider'></li>
+      <li role='presentation'>
+        <a href='javascript:void(0);' onclick='Tml.Utils.toggleInlineTranslations()'>
+          <%= tr(opts[:toggle_label] || 'Help Us Translate') %>
+        </a>
+      </li>
+    <% end %>
+
+    <li role='presentation' class='divider'></li>
+
+    <div style="font-size:8px;color:#ccc;text-align: center">
+      <a href="http://translationexchange.com">
+        <img style="padding: 10px;border: 0px;background-repeat: no-repeat;background-size: 14px 17px;
+             background-image:url(data:image/gif;base64,iVBORw0KGgoAAAANSUhEUgAAAEMAAABQCAYAAABCiMhGAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyRpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuMC1jMDYxIDY0LjE0MDk0OSwgMjAxMC8xMi8wNy0xMDo1NzowMSAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENTNS4xIE1hY2ludG9zaCIgeG1wTU06SW5zdGFuY2VJRD0ieG1wLmlpZDpCQTg4MTEyOEU0NkIxMUUzODhCMEJEOUNDRDQ0QkU0MiIgeG1wTU06RG9jdW1lbnRJRD0ieG1wLmRpZDpCQTg4MTEyOUU0NkIxMUUzODhCMEJEOUNDRDQ0QkU0MiI+IDx4bXBNTTpEZXJpdmVkRnJvbSBzdFJlZjppbnN0YW5jZUlEPSJ4bXAuaWlkOkJBODgxMTI2RTQ2QjExRTM4OEIwQkQ5Q0NENDRCRTQyIiBzdFJlZjpkb2N1bWVudElEPSJ4bXAuZGlkOkJBODgxMTI3RTQ2QjExRTM4OEIwQkQ5Q0NENDRCRTQyIi8+IDwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwveDp4bXBtZXRhPiA8P3hwYWNrZXQgZW5kPSJyIj8+mszKSAAAAqFJREFUeNrsnE1IFVEYhr+53QiKEIkgpCBwJSH9SITkqkVELXJZ0iYIqRaBCZWgoWKikRBI1KVNmyg3gVKQ0CZE+9kHQYukaGP2I6iEP1ffc+dc7iwK5s5Mx3PPvC88zGxm5s4zc85853JmvNardwTxwC1wGuyWdGQGvARduaH23wUJkJHFcgoclnTmKzgIIT8yWOlNsQiVPeB+8c74hmWNMNXqzqimh0JqlIxVeigkr2Tk6aGQtQwdlEIZlEEZlEEZEZONuf0YmASLYNNGPRI1e8FFsHUjZNwAg5Zd3GHwHuw02Uw+WShCZRr0m+4zPljc9D+alpG1WMYW0zJsfgplxMGTYp1BGZRBGZRBGZRBGZRBGZRBGZRBGQxlUAZlUAZlUAZlUAZlUAZlUAZlUIbDMmyeYr3KO6OUJdMyGiyWcdS0DPV+ykMLRRwD16JuHGc60gV9Fd6KP/Vxs/hTEDvBbIT9nQLNEdp8XkpTH0/GMRl3bladJpi7EWQcB89dfLSW24EdAeOsM0T2gQkWXX4bf6P7mlTL2KFFbE97Ob4NvAO70j42UcdTbyHU2jo28Qwe7zXYb2nl6mXE3DzwF6DJ5kGrkjFv4EBP4laHBjKjZDz7zwfJgTOWi3iVG2qfVTKui//ZhMTaXmD9Hmi1XMSf4m9UMubAIfAY/Epg58t62QcuWyxhQfx37A7grvgcHKipgdU5UPWX538LuBlh8Deu+4oVS2X8BN8h4p+j1jlNMOW+5lQ8+QmpsIQpusr5vsYV8EUqNElWoKojHpYKTlIyusFtqfAkIWMA9IgDiStD/cXXIY4kjowHoE0cSlQZj8AlcSxRZDwF58XBhJGxFlgfBWfF0YSR4QXK62ZxOGFk1OtR7QlxPGFkjIBGSUHWBRgAlJNpO4bVinwAAAAASUVORK5CYII=);"/>
+        <br>
+        Powered By Translation Exchange
+      </a>
+    </div>
+  </ul>
+</<%= opts[:element] %>>
+
