@@ -1,0 +1,117 @@
+{
+  "id": 708,
+  "key": "7f36a0b94ad8adaff5e786eb020fbb00b11c080ba4352fdaec6b63fe361195a2",
+  "name": "Rails Client SDK Dummy",
+  "threshold": 1,
+  "default_language": {
+    "id": 64,
+    "locale": "en",
+    "english_name": "English",
+    "native_name": "English",
+    "right_to_left": false,
+    "flag_url": "https://d23w63adpjpix6.cloudfront.net/7/55/1/27/c9262c9538cda82c6.png",
+    "status": "published"
+  },
+  "languages": [
+    {
+      "id": 302,
+      "locale": "zh",
+      "english_name": "Chinese",
+      "native_name": "中文(香港)",
+      "right_to_left": false,
+      "flag_url": "https://d23w63adpjpix6.cloudfront.net/75/38/99/40/3b18e3120000661a9.png",
+      "status": "published"
+    },
+    {
+      "id": 64,
+      "locale": "en",
+      "english_name": "English",
+      "native_name": "English",
+      "right_to_left": false,
+      "flag_url": "https://d23w63adpjpix6.cloudfront.net/7/55/1/27/c9262c9538cda82c6.png",
+      "status": "published"
+    },
+    {
+      "id": 109,
+      "locale": "fr",
+      "english_name": "French",
+      "native_name": "Français",
+      "right_to_left": false,
+      "flag_url": "https://d23w63adpjpix6.cloudfront.net/16/13/38/54/32b1532a946e0b17f.png",
+      "status": "published"
+    },
+    {
+      "id": 54,
+      "locale": "de",
+      "english_name": "German",
+      "native_name": "Deutsch",
+      "right_to_left": false,
+      "flag_url": "https://d23w63adpjpix6.cloudfront.net/12/42/21/65/7f4dfb2526908b57b.png",
+      "status": "published"
+    },
+    {
+      "id": 159,
+      "locale": "ko",
+      "english_name": "Korean",
+      "native_name": "한국어",
+      "right_to_left": false,
+      "flag_url": "https://d23w63adpjpix6.cloudfront.net/77/23/21/20/9f91cef570da293ff.png",
+      "status": "published"
+    },
+    {
+      "id": 233,
+      "locale": "ru",
+      "english_name": "Russian",
+      "native_name": "Русский",
+      "right_to_left": false,
+      "flag_url": "https://d23w63adpjpix6.cloudfront.net/91/67/34/74/6d14cff5e2826c668.png",
+      "status": "published"
+    },
+    {
+      "id": 79,
+      "locale": "es",
+      "english_name": "Spanish",
+      "native_name": "Español",
+      "right_to_left": false,
+      "flag_url": "https://d23w63adpjpix6.cloudfront.net/3/80/28/97/54cc192d2452a7d07.png",
+      "status": "published"
+    }
+  ],
+  "created_at": "2015-01-22 18:27:26",
+  "updated_at": "2015-01-22 18:27:26",
+  "default_locale": "en",
+  "features": {
+    "inline_translations": true,
+    "machine_translations": true,
+    "translation_suggestions": true,
+    "decorations": true,
+    "shortcuts": true,
+    "context_rules": true,
+    "language_cases": true,
+    "javascript_sdk": false,
+    "glossary": true,
+    "forum": true,
+    "awards": true,
+    "admin_translations": true,
+    "open_registration": true,
+    "language_flags": true
+  },
+  "tokens": {
+  },
+  "css": ".tml_not_translated { border-bottom: 1px dotted red; } .tml_translated { border-bottom: 1px dotted green; } .tml_fallback { border-bottom: 1px dotted #e90; } .tml_pending { border-bottom: 1px dotted #e90; } .tml_locked { border-bottom: 1px dotted blue; } .tml_language_case { padding:3px; border: 1px dotted blue; }",
+  "shortcuts": {
+    "Ctrl+Shift+S": "Tml.Utils.openShortcuts();",
+    "Ctrl+Shift+G": "Tml.Utils.login();",
+    "Ctrl+Shift+I": "Tml.Utils.toggleInlineTranslations();",
+    "Ctrl+Shift+L": "Tml.UI.LanguageSelector.show(true);",
+    "Ctrl+Shift+R": "Tml.Utils.reloadSettings();",
+    "Ctrl+Shift+O": "Tml.Utils.logout();"
+  },
+  "tools": {
+    "postoffice": "https://postoffice.translationexchange.com",
+    "host": "https://translation-center.translationexchange.com",
+    "assets": "https://trex-translation-center.s3-us-west-1.amazonaws.com/assets",
+    "javascript": "https://trex-translation-center.s3-us-west-1.amazonaws.com/assets/tools-8ff3582f18abc84db5dd50045afd41bf.js",
+    "stylesheet": "https://trex-translation-center.s3-us-west-1.amazonaws.com/assets/tools-c81abe6bb4cd518dcd1455127790c9c9.css"
+  }
+}
