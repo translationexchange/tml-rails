@@ -15,13 +15,13 @@ Tml.configure do |config|
   #    :expires_in => 90.minutes
   #}
 
-  #config.cache = {
-  #  :enabled    => true,
-  #  :adapter    => 'file',
-  #  :path       => 'config/tml',
-  #  :version    => 'current',
-  #  :segmented  => false
-  #}
+  config.cache = {
+    :enabled    => true,
+    :adapter    => 'file',
+    :path       => 'config/tml',
+    :version    => 'current',
+    :segmented  => false
+  }
 
   #config.cache = {
   #  :enabled    => true,
@@ -32,11 +32,11 @@ Tml.configure do |config|
   #  :timeout    => 3600
   #}
 
-  config.cache = {
-    :enabled    => true,
-    :adapter    => :rails,
-    :version    => 1
-  }
+  #config.cache = {
+  #  :enabled    => true,
+  #  :adapter    => :rails,
+  #  :version    => 1
+  #}
 
   config.logger  = {
     :enabled  => true,

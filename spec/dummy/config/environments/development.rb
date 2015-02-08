@@ -31,9 +31,9 @@ Dummy::Application.configure do
   #    :namespace => 'dummy'
   #})
 
-  config.identity_cache_store = config.cache_store = :redis_store, {
-    :url => 'redis://localhost:6379/0',
-    :namespace => 'translations1'
-  }
+  #config.identity_cache_store = config.cache_store = :redis_store, {
+  #  :url => 'redis://localhost:6379/0',
+  #  :namespace => 'translations1'
+  #}
 
 end

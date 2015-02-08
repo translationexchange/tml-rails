@@ -42,17 +42,17 @@ namespace :tml do
 
     desc 'generates local file cache'
     task :generate => :environment do
-      Tml::Generators::Cache::File.new.run
+      Tml::Generators::File.new.run
     end
 
     desc 'rolls back to the previous version'
     task :rollback => :environment do
-      Tml::Generators::Cache::File.new.rollback
+      Tml::Generators::File.new.rollback
     end
 
     desc 'rolls up to the next version'
     task :rollup => :environment do
-      Tml::Generators::Cache::File.new.rollup
+      Tml::Generators::File.new.rollup
     end
 
   end
