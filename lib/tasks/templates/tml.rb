@@ -35,23 +35,25 @@ I18n.backend = I18n::Backend::Tml.new
 
 Tml.configure do |config|
   config.application = {
-      token: '5f4ec93364b0bd70ecee17d4ea1bfb8d0d4a7764cbf3d77280c69f555f286454'
-  }
-
-  config.cache = {
-      :enabled    => true,
-      :adapter    => 'file',
-      :path       => 'config/tml',
-      :version    => 'current',
-      :segmented  => false
+      token: 'YOUR TOKEN'
   }
 
   # If you are using Rails.cache, use the following settings:
 
+  config.cache = {
+      :enabled    => true,
+      :adapter    => :rails,
+      :version    => 1
+  }
+
+  # If you are using File based pre-generated cache, use the following settings:
+
   #config.cache = {
-  #  :enabled    => true,
-  #  :adapter    => :rails,
-  #  :version    => 1
+  #    :enabled    => true,
+  #    :adapter    => 'file',
+  #    :path       => 'config/tml',
+  #    :version    => 'current',
+  #    :segmented  => false
   #}
 
   # If you are using Redis, use the following settings:
@@ -77,11 +79,11 @@ Tml.configure do |config|
 
   # For debugging, uncomment the following lines:
 
-  config.logger  = {
-      :enabled  => true,
-      :path     => "#{Rails.root}/log/tml.log",
-      :level    => 'debug'
-  }
+  #config.logger  = {
+  #    :enabled  => true,
+  #    :path     => "#{Rails.root}/log/tml.log",
+  #    :level    => 'debug'
+  #}
 
   # To use Rails logger instead, use:
 

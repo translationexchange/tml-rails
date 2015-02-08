@@ -50,9 +50,9 @@ gem 'rails', '~> 4.2'
 gem 'rake', '~> 10.3'
 gem 'rdoc', '~> 4.1'
 
-gem 'tml', '~> 4.3'
+# gem 'tml', '~> 4.3'
 # gem 'tml', :git => 'git://github.com/translationexchange/tml-ruby.git'
-# gem 'tml', :path => '../tml-ruby'
+ gem 'tml', :path => '../tml-ruby'
 
 gem 'coveralls', '~> 0.7', require: false
 

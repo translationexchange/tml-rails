@@ -55,7 +55,7 @@ module TmlRails
 
       def tml_user_preferred_locale
         tml_browser_accepted_locales.each do |locale|
-          next unless Tml.session.application.locales.include?(locale)
+          next unless Tml.session.application and Tml.session.application.locales.include?(locale)
           return locale
         end
         Tml.config.default_locale

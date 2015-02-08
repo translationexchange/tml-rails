@@ -33,6 +33,17 @@ require 'tml'
 
 namespace :tml do
 
+  desc 'initializes tml'
+  task :init => :environment do
+    unless File.exists?("#{Rails.root}/config/initializers/tml.rb")
+      root = File.expand_path('../templates', __FILE__)
+      system "cp #{root}/tml.rb #{Rails.root}/config/initializers"
+      puts 'Please update config/initializers/tml.rb with your application token'
+    else
+      puts 'Tml initializer file already exists'
+    end
+  end
+
   namespace :cache do
 
     desc 'upgrades shared translation cache'
