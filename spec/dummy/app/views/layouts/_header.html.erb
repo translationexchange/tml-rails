@@ -12,34 +12,35 @@
       </ul>
     
       <ul class="nav pull-right">
-          <%= tml_language_selector_tag(:bootstrap, :language => :native, :flags => true, :toggle => true, :element => 'li') %>
-          <% if tml_session.tools_enabled? %>
-            <% if tml_current_translator %>
-              <li class="dropdown">
-                <a id="user_menu_trigger" href="#" class="dropdown-toggle" data-toggle="dropdown">
-                  <%=image_tag(tml_current_translator.image_url, :style=>"max-width:16px;max-height:16px;padding:1px;border:1px solid #888;") %> &nbsp;
-                  <%=tml_current_translator.name %>
-                  <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu pas">
-                  <li role="presentation" class="text-center">
-                    <%=image_tag(tml_current_translator.image_url, :style=>"width:80px;height:80px;border:1px solid #eee", :class=>"img-circle") %>
-                  </li>
-                  <li class="divider"></li>
-                  <li><%= link_to(tr("Toggle Inline Mode"), "#", :onClick =>  "Tml.Utils.toggleInlineTranslations()") %></li>
-                  <li class="divider"></li>
-                  <li><%= link_to(tr("Shortcuts"), "#", :onClick => "Tml.Utils.openShortcuts()") %></li>
-                  <% if Tml.cache.enabled? and not Tml.cache.read_only? %>
-                    <li><%= link_to(tr("Upgrade Cache ({num})", :num => Tml.cache.version), :controller => :home, :action => :upgrade_cache) %></li>
-                  <% end %>
+        <%= tml_language_selector_tag(:bootstrap, :language => :native, :flags => true, :toggle => false, :element => 'li') %>
 
-                  <li class="divider"></li>
-                  <li><%=link_to(tr("Logout"), "#", :onClick => "Tml.Utils.logout();")%></li>
-                </ul>
-              </li>
-            <% else %>
-              <li><%=link_to(tr("Login"), "#", :onClick => "Tml.Utils.login()")%></li>
-            <% end %>
+        <% if tml_session.tools_enabled? %>
+          <% if tml_current_translator %>
+            <li class="dropdown">
+              <a id="user_menu_trigger" href="#" class="dropdown-toggle" data-toggle="dropdown">
+                <%=image_tag(tml_current_translator.image_url, :style=>"max-width:16px;max-height:16px;padding:1px;border:1px solid #888;") %> &nbsp;
+                <%=tml_current_translator.name %>
+                <b class="caret"></b>
+              </a>
+              <ul class="dropdown-menu pas">
+                <li role="presentation" class="text-center">
+                  <%=image_tag(tml_current_translator.image_url, :style=>"width:80px;height:80px;border:1px solid #eee", :class=>"img-circle") %>
+                </li>
+                <li class="divider"></li>
+                <li><%= link_to(tr("Toggle Inline Mode"), "#", :onClick =>  "Tml.Utils.toggleInlineTranslations()") %></li>
+                <li class="divider"></li>
+                <li><%= link_to(tr("Shortcuts"), "#", :onClick => "Tml.Utils.openShortcuts()") %></li>
+                <% if Tml.cache.enabled? and not Tml.cache.read_only? %>
+                  <li><%= link_to(tr("Upgrade Cache ({num})", :num => Tml.cache.version), :controller => :home, :action => :upgrade_cache) %></li>
+                <% end %>
+
+                <li class="divider"></li>
+                <li><%=link_to(tr("Logout"), "#", :onClick => "Tml.Utils.logout();")%></li>
+              </ul>
+            </li>
+          <% else %>
+            <li><%=link_to(tr("Login"), "#", :onClick => "Tml.Utils.login()")%></li>
+          <% end %>
         <% end %>
       </ul>
 

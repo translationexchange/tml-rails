@@ -87,7 +87,7 @@ module TmlRails
       return unless Tml.config.enabled?
 
       type ||= :default
-      unless [:bootstrap, :default, :inline, :select].include?(type.to_sym)
+      unless [:bootstrap, :default, :inline, :select, :popup].include?(type.to_sym)
         return "Unsupported language selector #{type}"
       end
 
