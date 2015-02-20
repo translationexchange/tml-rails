@@ -3,20 +3,43 @@
    opts[:class] ||= 'dropdown'
 %>
 
-<<%= opts[:element] %> class="<%= opts[:class] %>" style="<%= opts[:style] %>">
-  <a href="#" role="button" class="<%= opts[:class] || 'dropdown' %>-toggle" data-toggle="dropdown">
+
+<style>
+  .trex-dropdown {
+    text-align:<%= tml_current_language.align("left") %>;
+  }
+
+  .trex-dropdown .trex-dropdown-menu {
+    min-width:200px;
+  }
+
+  .trex-dropdown .trex-dropdown-footer {
+    font-size:10px;
+    color:#ccc;
+    text-align: center; 
+    background: #f5f5f5; 
+    padding:5px; 
+    margin-top: -10px; 
+    margin-bottom: -5px; 
+    border-bottom-left-radius: 5px; 
+    border-bottom-right-radius: 5px;
+  }
+
+</style>
+
+
+<<%= opts[:element] %> class="trex-dropdown <%= opts[:class] %>" style="<%= opts[:style] %>">
+  <a href="#" role="button" class="<%= opts[:class] || 'dropdown' %>-toggle" data-toggle="dropdown" dir="<%= tml_current_language.dir %>">
     <%= tml_language_name_tag(tml_current_language, opts) %>
   </a>
 
-  <ul class="dropdown-menu" role="menu">
+  <ul class="dropdown-menu trex-dropdown-menu">
 
     <% tml_application.languages.each do |lang| %>
 
-      <li role="presentation">
+      <li dir="<%= tml_current_language.dir %>">
         <%=link_to({:locale => lang.locale}) do %>
-
           <%= tml_language_name_tag(lang, opts) %>
-
         <% end %>
       </li>
 
@@ -33,9 +56,9 @@
 
     <li role='presentation' class='divider'></li>
 
-    <div style="font-size:8px;color:#ccc;text-align: center; background: #eee; padding:8px; margin-top: -10px; margin-bottom: -5px; border-bottom-left-radius: 5px; border-bottom-right-radius: 5px;">
+    <div class="trex-dropdown-footer">
       <a href="http://translationexchange.com" style="color: #888;">
-        Powered By Translation Exchange
+        <%= tr("Powered By {brand}", brand: "Translation Exchange") %>
       </a>
     </div>
   </ul>

@@ -10,9 +10,9 @@
         <li class="<%= "active" if controller.controller_name.to_s == 'docs' and controller.action_name.to_s == 'index' %>"><%=link_to(tr("Documentation & Samples"), :controller => :docs, :action => :index) %></li>
         <li class="<%= "active" if controller.controller_name.to_s == 'docs' and controller.action_name.to_s == 'tml' %>"><%=link_to(tr("TML Interactive Console"), :controller => :docs, :action => :tml) %></li>
       </ul>
-    
+    <center>
       <ul class="nav pull-right">
-        <%= tml_language_selector_tag(:bootstrap, :language => :native, :flags => true, :toggle => false, :element => 'li') %>
+        <%= tml_language_selector_tag(:popup, :language => :native, :flags => true, :toggle => false, :element => 'li') %>
 
         <% if tml_session.tools_enabled? %>
           <% if tml_current_translator %>
@@ -43,6 +43,7 @@
           <% end %>
         <% end %>
       </ul>
+      </center>
 
       </div>
     </div>

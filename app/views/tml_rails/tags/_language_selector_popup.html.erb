@@ -1,3 +1,9 @@
+<%
+   opts[:element] ||= 'div'
+   opts[:class] ||= 'dropdown'
+%>
+
+
 <style>
   .trex-language-selector {position: relative;display: inline-block;vertical-align: middle;}
   .trex-language-toggle,
@@ -10,14 +16,19 @@
     display: block;font-family:Arial, sans-serif;position: absolute;
     top: 100%;left: 0;z-index: 1000;float: left;list-style: none;background-color: #FFF;height:0px;width:0px;padding:0;overflow:hidden;
   }
+  .trex-language-selector[dir=rtl] .trex-dropdown-menu {left: auto; right: 0;}
+  .trex-language-selector.trex-dropleft[dir=rtl] .trex-dropdown-menu {left:0; right:auto;}
   .trex-language-selector.trex-open .trex-dropdown-menu {
     opacity: 1;height:auto;width:auto;overflow:hidden;min-width: 250px;margin: 2px 0 0;font-size: 13px;
     background-clip: padding-box;border: 1px solid rgba(0, 0, 0, 0.15);box-shadow: 0 2px 0 rgba(0, 0, 0, 0.05);
     border-radius: 4px;color: #6D7C88;text-align: left;padding: 5px 0;
     display:block;pointer-events: auto;-webkit-transform: none;transform: none;
   }
+  .trex-dropdown-menu > li {
+    text-align:<%= tml_current_language.align("left") %>;
+  }
   .trex-dropdown-menu > li > a {
-display: block;padding: 3px 10px;margin:0 5px;clear: both;font-weight: normal;line-height: 1.42857143;color: #333;border-radius:3px;white-space: nowrap;cursor:pointer;
+    display: block;padding: 3px 10px;margin:0 5px;clear: both;font-weight: normal;line-height: 1.42857143;color: #333;border-radius:3px;white-space: nowrap;cursor:pointer;
   }
   .trex-dropdown-menu > li > a .trex-flag {margin-right:3px;width:23px;}
   .trex-dropdown-menu > li.trex-language-item > a:hover,
@@ -28,14 +39,14 @@ display: block;padding: 3px 10px;margin:0 5px;clear: both;font-weight: normal;li
 </style>
 
 
-<div class="trex-language-selector">
-  <a class="trex-language-toggle" data-toggle="language-selector" tabindex="0">
+<<%= opts[:element] %> class="trex-language-selector" dir="<%= tml_current_language.dir %>">
+  <a class="trex-language-toggle" data-toggle="language-selector" tabindex="0" dir="<%= tml_current_language.dir %>">
     <%= tml_language_name_tag(tml_current_language, opts) %>
   </a>
   <ul class="trex-dropdown-menu">
     <% tml_application.languages.each do |lang| %>
 
-      <li class="trex-language-item">
+      <li class="trex-language-item" dir="<%= tml_current_language.dir %>">
         <%=link_to({:locale => lang.locale}) do %>
           <%= tml_language_name_tag(lang, opts) %>
         <% end %>
@@ -44,20 +55,20 @@ display: block;padding: 3px 10px;margin:0 5px;clear: both;font-weight: normal;li
     <% end %>
 
     <% if opts[:toggle] %>
-      <li class='trex-credit'>
+      <li class='trex-credit' dir="<%= tml_current_language.dir %>">
         <a href='javascript:void(0);' onclick='Tml.Utils.toggleInlineTranslations()'>
           <%= tr(opts[:toggle_label] || 'Help Us Translate') %>
         </a>
       </li>
     <% end %>
 
-    <li class="trex-credit">
+    <li class="trex-credit" dir="<%= tml_current_language.dir %>">
       <a href="http://translationexchange.com">
         Powered by Translation Exchange
       </a>
     </li>
   </ul>
-</div>
+</<%= opts[:element] %>>
 
 
 <script>
