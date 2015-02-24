@@ -64,21 +64,28 @@ module TmlRails
 
     def tml_language_name_tag(lang = tml_current_language, opts = {})
       show_flag = opts[:flag].nil? ? true : opts[:flag]
-      name_type = opts[:language].nil? ? :english : opts[:language] # :full, :native, :english, :locale
+      name_type = opts[:language].nil? ? :english : opts[:language] # :full, :native, :english, :locale, :both
 
       html = []
       html << "<span style='white-space: nowrap'>"
       html << tml_language_flag_tag(lang, opts) if show_flag
       html << "<span dir='ltr'>"
 
-      name = case name_type
-        when :native  then lang.native_name
-        when :full then lang.full_name
-        when :locale  then lang.locale
-        else lang.english_name
+      if name_type == :both
+        html << lang.english_name.to_s
+        html << '<span class="trex-native-name">'
+        html << lang.native_name
+        html << '</span>'
+      else
+        name = case name_type
+          when :native  then lang.native_name
+          when :full then lang.full_name
+          when :locale  then lang.locale
+          else lang.english_name
+        end
+        html << name.to_s
       end
 
-      html << name.to_s
       html << '</span></span>'
       html.join().html_safe
     end

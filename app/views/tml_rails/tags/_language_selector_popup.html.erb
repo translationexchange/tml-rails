@@ -34,7 +34,7 @@
   .trex-dropdown-menu > li.trex-language-item > a:hover,
   .trex-dropdown-menu > li.trex-language-item > a:focus {text-decoration:none;background: #F0F2F4;}
   .trex-dropdown-menu > li.trex-language-item > a .trex-native-name {font-size: 11px;color: #A9AFB8;margin-left: 3px;}
-  .trex-dropdown-menu > li.trex-selected a:after {content: "\2713";float: right;font-weight: bold;font-size: 16px;margin: 0px 5px 0 0;color: #13CF80;}
+  .trex-dropdown-menu > li.trex-selected a:after {content: "\2713";float: <%= tml_current_language.align(:right) %>;font-weight: bold;font-size: 16px;margin: 0px 5px 0 0;color: #13CF80;}
   .trex-dropdown-menu .trex-credit a {border-top: solid 1px #DDD;font-size: 13px;padding: 7px 0 0;margin: 5px 15px 5px;color: #9FA7AE;font-weight: 400;}
 </style>
 
@@ -46,9 +46,9 @@
   <ul class="trex-dropdown-menu">
     <% tml_application.languages.each do |lang| %>
 
-      <li class="trex-language-item" dir="<%= tml_current_language.dir %>">
+      <li class="trex-language-item <%='trex-selected' if tml_current_language.locale == lang.locale %>" dir="<%= tml_current_language.dir %>">
         <%=link_to({:locale => lang.locale}) do %>
-          <%= tml_language_name_tag(lang, opts) %>
+          <%= tml_language_name_tag(lang, opts.merge(:language => :both)) %>
         <% end %>
       </li>
 
