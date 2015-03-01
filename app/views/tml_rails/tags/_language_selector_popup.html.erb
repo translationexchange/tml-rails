@@ -47,9 +47,9 @@
   <ul class="trex-dropdown-menu">
     <% tml_application.languages.each do |lang| %>
 
-      <li class="trex-language-item" dir="<%= tml_current_language.dir %>">
+      <li class="trex-language-item <%='trex-selected' if tml_current_language.locale == lang.locale %>" dir="<%= tml_current_language.dir %>">
         <%=link_to({:locale => lang.locale}) do %>
-          <%= tml_language_name_tag(lang, opts) %>
+          <%= tml_language_name_tag(lang, opts.merge(:language => :both)) %>
         <% end %>
       </li>
 
