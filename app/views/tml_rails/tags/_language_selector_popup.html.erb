@@ -34,7 +34,8 @@
   .trex-dropdown-menu > li.trex-language-item > a:hover,
   .trex-dropdown-menu > li.trex-language-item > a:focus {text-decoration:none;background: #F0F2F4;}
   .trex-dropdown-menu > li.trex-language-item > a .trex-native-name {font-size: 11px;color: #A9AFB8;margin-left: 3px;}
-  .trex-dropdown-menu > li.trex-selected a:after {content: "\2713";float: right;font-weight: bold;font-size: 16px;margin: 0px 5px 0 0;color: #13CF80;}
+  .trex-dropdown-menu > li.trex-selected a:after {content: "✓";right: 5px;font-weight: bold;font-size: 16px;margin: 0px 5px 0px 0px;color: #13CF80;position: absolute;}
+  .trex-dropdown-menu[dir=rtl] > li.trex-selected a:after {left: 5px;right:auto;margin: 0px 0 0px 5px;}
   .trex-dropdown-menu .trex-credit a {border-top: solid 1px #DDD;font-size: 13px;padding: 7px 0 0;margin: 5px 15px 5px;color: #9FA7AE;font-weight: 400;}
 </style>
 
@@ -140,12 +141,9 @@
       close: function(e) {
         e = e || window.event;
         var target = e.currentTarget || e.srcElement;
-        removeClass(target.parentElement, 'trex-open');
-
-        if(e.relatedTarget && e.relatedTarget.getAttribute('data-toggle') !== 'language-selector') {
-          e.relatedTarget.click();
-        }
-        return false;
+        setTimeout(function(){
+          removeClass(target.parentElement, 'trex-open');  
+        }, 500); //hmmm
       }
     };
     var selectorList = document.querySelectorAll('[data-toggle=language-selector]');
