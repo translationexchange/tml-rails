@@ -3,7 +3,6 @@
    opts[:class] ||= 'dropdown'
 %>
 
-
 <style>
   .trex-language-selector {position: relative;display: inline-block;vertical-align: middle;}
   .trex-language-toggle,
@@ -25,7 +24,7 @@
     display:block;pointer-events: auto;-webkit-transform: none;transform: none;
   }
   .trex-dropdown-menu > li {
-    text-align:<%= tml_current_language.align("left") %>;
+    text-align:<%= tml_current_language.align('left') %>;
   }
   .trex-dropdown-menu > li > a {
     display: block;padding: 3px 10px;margin:0 5px;clear: both;font-weight: normal;line-height: 1.42857143;color: #333;border-radius:3px;white-space: nowrap;cursor:pointer;
@@ -34,7 +33,7 @@
   .trex-dropdown-menu > li.trex-language-item > a:hover,
   .trex-dropdown-menu > li.trex-language-item > a:focus {text-decoration:none;background: #F0F2F4;}
   .trex-dropdown-menu > li.trex-language-item > a .trex-native-name {font-size: 11px;color: #A9AFB8;margin-left: 3px;}
-  .trex-dropdown-menu > li.trex-selected a:after {content: "✓";right: 5px;font-weight: bold;font-size: 16px;margin: 0px 5px 0px 0px;color: #13CF80;position: absolute;}
+  .trex-dropdown-menu > li.trex-selected a:after {content: '✓';right: 5px;font-weight: bold;font-size: 16px;margin: 0px 5px 0px 0px;color: #13CF80;position: absolute;}
   .trex-dropdown-menu[dir=rtl] > li.trex-selected a:after {left: 5px;right:auto;margin: 0px 0 0px 5px;}
   .trex-dropdown-menu .trex-credit a {border-top: solid 1px #DDD;font-size: 13px;padding: 7px 0 0;margin: 5px 15px 5px;color: #9FA7AE;font-weight: 400;}
 </style>
@@ -44,7 +43,7 @@
   <a class="trex-language-toggle" data-toggle="language-selector" tabindex="0" dir="<%= tml_current_language.dir %>">
     <%= tml_language_name_tag(tml_current_language, opts) %>
   </a>
-  <ul class="trex-dropdown-menu">
+  <ul class="trex-dropdown-menu" dir="<%= tml_current_language.dir %>">
     <% tml_application.languages.each do |lang| %>
 
       <li class="trex-language-item <%='trex-selected' if tml_current_language.locale == lang.locale %>" dir="<%= tml_current_language.dir %>">
