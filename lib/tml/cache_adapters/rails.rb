@@ -94,4 +94,5 @@ class Tml::CacheAdapters::Rails < Tml::Cache
   rescue Exception => ex
     warn("Failed to clear cache: #{ex.message}")
   end
+
 end

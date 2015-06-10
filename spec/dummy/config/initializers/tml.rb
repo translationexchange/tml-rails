@@ -35,15 +35,17 @@ I18n.backend = I18n::Backend::Tml.new
 
 Tml.configure do |config|
   config.application = {
-      token: '5f4ec93364b0bd70ecee17d4ea1bfb8d0d4a7764cbf3d77280c69f555f286454'
+      # token: '5f4ec93364b0bd70ecee17d4ea1bfb8d0d4a7764cbf3d77280c69f555f286454'
+      token: '4b673d6ba5f4f9109668653962f4f2b34ad6e77d1a3de21ffbf7bf51b874993d',
+      host: 'http://localhost:3000'
   }
 
   config.cache = {
       :enabled    => true,
       :adapter    => 'file',
       :path       => 'config/tml',
-      :version    => 'current',
-      :segmented  => false
+      :version    => '20150610012945',
+      :segmented  => true
   }
 
   # If you are using Rails.cache, use the following settings:
@@ -67,13 +69,12 @@ Tml.configure do |config|
 
   # If you are using Memcache, use the following settings:
 
-  #config.cache = {
+  # config.cache = {
   #  :enabled    => true,
   #  :adapter    => 'memcache',
   #  :host       => 'localhost:11211',
-  #  :version    => 1,
-  #  :namespace  => 'translations',
-  #}
+  #  :namespace  => '4b673',
+  # }
 
   # For debugging, uncomment the following lines:
 

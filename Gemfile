@@ -34,9 +34,6 @@ source 'http://rubygems.org'
 Encoding.default_external = Encoding::UTF_8
 Encoding.default_internal = Encoding::UTF_8
 
-# Declare your gem's dependencies in tml_client_sdk.gemspec.
-# Bundler will treat runtime dependencies like base dependencies, and
-# development dependencies will be added by default to the :development group.
 gemspec
 
 gem 'bundler'
@@ -50,9 +47,9 @@ gem 'rails', '~> 4.2'
 gem 'rake', '~> 10.3'
 gem 'rdoc', '~> 4.1'
 
-gem 'tml', '~> 4.3'
+# gem 'tml', '~> 4.4'
 # gem 'tml', :git => 'git://github.com/translationexchange/tml-ruby.git'
-# gem 'tml', :path => '../tml-ruby'
+gem 'tml', :path => '../tml-ruby'
 
 gem 'coveralls', '~> 0.7', require: false
 

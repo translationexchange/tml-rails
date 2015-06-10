@@ -68,32 +68,13 @@ module TmlRails
         self.class.name
       end
 
-      # Overwrite this method in a controller to assign a custom component for all views
-      def tml_component
-        nil
-      end
-
-      def tml_toggle_tools(flag)
-        session[:tml_tools_disabled] = !flag
-      end
-
-      def tml_tools_enabled?
-        not session[:tml_tools_disabled]
-      end
-
       def tml_init_client_sdk
         return if Tml.config.disabled?
 
         @tml_started_at = Time.now
 
-        if params[:tml]
-          tml_toggle_tools(params[:tml] == 'on')
-        end
-
         tml_session_params = {
-          :tools_enabled    => tml_tools_enabled?,
-          :source           => tml_source,
-          :component        => tml_component
+          :source => tml_source
         }
 
         if Tml.config.current_user_method
@@ -125,10 +106,12 @@ module TmlRails
           cookies[Tml.session.cookie_name] = Tml::Utils.encode(Tml.session.cookie_params)
         end
 
-        if defined? I18n.enforce_available_locales
-          I18n.enforce_available_locales = false
+        if I18n.backend.class.name == 'I18n::Backend::Tml'
+          if defined? I18n.enforce_available_locales
+            I18n.enforce_available_locales = false
+          end
+          I18n.locale = Tml.session.current_language.locale
         end
-        I18n.locale = Tml.session.current_language.locale
       end
 
       def tml_reset_client_sdk
@@ -136,6 +119,7 @@ module TmlRails
         @tml_finished_at = Time.now
         tml_application.submit_missing_keys
         Tml.session.reset
+        Tml.cache.reset_version
         Tml.logger.info("Request took #{@tml_finished_at - @tml_started_at} mls") if @tml_started_at
       end
 

@@ -33,17 +33,9 @@ module TmlRails
   class ToolsController < ApplicationController
 
     def upgrade
-      Tml.cache.upgrade_version
-      redirect_back
-    end
-
-    def enable
-      tml_toggle_tools(true)
-      redirect_back
-    end
-
-    def disable
-      tml_toggle_tools(false)
+      if params[:access_token] == Tml.config.access_token
+        Tml.cache.upgrade_version
+      end
       redirect_back
     end
 

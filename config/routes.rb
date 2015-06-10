@@ -31,6 +31,4 @@
 
 Rails.application.routes.draw do
   get '/tml/upgrade' => 'tml_rails/tools#upgrade'
-  get '/tml/on' => 'tml_rails/tools#enable'
-  get '/tml/off' => 'tml_rails/tools#disable'
 end
