@@ -35,26 +35,24 @@ I18n.backend = I18n::Backend::Tml.new
 
 Tml.configure do |config|
   config.application = {
-      # token: '5f4ec93364b0bd70ecee17d4ea1bfb8d0d4a7764cbf3d77280c69f555f286454'
-      token: '4b673d6ba5f4f9109668653962f4f2b34ad6e77d1a3de21ffbf7bf51b874993d',
-      host: 'http://localhost:3000'
+      token: '5f4ec93364b0bd70ecee17d4ea1bfb8d0d4a7764cbf3d77280c69f555f286454'
+      # token: '4b673d6ba5f4f9109668653962f4f2b34ad6e77d1a3de21ffbf7bf51b874993d',
+      # host: 'http://localhost:3000'
   }
 
-  config.cache = {
-      :enabled    => true,
-      :adapter    => 'file',
-      :path       => 'config/tml',
-      :version    => '20150610012945',
-      :segmented  => true
-  }
+  # config.cache = {
+  #     :enabled    => true,
+  #     :adapter    => 'file',
+  #     :version    => 'current'
+  # }
 
   # If you are using Rails.cache, use the following settings:
 
-  #config.cache = {
-  #  :enabled    => true,
-  #  :adapter    => :rails,
-  #  :version    => 1
-  #}
+  config.cache = {
+   :enabled    => true,
+   :adapter    => :rails,
+   :version    => 1
+  }
 
   # If you are using Redis, use the following settings:
 
@@ -79,9 +77,9 @@ Tml.configure do |config|
   # For debugging, uncomment the following lines:
 
   config.logger  = {
-      :enabled  => true,
-      :path     => "#{Rails.root}/log/tml.log",
-      :level    => 'debug'
+    :enabled  => false,
+    :path     => "#{Rails.root}/log/tml.log",
+    :level    => 'debug'
   }
 
   # To use Rails logger instead, use:

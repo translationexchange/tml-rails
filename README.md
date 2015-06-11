@@ -43,8 +43,8 @@ Tml.configure do |config|
     :token => YOUR_APPLICATION_TOKEN,
   }
   config.cache = {
-    :adapter    => 'rails',
-    :version    => 1
+    :enablec => true,
+    :adapter => 'rails'
   }
 end
 ```
@@ -82,8 +82,7 @@ config.cache_store = :redis_store, {
   :host => 'localhost',
   :port => 6379,
   :db => 0,
-  :namespace => 'my_cache',
-  :expires_in => 90.minutes
+  :namespace => 'my_cache'
 }
 ```
 
@@ -100,8 +99,7 @@ config/initializers/tml.rb
 ```ruby
 config.cache = {
   :enabled    => true,
-  :adapter    => 'rails',
-  :version    => 1
+  :adapter    => 'rails'
 }
 ```
 
@@ -112,9 +110,7 @@ config.cache = {
     :enabled    => true,
     :adapter    => 'memcache',
     :host       => 'localhost:11211',
-    :namespace  => 'translations',
-    :version    => 1,
-    :timeout    => 3600
+    :namespace  => 'translations'
 }
 ```
 
@@ -127,9 +123,7 @@ config.cache = {
     :host       => 'localhost',
     :port       => 6379,
     :password   => 'password',
-    :namespace  => 'translations',
-    :version    => 1,
-    :timeout    => 3600
+    :namespace  => 'translations'
 }
 ```
 
@@ -160,25 +154,15 @@ config.cache = {
   :enabled    => true,
   :adapter    => 'file',
   :path       => 'config/tml',
-  :version    => 'current',
-  :segmented  => false
+  :version    => 'current'
 }
 ```
 
-If you set ':segmented' to 'true', the cache will be generated for each source in your application. Otherwise, a single cache file will be generated per language for the entire application.
-
-The file based cache must be generated before you deploy your application using the following command:
+The file based cache can be generated from your current release using the following command:
 
 ```sh
 $ bundle exec rake tml:cache:generate
 ```
-
-You can also rollback to the previous file cache using:
-
-```sh
-$ bundle exec rake tml:cache:rollback
-```
-
 
 Integration
 ===================================
@@ -241,7 +225,7 @@ you can simply use:
 "Hello World".translate
 ```
 
-Learn more about TML at: http://TranslationExchange.com/docs
+Learn more about TML at: http://translationexchange.com/docs
 
 
 I18n fallback
