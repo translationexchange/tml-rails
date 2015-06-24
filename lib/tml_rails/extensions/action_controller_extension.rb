@@ -35,8 +35,8 @@ module TmlRails
     def self.included(base)
       base.send(:include, TmlRails::ActionCommonMethods)
       base.send(:include, InstanceMethods) 
-      base.before_filter :tml_init_client_sdk
-      base.after_filter :tml_reset_client_sdk
+      base.before_filter :tml_init
+      base.after_filter :tml_reset
       if defined? base.rescue_from
         base.rescue_from 'Tml::Exception' do |e|
           Tml.logger.error(e)
@@ -68,7 +68,7 @@ module TmlRails
         self.class.name
       end
 
-      def tml_init_client_sdk
+      def tml_init
         return if Tml.config.disabled?
 
         @tml_started_at = Time.now
@@ -95,6 +95,7 @@ module TmlRails
 
         unless tml_session_params[:locale]
           tml_session_params.merge!(:cookies => cookies)
+          params[:locale] = request.subdomain if Tml.config.locale[:subdomain]
           tml_session_params.merge!(:change_locale => true) if params[:locale]
           tml_session_params.merge!(:locale => params[:locale] || tml_user_preferred_locale)
         end
@@ -114,7 +115,7 @@ module TmlRails
         end
       end
 
-      def tml_reset_client_sdk
+      def tml_reset
         return if Tml.config.disabled?
         @tml_finished_at = Time.now
         tml_application.submit_missing_keys

@@ -31,12 +31,14 @@
 
 class String
 
+  # marks the string as translated and safe at the same time
   def tml_translated
     return self if frozen?
     @tml_translated = true
     self.html_safe
   end
 
+  # indicates whether the string has been translated or not
   def tml_translated?
     @tml_translated
   end

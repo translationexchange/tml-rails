@@ -46,15 +46,6 @@ module TmlRails
       options_for_select(options.tro(description), selected)
     end
 
-    def tml_phrases_link_tag(search = "", phrase_type = :without, phrase_status = :any)
-      return unless Tml.config.enabled?
-      return if tml_current_language.default?
-      return unless tml_current_translator.inline?
-
-      link_to(image_tag(tml_application.url_for("/assets/tml/translate_icn.gif"), :style => "vertical-align:middle; border: 0px;", :title => search),
-              tml_application.url_for("/tml/app/phrases/index?search=#{search}")).html_safe
-    end
-
     def tml_language_flag_tag(lang = tml_current_language, opts = {})
       return '' unless tml_application.feature_enabled?(:language_flags)
       html = image_tag(lang.flag_url, :style => (opts[:style] || 'vertical-align:middle;'), :title => lang.native_name)
@@ -64,7 +55,7 @@ module TmlRails
 
     def tml_language_name_tag(lang = tml_current_language, opts = {})
       show_flag = opts[:flag].nil? ? true : opts[:flag]
-      name_type = opts[:language].nil? ? :english : opts[:language] # :full, :native, :english, :locale, :both
+      name_type = opts[:language].nil? ? :english : opts[:language].to_sym # :full, :native, :english, :locale, :both
 
       html = []
       html << "<span style='white-space: nowrap'>"
@@ -87,14 +78,16 @@ module TmlRails
       end
 
       html << '</span></span>'
-      html.join().html_safe
+      html.join.html_safe
     end
 
     def tml_language_selector_tag(type = nil, opts = {})
       return unless Tml.config.enabled?
 
       type ||= :default
-      unless [:bootstrap, :default, :inline, :select, :popup].include?(type.to_sym)
+      type = :dropdown if type == :select
+
+      unless [:bootstrap, :default, :inline, :dropdown, :popup, :flags].include?(type.to_sym)
         return "Unsupported language selector #{type}"
       end
 
@@ -142,6 +135,10 @@ module TmlRails
     end
     alias_method :tml_block, :tml_with_options_tag
 
+    def tml_source(source, &block)
+      tml_with_options_tag({source: source}, &block)
+    end
+
     def tml_when_string_tag(time, opts = {})
       elapsed_seconds = Time.now - time
       if elapsed_seconds < 0
@@ -177,21 +174,33 @@ module TmlRails
     ## Language Direction Support
     ######################################################################
 
+    # switches CSS positions based on the language direction
+    # <%= tml_style_attribute_tag('float', 'right') %> => "float: right" : "float: left"
+    # <%= tml_style_attribute_tag('align', 'right') %> => "align: right" : "align: left"
     def tml_style_attribute_tag(attr_name = 'float', default = 'right', lang = tml_current_language)
       return "#{attr_name}:#{default}".html_safe if Tml.config.disabled?
       "#{attr_name}:#{lang.align(default)}".html_safe
     end
 
+    # supports directional CSS attributes
+    # <%= tml_style_directional_attribute_tag('padding', 'right', '5px') %> => "padding-right: 5px" : "padding-left: 5px"
     def tml_style_directional_attribute_tag(attr_name = 'padding', default = 'right', value = '5px', lang = tml_current_language)
       return "#{attr_name}-#{default}:#{value}".html_safe if Tml.config.disabled?
       "#{attr_name}-#{lang.align(default)}:#{value}".html_safe
     end
 
+    # provides the locale and direction of the language
+    def tml_html_attributes_tag(lang = tml_current_language)
+      "#{tml_lang_attribute_tag(lang)} #{tml_dir_attribute_tag(lang)}"
+    end
+
+    # providers the direction of the language
     def tml_dir_attribute_tag(lang = tml_current_language)
       return "dir='ltr'" if Tml.config.disabled?
       "dir='#{lang.dir}'".html_safe
     end
 
+    # provides the locale of the language
     def tml_lang_attribute_tag(lang = tml_current_language)
       return "lang='en-US'" if Tml.config.disabled?
       "lang='#{lang.locale}'".html_safe

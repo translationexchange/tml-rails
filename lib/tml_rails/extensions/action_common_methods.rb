@@ -127,5 +127,17 @@ module TmlRails
       tml_current_language.dir
     end
 
+    def tml_subdomain_locale_url(locale = tml_current_locale)
+      uri = URI::parse(request.url)
+      host = uri.host.split('.')
+      if host.count == 2
+        host.unshift(locale)
+      else
+        host[0] = locale
+      end
+      uri.host = host.join('.')
+      uri.to_s
+    end
+
   end
 end

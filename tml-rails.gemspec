@@ -42,7 +42,7 @@ Gem::Specification.new do |s|
   s.email       = %w(michael@translationexchange.com)
   s.homepage    = 'https://github.com/translationexchange/tml-rails'
   s.summary     = 'Tml Client SDK for Ruby on Rails'
-  s.description = 'Client SDK for Translation Exchange.'
+  s.description = 'Translation Markup Language from Translation Exchange.'
 
   s.files = Dir['{app,config,lib}/**/*'] + %w(LICENSE Rakefile README.md)
   s.licenses = 'MIT-LICENSE'
