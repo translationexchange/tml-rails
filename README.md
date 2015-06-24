@@ -40,11 +40,11 @@ config/initializers/tml.rb
 ```ruby
 Tml.configure do |config|
   config.application = {
-    :token => YOUR_APPLICATION_TOKEN,
+    token: YOUR_APPLICATION_TOKEN,
   }
   config.cache = {
-    :enablec => true,
-    :adapter => 'rails'
+    enabled: true,
+    adapter: 'rails'
   }
 end
 ```
@@ -79,10 +79,10 @@ Redis
 
 ```ruby
 config.cache_store = :redis_store, {
-  :host => 'localhost',
-  :port => 6379,
-  :db => 0,
-  :namespace => 'my_cache'
+  host:       'localhost',
+  port:       6379,
+  db:         0,
+  namespace:  'my_cache'
 }
 ```
 
@@ -98,8 +98,8 @@ config/initializers/tml.rb
 
 ```ruby
 config.cache = {
-  :enabled    => true,
-  :adapter    => 'rails'
+  enabled:  true,
+  adapter:  'rails'
 }
 ```
 
@@ -107,10 +107,10 @@ Alternatively, you can provide a separate memcache server to store your translat
 
 ```ruby
 config.cache = {
-    :enabled    => true,
-    :adapter    => 'memcache',
-    :host       => 'localhost:11211',
-    :namespace  => 'translations'
+  enabled:    true,
+  adapter:    'memcache',
+  host:       'localhost:11211',
+  namespace:  'translations'
 }
 ```
 
@@ -118,12 +118,12 @@ You can also use Redis to persist your translations cache:
 
 ```ruby
 config.cache = {
-    :enabled    => true,
-    :adapter    => 'redis',
-    :host       => 'localhost',
-    :port       => 6379,
-    :password   => 'password',
-    :namespace  => 'translations'
+    enabled:    true,
+    adapter:    'redis',
+    host:       'localhost',
+    port:       6379,
+    password:   'password',
+    namespace:  'translations'
 }
 ```
 
@@ -151,10 +151,10 @@ To specify in-memory, file-based cache, provide the following configuration:
 
 ```ruby
 config.cache = {
-  :enabled    => true,
-  :adapter    => 'file',
-  :path       => 'config/tml',
-  :version    => 'current'
+  enabled:  true,
+  adapter:  'file',
+  path:     'config/tml',
+  version:  'current'
 }
 ```
 
@@ -176,7 +176,7 @@ In the HEAD section of your layout, add:
 Now you can simply add the default language selector anywhere on your page using:
 
 ```ruby
-<%= tml_language_selector_tag %>
+<%= tml_language_selector_tag(:popup) %>
 ```
 
 The default language selector is used to enable/disable translation modes. It may be useful on staging or translation
@@ -203,7 +203,7 @@ To use a list language selector that uses locale in the url parameter, use:
 If you want to see just a list of flags, use:
 
 ```ruby
-<%= tml_language_selector_tag(:list, {
+<%= tml_language_selector_tag(:flags, {
     :flags_only => true
 }) %>
 ```
