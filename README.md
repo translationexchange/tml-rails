@@ -116,12 +116,12 @@ You can also use Redis to persist your translations cache:
 
 ```ruby
 config.cache = {
-    enabled:    true,
-    adapter:    'redis',
-    host:       'localhost',
-    port:       6379,
-    password:   'password',
-    namespace:  'translations'
+  enabled:    true,
+  adapter:    'redis',
+  host:       'localhost',
+  port:       6379,
+  password:   'password',
+  namespace:  'translations'
 }
 ```
 
