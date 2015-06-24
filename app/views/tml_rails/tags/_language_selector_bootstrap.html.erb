@@ -3,16 +3,18 @@
    opts[:class] ||= 'dropdown'
 %>
 
-
 <style>
   .trex-dropdown {
     text-align:<%= tml_current_language.align("left") %>;
   }
-
   .trex-dropdown .trex-dropdown-menu {
     min-width:200px;
   }
-
+  .trex-native-name {
+    padding: 0px 5px;
+    color: #ccc;
+    font-size: 10px;
+  }
   .trex-dropdown .trex-dropdown-footer {
     font-size:10px;
     color:#ccc;
@@ -24,11 +26,13 @@
     border-bottom-left-radius: 5px; 
     border-bottom-right-radius: 5px;
   }
-
 </style>
 
 
-<<%= opts[:element] %> class="trex-dropdown <%= opts[:class] %>" style="<%= opts[:style] %>">
+<% if opts[:element] %>
+  <<%= opts[:element] %> class="trex-language-selector trex-dropdown <%= opts[:class] %>" style="<%= opts[:style] %>">
+<% end %>
+
   <a href="#" role="button" class="<%= opts[:class] || 'dropdown' %>-toggle" data-toggle="dropdown" dir="<%= tml_current_language.dir %>">
     <%= tml_language_name_tag(tml_current_language, opts) %>
   </a>
@@ -38,8 +42,14 @@
     <% tml_application.languages.each do |lang| %>
 
       <li dir="<%= tml_current_language.dir %>">
-        <%=link_to({:locale => lang.locale}) do %>
-          <%= tml_language_name_tag(lang, opts) %>
+        <% if Tml.config.locale[:subdomain] %>
+          <%=link_to(tml_subdomain_locale_url(lang.locale)) do %>
+            <%= tml_language_name_tag(lang, opts) %>
+          <% end %>
+        <% else %>
+          <%=link_to({:locale => lang.locale}) do %>
+            <%= tml_language_name_tag(lang, opts) %>
+          <% end %>
         <% end %>
       </li>
 
@@ -62,5 +72,8 @@
       </a>
     </div>
   </ul>
-</<%= opts[:element] %>>
+
+<% if opts[:element] %>
+  </<%= opts[:element] %>>
+<% end %>
 
