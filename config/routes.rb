@@ -30,5 +30,9 @@
 #++
 
 Rails.application.routes.draw do
-  get '/tml/upgrade' => 'tml_rails/tools#upgrade'
+
+  if Tml.config.invalidator and Tml.config.invalidator[:enabled]
+    get Tml.config.invalidator[:path] => 'tml_rails/tools#upgrade'
+  end
+
 end

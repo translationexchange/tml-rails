@@ -33,9 +33,16 @@ module TmlRails
   class ToolsController < ApplicationController
 
     def upgrade
-      if params[:access_token] == Tml.config.access_token
+      if Tml.config.invalidator[:auth].is_a?(Proc)
+        authorized = Tml.config.invalidator[:auth].call(request)
+      else
+        authorized = params[:access_token] == Tml.config.access_token
+      end
+
+      if authorized
         Tml.cache.upgrade_version
       end
+
       redirect_back
     end
 
