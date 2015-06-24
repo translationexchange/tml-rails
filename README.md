@@ -53,21 +53,19 @@ Tml must be used with caching enabled.
 
 If you are already using Rails caching, you probably already specify it in your production file, like the following:
 
-Memcache
-
 config/environments/production.rb
 
 ```ruby
 config.cache_store = :mem_cache_store, { :namespace => 'my_cache' }
 ```
 
-Memcache for multiple servers
+Memcache for multiple servers:
 
 ```ruby
 config.cache_store = :mem_cache_store, '123.456.78.9:1001', '123.456.78.9:1002'
 ```
 
-Memcache with Dalli
+Memcache with Dalli:
 
 ```ruby
 config.cache_store = :mem_cache_store, Dalli::Client.new('localhost:11211', {
@@ -75,7 +73,7 @@ config.cache_store = :mem_cache_store, Dalli::Client.new('localhost:11211', {
 })
 ```
 
-Redis
+For Redis:
 
 ```ruby
 config.cache_store = :redis_store, {
