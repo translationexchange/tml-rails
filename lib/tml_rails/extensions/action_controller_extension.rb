@@ -34,9 +34,13 @@ module TmlRails
 
     def self.included(base)
       base.send(:include, TmlRails::ActionCommonMethods)
-      base.send(:include, InstanceMethods) 
-      base.before_filter :tml_init
-      base.after_filter :tml_reset
+      base.send(:include, InstanceMethods)
+
+      if Tml.config.auto_init
+        base.before_filter :tml_init
+        base.after_filter :tml_reset
+      end
+
       if defined? base.rescue_from
         base.rescue_from 'Tml::Exception' do |e|
           Tml.logger.error(e)

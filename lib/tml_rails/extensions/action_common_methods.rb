@@ -123,6 +123,10 @@ module TmlRails
       tml_session.current_language
     end
 
+    def tml_current_source
+      tml_session.current_source
+    end
+
     def tml_language_dir
       tml_current_language.dir
     end

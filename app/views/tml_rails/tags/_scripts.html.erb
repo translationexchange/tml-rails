@@ -22,7 +22,7 @@
         Tml.app_key = '<%= tml_application.key %>';
         Tml.host = '<%= tml_application.tools['host'] %>';
         Tml.locale = '<%= tml_current_language.locale %>';
-        Tml.sources = [];
+        Tml.current_source = '<%= tml_current_source %>';
         <%
           if tml_application.feature_enabled?(:shortcuts)
              tml_application.shortcuts.each do |key, script|
