@@ -59,7 +59,11 @@
       <li role='presentation' class='divider'></li>
       <li role='presentation'>
         <a href='javascript:void(0);' onclick='Tml.Utils.toggleInlineTranslations()'>
-          <%= tr(opts[:toggle_label] || 'Help Us Translate') %>
+          <% if Tml.session.inline_mode? %>
+            <%= tr(opts[:toggle_label_close] || 'Disable Translation Mode') %>
+          <% else %>
+            <%= tr(opts[:toggle_label] || 'Help Us Translate') %>
+          <% end %>
         </a>
       </li>
     <% end %>
@@ -68,7 +72,7 @@
 
     <div class="trex-dropdown-footer">
       <a href="http://translationexchange.com" style="color: #888;">
-        <%= tr("Powered By {brand}", brand: "Translation Exchange") %>
+        <%= tr('Powered By {brand}', brand: 'Translation Exchange') %>
       </a>
     </div>
   </ul>

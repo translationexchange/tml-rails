@@ -57,14 +57,18 @@
     <% if opts[:toggle] %>
       <li class='trex-credit' dir="<%= tml_current_language.dir %>">
         <a href='javascript:void(0);' onclick='Tml.Utils.toggleInlineTranslations()'>
-          <%= tr(opts[:toggle_label] || 'Help Us Translate') %>
+          <% if Tml.session.inline_mode? %>
+            <%= tr(opts[:toggle_label_close] || 'Disable Translation Mode') %>
+          <% else %>
+            <%= tr(opts[:toggle_label] || 'Help Us Translate') %>
+          <% end %>
         </a>
       </li>
     <% end %>
 
     <li class="trex-credit" dir="<%= tml_current_language.dir %>">
       <a href="http://translationexchange.com">
-        Powered by Translation Exchange
+        <%= tr('Powered By {brand}', brand: 'Translation Exchange') %>
       </a>
     </li>
   </ul>

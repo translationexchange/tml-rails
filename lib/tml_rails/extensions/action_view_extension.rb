@@ -206,5 +206,17 @@ module TmlRails
       "lang='#{lang.locale}'".html_safe
     end
 
+    def tml_lang_attributes_tag(lang = tml_current_language)
+      "#{tml_lang_attribute_tag(lang)} #{tml_dir_attribute_tag(lang)}".html_safe
+    end
+
+    def tml_stylesheet_link_tag(ltr, rtl, attrs = {})
+      if tml_current_language.right_to_left?
+        stylesheet_link_tag(rtl, attrs)
+      else
+        stylesheet_link_tag(ltr, attrs)
+      end
+    end
+
   end
 end
