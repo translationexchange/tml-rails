@@ -189,10 +189,12 @@ module TmlRails
       "#{attr_name}-#{lang.align(default)}:#{value}".html_safe
     end
 
+
     # provides the locale and direction of the language
     def tml_html_attributes_tag(lang = tml_current_language)
-      "#{tml_lang_attribute_tag(lang)} #{tml_dir_attribute_tag(lang)}"
+      "xml:lang='#{lang.locale}' #{tml_lang_attribute_tag(lang)} #{tml_dir_attribute_tag(lang)}".html_safe
     end
+    alias_method :tml_lang_attributes_tag, :tml_html_attributes_tag
 
     # providers the direction of the language
     def tml_dir_attribute_tag(lang = tml_current_language)
@@ -204,10 +206,6 @@ module TmlRails
     def tml_lang_attribute_tag(lang = tml_current_language)
       return "lang='en-US'" if Tml.config.disabled?
       "lang='#{lang.locale}'".html_safe
-    end
-
-    def tml_lang_attributes_tag(lang = tml_current_language)
-      "#{tml_lang_attribute_tag(lang)} #{tml_dir_attribute_tag(lang)}".html_safe
     end
 
     def tml_stylesheet_link_tag(ltr, rtl, attrs = {})
