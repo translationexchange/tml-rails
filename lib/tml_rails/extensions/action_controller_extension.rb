@@ -37,8 +37,8 @@ module TmlRails
       base.send(:include, InstanceMethods)
 
       if Tml.config.auto_init
-        base.before_filter :tml_init
-        base.after_filter :tml_reset
+        base.before_filter  :tml_init
+        base.after_filter   :tml_reset
       end
 
       if defined? base.rescue_from
@@ -53,18 +53,11 @@ module TmlRails
 
     module InstanceMethods
 
+      # Returns all browser accepted locales
       def tml_browser_accepted_locales
-        @tml_browser_accepted_locales ||= Tml::Utils.browser_accepted_locales(request)
+        @tml_browser_accepted_locales ||= Tml::Utils.browser_accepted_locales(request.env['HTTP_ACCEPT_LANGUAGE']).join(',')
       end
 
-      def tml_user_preferred_locale
-        tml_browser_accepted_locales.each do |locale|
-          next unless Tml.session.application and Tml.session.application.locales.include?(locale)
-          return locale
-        end
-        Tml.config.default_locale
-      end
-      
       # Overwrite this method in a controller to assign a custom source for all views
       def tml_source
         "/#{controller_name}/#{action_name}"
@@ -72,44 +65,90 @@ module TmlRails
         self.class.name
       end
 
+      # Returns data from cookie set by the agent
+      def tml_cookie
+        @tml_cookie ||= begin
+          cookie = cookies[Tml::Utils.cookie_name(Tml.config.application[:key])]
+          if cookie.blank?
+            {}
+          else
+            HashWithIndifferentAccess.new(Tml::Utils.decode(cookie, Tml.config.application[:token]))
+          end
+        end
+      rescue Exception => ex
+        Tml.logger.error("Failed to parse tml cookie: #{ex.message}")
+        {}
+      end
+
+      # Locale is retrieved from method => params => cookie => subdomain => browser accepted locales
+      # Alternatively, this method can be overwritten
+      def tml_locale
+        @tml_locale ||= begin
+          locale = nil
+
+          unless Tml.config.current_locale_method.blank?
+            begin
+              locale = self.send(Tml.config.current_locale_method)
+            rescue
+              locale = nil
+            end
+          end
+
+          if locale.nil?
+            if params[:locale].blank?
+              locale = tml_cookie[:locale]
+              if locale.nil?
+                if Tml.config.locale[:subdomain]
+                  locale = request.subdomain
+                else
+                  locale = tml_browser_accepted_locales
+                end
+              end
+            else
+              locale = tml_cookie[:locale] = params[:locale]
+              cookies[Tml::Utils.cookie_name(Tml.config.application[:key])] = Tml::Utils.encode(tml_cookie, Tml.config.application[:token])
+            end
+          end
+
+          locale
+        end
+      end
+
+      def tml_viewing_user
+        @tml_viewing_user ||= begin
+          unless Tml.config.current_user_method.blank?
+            begin
+              self.send(Tml.config.current_user_method)
+            rescue
+              {}
+            end
+          end
+        end
+      end
+
+      def tml_translator
+        @tml_translator ||= begin
+          if tml_cookie[:translator]
+            Tml::Translator.new(tml_cookie[:translator])
+          else
+            nil
+          end
+        end
+      end
+
       def tml_init
         return if Tml.config.disabled?
 
+        # Tml.logger.info(tml_cookie.inspect)
+
         @tml_started_at = Time.now
 
-        tml_session_params = {
-          :source => tml_source
-        }
-
-        if Tml.config.current_user_method
-          begin
-            tml_session_params.merge!(:user => self.send(Tml.config.current_user_method))
-          rescue
-            # Tml.logger.error('Current user method is specified but not provided')
-          end
-        end
-
-        if Tml.config.current_locale_method
-          begin
-            tml_session_params.merge!(:locale => self.send(Tml.config.current_locale_method))
-          rescue
-            # Tml.logger.error('Current locale method is specified but not provided')
-          end
-        end
-
-        unless tml_session_params[:locale]
-          tml_session_params.merge!(:cookies => cookies)
-          params[:locale] = request.subdomain if Tml.config.locale[:subdomain]
-          tml_session_params.merge!(:change_locale => true) if params[:locale]
-          tml_session_params.merge!(:locale => params[:locale] || tml_user_preferred_locale)
-        end
-
-        Tml.session.init(tml_session_params)
-
-        # if user sets locale manually, update the cookie for future use
-        if tml_session_params[:change_locale]
-          cookies[Tml.session.cookie_name] = Tml::Utils.encode(Tml.session.cookie_params)
-        end
+        Tml.session.init({
+         :source      => tml_source,
+         :locale      => tml_locale,
+         :user        => tml_viewing_user,
+         :translator  => tml_translator
+        })
 
         if I18n.backend.class.name == 'I18n::Backend::Tml'
           if defined? I18n.enforce_available_locales

@@ -33,6 +33,7 @@ module TmlRails
   module ActionViewExtension
     extend ActiveSupport::Concern
 
+    # Translates HTML block
     def trh(tokens = {}, options = {}, &block)
       return '' unless block_given?
 
@@ -42,10 +43,12 @@ module TmlRails
       tokenizer.translate(label).html_safe
     end
 
+    # Translates <select><option></option></select>
     def tml_options_for_select(options, selected = nil, description = nil, lang = Tml.session.current_language)
       options_for_select(options.tro(description), selected)
     end
 
+    # Returns language flag
     def tml_language_flag_tag(lang = tml_current_language, opts = {})
       return '' unless tml_application.feature_enabled?(:language_flags)
       html = image_tag(lang.flag_url, :style => (opts[:style] || 'vertical-align:middle;'), :title => lang.native_name)
@@ -53,6 +56,7 @@ module TmlRails
       html.html_safe
     end
 
+    # Returns language name
     def tml_language_name_tag(lang = tml_current_language, opts = {})
       show_flag = opts[:flag].nil? ? true : opts[:flag]
       name_type = opts[:language].nil? ? :english : opts[:language].to_sym # :full, :native, :english, :locale, :both
@@ -81,6 +85,7 @@ module TmlRails
       html.join.html_safe
     end
 
+    # Returns language selector UI
     def tml_language_selector_tag(type = nil, opts = {})
       return unless Tml.config.enabled?
 
@@ -94,6 +99,7 @@ module TmlRails
       render(:partial => "/tml_rails/tags/language_selector_#{type}", :locals => {:opts => opts})
     end
 
+    # Returns language strip UI
     def tml_language_strip_tag(opts = {})
       opts[:flag] = opts[:flag].nil? ? false : opts[:flag]
       opts[:name] = opts[:name].nil? ? :native : opts[:name] 
@@ -103,6 +109,7 @@ module TmlRails
       render(:partial => '/tml_rails/tags/language_strip', :locals => {:opts => opts})
     end
 
+    # Translates flashes
     def tml_flashes_tag(opts = {})
       render(:partial => '/tml_rails/tags/flashes', :locals => {:opts => opts})
     end
@@ -188,7 +195,6 @@ module TmlRails
       return "#{attr_name}-#{default}:#{value}".html_safe if Tml.config.disabled?
       "#{attr_name}-#{lang.align(default)}:#{value}".html_safe
     end
-
 
     # provides the locale and direction of the language
     def tml_html_attributes_tag(lang = tml_current_language)

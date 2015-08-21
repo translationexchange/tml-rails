@@ -58,7 +58,7 @@ module TmlRails
       # Translate individual sentences
       if params[:options][:split]
         text = params[:label]
-        sentences = Tml::Utils.split_by_sentence(text)
+        sentences = Tml::Utils.split_sentences(text)
         sentences.each do |sentence|
           text = text.gsub(sentence, tml_current_language.translate(sentence, params[:description], params[:tokens], params[:options]))
         end
