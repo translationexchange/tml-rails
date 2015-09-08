@@ -40,6 +40,7 @@ config/initializers/tml.rb
 ```ruby
 Tml.configure do |config|
   config.application = {
+    key:   YOUR_APPLICATION_KEY,
     token: YOUR_APPLICATION_TOKEN,
   }
   config.cache = {
@@ -264,7 +265,7 @@ And the i18n will use Translation Exchange as the backend for your translations.
 <%= tr("This is a nested key") %>
 ```
 
-The above calls are equivalent. 
+The above calls are equivalent.
 
 
 Logging
