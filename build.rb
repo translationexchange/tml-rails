@@ -6,7 +6,7 @@ def run(cmd)
   system(cmd)
 end
 
-run('rspec')
+run('bundle exec rspec')
 run('gem build tml-rails.gemspec')
 run("gem install tml-rails-#{TmlRails::VERSION}.gem --no-ri --no-rdoc")
 
