@@ -6,6 +6,10 @@ def run(cmd)
   system(cmd)
 end
 
+run('git checkout master')
+run('git merge develop')
+run('git push')
+
 run('bundle exec rspec')
 run('gem build tml-rails.gemspec')
 run("gem install tml-rails-#{TmlRails::VERSION}.gem --no-ri --no-rdoc")
@@ -15,3 +19,5 @@ if ARGV.include?('release')
   run('git push')
   run("gem push tml-rails-#{TmlRails::VERSION}.gem")
 end
+
+run('git checkout develop')
