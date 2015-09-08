@@ -35,58 +35,70 @@ I18n.backend = I18n::Backend::Tml.new
 
 Tml.configure do |config|
 
-  config.application = {
-    key:    '1671c1f1b90d1dad894e43b4edd0ed20eca453dfb77c889d098db3e140de018e',
-    token:  '23dc0805cf21d7c3342115455ab7355706c14922e207c5b38b641b16e7d38dc3',
-    host:   'http://localhost:3000'
-  }
+  if Rails.env.development?
+    config.application = {
+        key:    '1671c1f1b90d1dad894e43b4edd0ed20eca453dfb77c889d098db3e140de018e',
+        token:  '23dc0805cf21d7c3342115455ab7355706c14922e207c5b38b641b16e7d38dc3',
+        host:   'http://localhost:3000'
+    }
 
-  # config.cache = {
-  #     :enabled    => true,
-  #     :adapter    => 'file',
-  #     :version    => 'current'
-  # }
+    # config.cache = {
+    #     :enabled    => true,
+    #     :adapter    => 'file',
+    #     :version    => 'current'
+    # }
 
-  # If you are using Rails.cache, use the following settings:
+    # If you are using Rails.cache, use the following settings:
 
-  # config.cache = {
-  #  enabled: true,
-  #  adapter: :rails
-  # }
+    # config.cache = {
+    #  enabled: true,
+    #  adapter: :rails
+    # }
 
-  # If you are using Redis, use the following settings:
+    # If you are using Redis, use the following settings:
 
-  config.cache = {
-     :enabled   => true,
-     :adapter   => 'redis',
-     :host      => 'localhost',
-     :port      => 6379,
-     :db        => 0,
-     :namespace => '2dsfsd312312',
-  }
+    config.cache = {
+        :enabled   => true,
+        :adapter   => 'redis',
+        :host      => 'localhost',
+        :port      => 6379,
+        :db        => 0,
+        :namespace => '2dsfsd312312',
+    }
 
-  # If you are using Memcache, use the following settings:
+    # If you are using Memcache, use the following settings:
 
-  # config.cache = {
-  #  :enabled    => true,
-  #  :adapter    => 'memcache',
-  #  :host       => 'localhost:11211',
-  #  :namespace  => '2dsfsd312312',
-  # }
+    # config.cache = {
+    #  :enabled    => true,
+    #  :adapter    => 'memcache',
+    #  :host       => 'localhost:11211',
+    #  :namespace  => '2dsfsd312312',
+    # }
 
-  # For debugging, uncomment the following lines:
+    # For debugging, uncomment the following lines:
 
-  config.logger  = {
-    enabled: true,
-    path:   "#{Rails.root}/log/tml.log",
-    level:  'debug'
-  }
+    config.logger  = {
+        enabled: true,
+        path:   "#{Rails.root}/log/tml.log",
+        level:  'debug'
+    }
 
-  # To use Rails logger instead, use:
+    # To use Rails logger instead, use:
 
-  #config.logger  = {
-  #    :enabled  => true,
-  #    :type     => :rails
-  #}
+    #config.logger  = {
+    #    :enabled  => true,
+    #    :type     => :rails
+    #}
+
+  else
+
+    # For now, let's test real API from staging
+
+    config.application = {
+        host:   'https://staging-api.translationexchange.com',
+        key:    '4581b9ba74f26387ec3f74d269e6a6424bac68978e608c18b4d47e39f84875be',
+        token:  'd6105e2f05548756b116d7eb8e07642422bc8510b580a4c1685037dfd8ca39b3'
+    }
+  end
 
 end
