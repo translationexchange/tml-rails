@@ -58,12 +58,12 @@ Tml.configure do |config|
     # If you are using Redis, use the following settings:
 
     config.cache = {
-        :enabled   => true,
-        :adapter   => 'redis',
-        :host      => 'localhost',
-        :port      => 6379,
-        :db        => 0,
-        :namespace => '2dsfsd312312',
+      :enabled   => true,
+      :adapter   => 'redis',
+      :host      => 'localhost',
+      :port      => 6379,
+      :db        => 0,
+      :namespace => '2dsfsd312312',
     }
 
     # If you are using Memcache, use the following settings:
@@ -78,9 +78,9 @@ Tml.configure do |config|
     # For debugging, uncomment the following lines:
 
     config.logger  = {
-        enabled: true,
-        path:   "#{Rails.root}/log/tml.log",
-        level:  'debug'
+      enabled: true,
+      path:   "#{Rails.root}/log/tml.log",
+      level:  'debug'
     }
 
     # To use Rails logger instead, use:
@@ -90,6 +90,17 @@ Tml.configure do |config|
     #    :type     => :rails
     #}
 
+    config.agent = {
+      enabled:  true,
+      type:     'tools',
+      host:     'https://cdn.translationexchange.com/tools/agent/latest/agent.js',
+      version:  '0.1.7',
+      domains:  {
+        api:        'http://localhost:3000',
+        tools:      'http://localhost:3002',
+        analytics:  'https://analyst.translationexchange.com'
+      }
+    }
   else
 
     # For now, let's test real API from staging
@@ -99,6 +110,18 @@ Tml.configure do |config|
         key:    '4581b9ba74f26387ec3f74d269e6a6424bac68978e608c18b4d47e39f84875be',
         token:  'd6105e2f05548756b116d7eb8e07642422bc8510b580a4c1685037dfd8ca39b3'
     }
+
+    config.agent = {
+        enabled:  true,
+        type:     'agent',
+        version:  'latest',
+        domains:  {
+          api:        'https://staging-api.translationexchange.com',
+          tools:      'https://staging-translation-center.translationexchange.com',
+          analytics:  'https://analyst.translationexchange.com'
+        }
+    }
+
   end
 
 end

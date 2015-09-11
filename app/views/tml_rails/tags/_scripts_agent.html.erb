@@ -1,0 +1,16 @@
+<script>
+    <%
+        agent_host = Tml.config.agent[:host] || "https://cdn.translationexchange.com/tools/agent/" + (Tml.config.agent[:version] || 'latest') + "/agent.min.js"
+    %>
+    (function() {
+        var script = window.document.createElement('script');
+        script.setAttribute('id', 'tml-agent');
+        script.setAttribute('type', 'application/javascript');
+        script.setAttribute('src', '<%= agent_host %>');
+        script.setAttribute('charset', 'UTF-8');
+        script.onload = function() {
+            Trex.init("<%=tml_application.key%>", <%=Tml.config.agent.to_json.html_safe%>);
+        };
+        window.document.getElementsByTagName('head')[0].appendChild(script);
+    })();
+</script>
