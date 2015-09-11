@@ -92,8 +92,7 @@ Tml.configure do |config|
 
     config.agent = {
       enabled:  true,
-      type:     'tools',
-      host:     'https://cdn.translationexchange.com/tools/agent/latest/agent.js',
+      type:     'agent',
       version:  '0.1.7',
       domains:  {
         api:        'http://localhost:3000',
