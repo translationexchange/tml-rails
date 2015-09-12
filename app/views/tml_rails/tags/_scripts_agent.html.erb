@@ -1,6 +1,6 @@
 <script>
     <%
-        agent_host = Tml.config.agent[:host] || "https://cdn.translationexchange.com/tools/agent/" + (Tml.config.agent[:version] || 'latest') + "/agent.min.js"
+        agent_host = Tml.config.agent[:host] || 'https://cdn.translationexchange.com/tools/agent/' + (Tml.config.agent[:version] || 'stable') + '/agent.min.js'
     %>
     (function() {
         var script = window.document.createElement('script');

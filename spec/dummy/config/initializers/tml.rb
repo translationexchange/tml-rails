@@ -93,7 +93,7 @@ Tml.configure do |config|
     config.agent = {
       enabled:  true,
       type:     'agent',
-      version:  '0.1.7',
+      version:  'stable',
       domains:  {
         api:        'http://localhost:3000',
         tools:      'http://localhost:3002',
@@ -113,7 +113,7 @@ Tml.configure do |config|
     config.agent = {
         enabled:  true,
         type:     'agent',
-        version:  'latest',
+        version:  'stable',
         domains:  {
           api:        'https://staging-api.translationexchange.com',
           tools:      'https://staging-translation-center.translationexchange.com',
