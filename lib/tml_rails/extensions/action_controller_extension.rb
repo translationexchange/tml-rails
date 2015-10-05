@@ -65,10 +65,14 @@ module TmlRails
         self.class.name
       end
 
+      def tml_cookie_name
+        Tml::Utils.cookie_name(Tml.config.application[:key])
+      end
+
       # Returns data from cookie set by the agent
       def tml_cookie
         @tml_cookie ||= begin
-          cookie = cookies[Tml::Utils.cookie_name(Tml.config.application[:key])]
+          cookie = cookies[tml_cookie_name]
           if cookie.blank?
             {}
           else
