@@ -49,30 +49,38 @@ module I18n
         end
 
         def translate(locale, key, options = {})
-          super(locale, key, options).html_safe
+          translation = super(locale, key, options)
+          translation.is_a?(String) ? translation.html_safe : translation
+        end
+
+        def convert_to_tml(str)
+          str.gsub('%{', '{')
         end
 
         def lookup(locale, key, scope = [], options = {})
-          #pp ''
-          #pp [locale, key, scope, options]
+          # pp [locale, key, scope, options]
 
           default_key = super(application.default_locale, key, scope, options)
+          return default_key if key.to_s.match(/^(support|i18n)/)
 
-          #pp default_key
+          if default_key.nil?
+            default_key = key.to_s.gsub('_', ' ').capitalize
+          end
 
           default_key ||= key
           if default_key.is_a?(String)
-            translated_key = default_key.gsub('%{', '{')
-            translated_key = application.language(locale.to_s).translate(translated_key, options, options)
+            translated_key = application.language(locale.to_s).translate(convert_to_tml(default_key), options, options)
           elsif default_key.is_a?(Hash)
             translated_key = {}
+
             default_key.each do |key, value|
-              value = value.gsub('%{', '{')
-              translated_key[key] =  application.language(locale.to_s).translate(value, options, options)
+              if value.is_a?(String)
+                value = application.language(locale.to_s).translate(convert_to_tml(value), options, options)
+              end
+              translated_key[key] = value
             end
           end
 
-          #pp translated_key
           translated_key
         end
 
