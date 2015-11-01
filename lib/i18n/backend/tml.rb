@@ -63,11 +63,8 @@ module I18n
           default_key = super(application.default_locale, key, scope, options)
           return default_key if key.to_s.match(/^(support|i18n)/)
 
-          if default_key.nil?
-            default_key = key.to_s.gsub('_', ' ').capitalize
-          end
+          default_key ||= key.to_s.split('.').last.gsub('_', ' ').capitalize
 
-          default_key ||= key
           if default_key.is_a?(String)
             translated_key = application.language(locale.to_s).translate(convert_to_tml(default_key), options, options)
           elsif default_key.is_a?(Hash)
