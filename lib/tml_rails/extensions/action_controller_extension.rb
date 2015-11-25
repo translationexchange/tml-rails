@@ -36,10 +36,8 @@ module TmlRails
       base.send(:include, TmlRails::ActionCommonMethods)
       base.send(:include, InstanceMethods)
 
-      if Tml.config.auto_init
-        base.before_filter  :tml_init
-        base.after_filter   :tml_reset
-      end
+      base.before_filter :tml_filter_init
+      base.after_filter :tml_filter_reset
 
       if defined? base.rescue_from
         base.rescue_from 'Tml::Exception' do |e|
@@ -65,14 +63,10 @@ module TmlRails
         self.class.name
       end
 
-      def tml_cookie_name
-        Tml::Utils.cookie_name(Tml.config.application[:key])
-      end
-
       # Returns data from cookie set by the agent
       def tml_cookie
         @tml_cookie ||= begin
-          cookie = cookies[tml_cookie_name]
+          cookie = cookies[Tml::Utils.cookie_name(Tml.config.application[:key])]
           if cookie.blank?
             {}
           else
@@ -147,12 +141,12 @@ module TmlRails
 
         @tml_started_at = Time.now
 
-        Tml.session.init({
-         :source      => tml_source,
-         :locale      => tml_locale,
-         :user        => tml_viewing_user,
-         :translator  => tml_translator
-        })
+        Tml.session.init(
+            :source => tml_source,
+            :locale => tml_locale,
+            :user => tml_viewing_user,
+            :translator => tml_translator
+        )
 
         if I18n.backend.class.name == 'I18n::Backend::Tml'
           if defined? I18n.enforce_available_locales
@@ -162,13 +156,21 @@ module TmlRails
         end
       end
 
+      def tml_filter_init
+        tml_init if Tml.config.auto_init
+      end
+
       def tml_reset
         return if Tml.config.disabled?
         @tml_finished_at = Time.now
-        tml_application.submit_missing_keys
+        Tml.session.application.submit_missing_keys if Tml.session.application
         Tml.session.reset
         Tml.cache.reset_version
         Tml.logger.info("Request took #{@tml_finished_at - @tml_started_at} mls") if @tml_started_at
+      end
+
+      def tml_filter_reset
+        tml_reset if Tml.config.auto_init
       end
 
     end

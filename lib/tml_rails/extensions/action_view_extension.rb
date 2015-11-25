@@ -34,6 +34,7 @@ module TmlRails
     extend ActiveSupport::Concern
 
     # Translates HTML block
+    # noinspection RubyArgCount
     def trh(tokens = {}, options = {}, &block)
       return '' unless block_given?
 
