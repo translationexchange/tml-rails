@@ -1,7 +1,7 @@
 #--
 # Copyright (c) 2015 Translation Exchange Inc.
 #
-# http://translationexchange.com
+# https://translationexchange.com
 #
 #  _______                  _       _   _             ______          _
 # |__   __|                | |     | | (_)           |  ____|        | |
@@ -37,8 +37,8 @@ Tml.configure do |config|
 
   if Rails.env.development?
     config.application = {
-        key:    '1671c1f1b90d1dad894e43b4edd0ed20eca453dfb77c889d098db3e140de018e',
-        token:  '23dc0805cf21d7c3342115455ab7355706c14922e207c5b38b641b16e7d38dc3',
+        key:    '8e152124c6a243d151c0ae3e038325a64e1899f07a298773f8cf231432575d3a',
+        token:  '053b656ad007d1d1ecdabd7fa8e277acfd3d1d796d0970f8d5c129fbd54ae111',
         host:   'http://localhost:3000'
     }
 
@@ -58,12 +58,12 @@ Tml.configure do |config|
     # If you are using Redis, use the following settings:
 
     config.cache = {
-      :enabled   => true,
+      :enabled   => false,
       :adapter   => 'redis',
       :host      => 'localhost',
       :port      => 6379,
       :db        => 0,
-      :namespace => '2dsfsd312312',
+      :namespace => '23dc0805',
     }
 
     # If you are using Memcache, use the following settings:
@@ -93,32 +93,19 @@ Tml.configure do |config|
     config.agent = {
       enabled:  true,
       type:     'agent',
-      version:  'stable',
-      domains:  {
-        api:        'http://localhost:3000',
-        tools:      'http://localhost:3002',
-        analytics:  'https://analyst.translationexchange.com'
-      }
+      host:     'http://localhost:8282/dist/agent.js'
     }
   else
 
-    # For now, let's test real API from staging
-
     config.application = {
-        host:   'https://api.translationexchange.com',
+        host:   'https://staging-api.translationexchange.com',
         key:    '4581b9ba74f26387ec3f74d269e6a6424bac68978e608c18b4d47e39f84875be',
         token:  'd6105e2f05548756b116d7eb8e07642422bc8510b580a4c1685037dfd8ca39b3'
     }
 
     config.agent = {
         enabled:  true,
-        type:     'agent',
-        version:  'stable',
-        domains:  {
-          api:        'https://api.translationexchange.com',
-          tools:      'https://translation-center.translationexchange.com',
-          analytics:  'https://analyst.translationexchange.com'
-        }
+        type:     'agent'
     }
 
   end
