@@ -9,7 +9,7 @@
   <%= tr("Add the following gem to your [bold: Gemfile]:")%>
 </p>
 
-<pre><code class="language-ruby">gem 'tml_client_sdk'</code></pre>
+<pre><code class="language-ruby">gem 'tml-rails'</code></pre>
 
 <p>
   <%= tr("Install the gem by running the bundle command:") %>
@@ -22,15 +22,13 @@
 <pre><code class="language-ruby">Tml.configure do |config|
   config.application = {
     :key => YOUR_APP_KEY,
-    :secret => YOUR_APP_SECRET
+    :token => YOUR_APP_TOKEN
   }
 
   config.cache = {
     :enabled  => true,
     :adapter  => 'memcache',
-    :host     => 'localhost:11211',
-    :version  => 2,
-    :timeout  => 3600
+    :host     => 'localhost:11211'
   }
 end</code></pre>
 
