@@ -47,6 +47,6 @@ Gem::Specification.new do |s|
   s.files = Dir['{app,config,lib}/**/*'] + %w(LICENSE Rakefile README.md)
   s.licenses = 'MIT-LICENSE'
 
-  s.add_dependency 'rails', '> 3.2'
+  s.add_dependency 'rails', '~> 4'
   s.add_dependency 'tml', '~> 5.2'
 end
