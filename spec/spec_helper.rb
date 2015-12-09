@@ -35,10 +35,6 @@ require 'simplecov'
 require 'coveralls'
 require 'json'
 
-SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
-    SimpleCov::Formatter::HTMLFormatter,
-    Coveralls::SimpleCov::Formatter
-]
 SimpleCov.start
 
 RSpec.configure do |config|
