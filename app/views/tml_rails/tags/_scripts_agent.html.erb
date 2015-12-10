@@ -1,6 +1,6 @@
 <script>
     <%
-        agent_host = Tml.config.agent[:host] || 'https://tools.translationexchange.com/agent/agent.min.js'
+        agent_host = Tml.config.agent[:host] || 'https://tools.translationexchange.com/agent/stable/agent.min.js'
         if Tml.config.agent[:cache]
           t = Time.now
           t = t - (t.to_i % Tml.config.agent[:cache].to_i).seconds
