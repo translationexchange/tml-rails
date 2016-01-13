@@ -8,9 +8,9 @@
         end
 
         agent_config = Tml.config.agent
-        agent_config[:lanuages] = []
+        agent_config[:languages] = []
         tml_application.languages.each do |lang|
-          agent_config[:lanuages] << {
+          agent_config[:languages] << {
               locale: lang.locale,
               english_name: lang.english_name,
               native_name: lang.native_name,
