@@ -7,11 +7,11 @@
     <%= tml_application.css %>
   </style>
 
-  <% if Tml.config.respond_to?(:agent) and Tml.config.agent and Tml.config.agent[:enabled] %>
-    <% if Tml.config.agent[:type].to_s == 'agent' %>
-        <%= render(:partial => '/tml_rails/tags/scripts_agent') %>
+  <% if Tml.config.respond_to?(:agent) and Tml.config.agent %>
+    <% if Tml.config.agent[:type].to_s == 'tools' %>
+      <%= render(:partial => '/tml_rails/tags/scripts_tools') %>
     <% else %>
-        <%= render(:partial => '/tml_rails/tags/scripts_tools') %>
+      <%= render(:partial => '/tml_rails/tags/scripts_agent') %>
     <% end %>
   <% end %>
 <% end %>

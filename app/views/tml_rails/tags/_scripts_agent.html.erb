@@ -6,6 +6,17 @@
           t = t - (t.to_i % Tml.config.agent[:cache].to_i).seconds
           agent_host += "?ts=#{t.to_i}"
         end
+
+        agent_config = Tml.config.agent
+        agent_config[:lanuages] = []
+        tml_application.languages.each do |lang|
+          agent_config[:lanuages] << {
+              locale: lang.locale,
+              english_name: lang.english_name,
+              native_name: lang.native_name,
+              flag_url: lang.flag_url
+           }
+        end
     %>
     (function() {
         var script = window.document.createElement('script');
@@ -14,7 +25,7 @@
         script.setAttribute('src',      '<%= agent_host %>');
         script.setAttribute('charset',  'UTF-8');
         script.onload = function() {
-            Trex.init("<%=tml_application.key%>", <%=Tml.config.agent.to_json.html_safe%>);
+            Trex.init("<%=tml_application.key%>", <%=agent_config.to_json.html_safe%>);
         };
         window.document.getElementsByTagName('head')[0].appendChild(script);
     })();
