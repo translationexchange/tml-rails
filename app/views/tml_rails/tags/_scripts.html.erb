@@ -1,12 +1,4 @@
 <% if Tml.config.enabled? %>
-  <style type="text/css">
-    .tml_fltr {<%=tml_style_attribute_tag('float', 'right')%> !important;}
-    .tml_fltl {<%=tml_style_attribute_tag('float', 'left')%> !important;}
-    .tml_txtr {<%=tml_style_attribute_tag('text-align', 'right')%> !important;}
-    .tml_txtl {<%=tml_style_attribute_tag('text-align', 'left')%> !important;}
-    <%= tml_application.css %>
-  </style>
-
   <% if Tml.config.respond_to?(:agent) and Tml.config.agent %>
     <% if Tml.config.agent[:type].to_s == 'tools' %>
       <%= render(:partial => '/tml_rails/tags/scripts_tools') %>
