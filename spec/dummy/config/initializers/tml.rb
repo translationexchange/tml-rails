@@ -98,7 +98,6 @@ Tml.configure do |config|
   else
 
     config.application = {
-        host:   'https://api.translationexchange.com',
         key:    '4581b9ba74f26387ec3f74d269e6a6424bac68978e608c18b4d47e39f84875be',
         token:  'd6105e2f05548756b116d7eb8e07642422bc8510b580a4c1685037dfd8ca39b3'
     }
