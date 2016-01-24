@@ -1,0 +1,21 @@
+<p>
+
+  <%= t(:hello) %>
+
+  <br>
+
+  <%= t('my.nested.key') %>
+
+  <br>
+
+  <%= t('Direct fallback onto tml') %>
+
+  <br>
+
+  <%= number_to_currency(1000, :unit => "R") %>
+
+  <br>
+
+  <%= number_to_human(500000, units: {unit: "ml", thousand: "lt"}) %>
+
+</p>

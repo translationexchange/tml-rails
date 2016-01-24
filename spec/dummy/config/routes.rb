@@ -20,5 +20,6 @@ Rails.application.routes.draw do
   post 'emails' => 'emails#index'
 
   get 'samples/language_cases' => 'samples#language_cases'
+  get 'samples/i18n' => 'samples#i18n'
 
 end

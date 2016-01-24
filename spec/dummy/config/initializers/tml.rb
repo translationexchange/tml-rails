@@ -95,6 +95,7 @@ Tml.configure do |config|
       type:     'agent',
       host:     'http://localhost:8282/dist/agent.js'
     }
+
   else
 
     config.application = {
