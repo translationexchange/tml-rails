@@ -60,9 +60,11 @@ module I18n
         def lookup(locale, key, scope = [], options = {})
           # pp [locale, key, scope, options]
 
-          default_key = super(application.default_locale, key, scope, options)
-          return default_key if key.to_s.match(/^(support|i18n)/)
+          if key.to_s.match(/^(support|i18n|number|human|distance)/)
+            return super(locale, key, scope, options)
+          end
 
+          default_key = super(application.default_locale, key, scope, options)
           default_key ||= key.to_s.split('.').last.gsub('_', ' ').capitalize
 
           if default_key.is_a?(String)
