@@ -98,7 +98,9 @@ tr("Invite", "An invitation you received from your friend")</code></pre>
   <pre class="code"><code class="language-ruby">tr("Welcome to {city}", :city => tr("Los Angeles"))</code></pre>
 
   <div class="content">
-    <%=tr("Welcome to {city}", :city => tr("Los Angeles")) %>
+    <%=tr('Welcome to {city}', :city => tr('Los Angeles')) %>
+    <br>
+    <%=tr('Welcome to {city}', :city => tr('Moscow')) %>
   </div>
 </div>
 
@@ -194,7 +196,11 @@ tr("Invite", "An invitation you received from your friend")</code></pre>
   <div class="title"><%=tr('example')%></div>
   <pre class="code"><code class="language-ruby">tr("You have {count || one: message, other: messages}", :count => 1)</code></pre>
   <div class="content">
-    <%=tr("You have {count || one: message, other: messages}", :count => 1) %>
+    <%=tr('You have {count || one: message, other: messages}', :count => 1) %>
+    <br>
+    <%=tr('You have {count || one: message, other: messages}', :count => 2) %>
+    <br>
+    <%=tr('You have {count || one: message, other: messages}', :count => 10) %>
   </div>
 </div>
 
@@ -208,7 +214,11 @@ tr("Invite", "An invitation you received from your friend")</code></pre>
   <div class="title"><%=tr('example')%></div>
   <pre class="code"><code class="language-ruby">tr("You have {count || message, messages}", :count => 2)</code></pre>
   <div class="content">
-    <%=tr("You have {count || message, messages}", :count => 2) %>
+    <%=tr('You have {count || message, messages}', :count => 1) %>
+    <br>
+    <%=tr('You have {count || message, messages}', :count => 2) %>
+    <br>
+    <%=tr('You have {count || message, messages}', :count => 10) %>
   </div>
 </div>
 
@@ -217,7 +227,11 @@ tr("Invite", "An invitation you received from your friend")</code></pre>
   <div class="title"><%=tr('example')%></div>
   <pre class="code"><code class="language-ruby">tr("You have {count || message}", :count => 5)</code></pre>
   <div class="content">
-    <%=tr("You have {count || message}", :count => 5) %>
+    <%=tr('You have {count || message}', :count => 1) %>
+    <br>
+    <%=tr('You have {count || message}', :count => 2) %>
+    <br>
+    <%=tr('You have {count || message}', :count => 10) %>
   </div>
 </div>
 
