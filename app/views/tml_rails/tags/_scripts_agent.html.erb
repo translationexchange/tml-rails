@@ -8,6 +8,8 @@
         end
 
         agent_config = Tml.config.agent
+        agent_config[:css] = tml_application.css
+        agent_config[:sdk] = Tml.respond_to?(:full_version) ? Tml.full_version : Tml::VERSION
         agent_config[:languages] = []
         tml_application.languages.each do |lang|
           agent_config[:languages] << {
@@ -17,7 +19,6 @@
               flag_url: lang.flag_url
            }
         end
-        agent_config[:css] = tml_application.css
     %>
     (function() {
         var script = window.document.createElement('script');
