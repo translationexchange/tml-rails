@@ -1,9 +1,0 @@
-<% if Tml.config.enabled? %>
-  <% if Tml.config.respond_to?(:agent) and Tml.config.agent %>
-    <% if Tml.config.agent[:type].to_s == 'tools' %>
-      <%= render(:partial => '/tml_rails/tags/scripts_tools') %>
-    <% else %>
-      <%= render(:partial => '/tml_rails/tags/scripts_agent') %>
-    <% end %>
-  <% end %>
-<% end %>

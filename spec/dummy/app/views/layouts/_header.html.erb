@@ -1,58 +1,32 @@
 <%= tml_block(:source => 'navigation') do %>
-<div class="navbar navbar-fixed-top">
-  <div class="navbar-inner">
-    <div class="container">
-      <a class="brand" href="/home">
-        <span class="h3"><%= tr("Tml For Ruby on Rails") %></span>
-      </a>
+  <div class="navbar navbar-fixed-top">
+    <div class="navbar-inner">
+      <div class="container">
+        <a class="brand" href="/home">
+          <span class="h3"><%= tr("Tml For Ruby on Rails") %></span>
+        </a>
 
-       <ul class="nav">
-        <li class="<%= "active" if controller.controller_name.to_s == 'docs' and controller.action_name.to_s == 'index' %>"><%=link_to(tr("Documentation & Samples"), :controller => :docs, :action => :index) %></li>
-        <li class="<%= "active" if controller.controller_name.to_s == 'docs' and controller.action_name.to_s == 'tml' %>"><%=link_to(tr("TML Interactive Console"), :controller => :docs, :action => :tml) %></li>
-      </ul>
+        <ul class="nav">
+          <li class="<%= "active" if controller.controller_name.to_s == 'docs' and controller.action_name.to_s == 'index' %>"><%= link_to(tr("Documentation & Samples"), :controller => :docs, :action => :index) %></li>
+          <li class="<%= "active" if controller.controller_name.to_s == 'docs' and controller.action_name.to_s == 'tml' %>"><%= link_to(tr("TML Interactive Console"), :controller => :docs, :action => :tml) %></li>
+        </ul>
 
-      <ul class="nav pull-right">
-        <%= tml_language_selector_tag(:popup, :language => :native, :flags => true, :toggle => true, :element => 'li') %>
-
-        <% if tml_current_translator %>
-          <li class="dropdown">
-            <a id="user_menu_trigger" href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <%=image_tag(tml_current_translator.image_url, :style=>"max-width:16px;max-height:16px;padding:1px;border:1px solid #888;") %> &nbsp;
-              <%=tml_current_translator.name %>
-              <b class="caret"></b>
-            </a>
-            <ul class="dropdown-menu pas">
-              <li role="presentation" class="text-center">
-                <%=image_tag(tml_current_translator.image_url, :style=>"width:80px;height:80px;border:1px solid #eee", :class=>"img-circle") %>
-              </li>
-              <li class="divider"></li>
-              <li><%= link_to(tr("Shortcuts"), "#", :onClick => "Tml.Utils.openShortcuts()") %></li>
-              <% if Tml.cache.enabled? and not Tml.cache.read_only? %>
-                <li><%= link_to(tr("Upgrade Cache ({num})", :num => Tml.cache.version || 0), :controller => :home, :action => :upgrade_cache) %></li>
-              <% end %>
-
-              <li class="divider"></li>
-              <li><%=link_to(tr("Logout"), "#", :onClick => "Tml.Utils.logout();")%></li>
-            </ul>
-          </li>
-        <% else %>
-          <li><%=link_to(tr("Login"), "#", :onClick => "Tml.Utils.login()")%></li>
-        <% end %>
-      </ul>
-
+        <div class="navbar-right navbar-text pull-right">
+          <%= tml_language_selector_tag(:popup) %>
+        </div>
 
       </div>
     </div>
   </div>
 
   <div class="container">
-    <%=render :partial => "/layouts/flashes" %>
+    <%= render :partial => "/layouts/flashes" %>
   </div>
 
 <% end %>
 
 <script>
-  $(function(){
+  $(function () {
     $('#user_menu_trigger').dropdown();
   });
 </script>

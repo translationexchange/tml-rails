@@ -93,30 +93,50 @@ module TmlRails
       type ||= :default
       type = :dropdown if type == :select
 
-      unless [:bootstrap, :default, :inline, :dropdown, :popup, :flags].include?(type.to_sym)
-        return "Unsupported language selector #{type}"
-      end
-
-      render(:partial => "/tml_rails/tags/language_selector_#{type}", :locals => {:opts => opts})
-    end
-
-    # Returns language strip UI
-    def tml_language_strip_tag(opts = {})
-      opts[:flag] = opts[:flag].nil? ? false : opts[:flag]
-      opts[:name] = opts[:name].nil? ? :native : opts[:name] 
-      opts[:linked] = opts[:linked].nil? ? true : opts[:linked] 
-      opts[:javascript] = opts[:javascript].nil? ? false : opts[:javascript] 
-
-      render(:partial => '/tml_rails/tags/language_strip', :locals => {:opts => opts})
-    end
-
-    # Translates flashes
-    def tml_flashes_tag(opts = {})
-      render(:partial => '/tml_rails/tags/flashes', :locals => {:opts => opts})
+      opts = opts.collect{|key, value| "data-tml-#{key}='#{value}'"}.join(' ')
+      "<div data-tml-language-selector='#{type}' #{opts}></div>".html_safe
     end
 
     def tml_scripts_tag(opts = {})
-      render(:partial => '/tml_rails/tags/scripts', :locals => {:opts => opts})
+      agent_config = Tml.config.respond_to?(:agent) ? Tml.config.agent : {}
+
+      agent_host = agent_config[:host] || 'https://tools.translationexchange.com/agent/stable/agent.min.js'
+      if agent_config[:cache]
+        t = Time.now
+        t = t - (t.to_i % agent_config[:cache].to_i).seconds
+        agent_host += "?ts=#{t.to_i}"
+      end
+
+      agent_config[:locale] = tml_current_locale
+      agent_config[:source] = tml_current_source
+      agent_config[:css] = tml_application.css
+      agent_config[:sdk] = Tml.respond_to?(:full_version) ? Tml.full_version : Tml::VERSION
+      agent_config[:languages] = []
+
+      tml_application.languages.each do |lang|
+        agent_config[:languages] << {
+            locale: lang.locale,
+            english_name: lang.english_name,
+            native_name: lang.native_name,
+            flag_url: lang.flag_url
+        }
+      end
+
+      html = []
+      html << '<script>'
+      html << '(function() {'
+      html << "var script = window.document.createElement('script');"
+      html << "script.setAttribute('id', 'tml-agent');"
+      html << "script.setAttribute('type', 'application/javascript');"
+      html << "script.setAttribute('src', '#{agent_host}');"
+      html << "script.setAttribute('charset', 'UTF-8');"
+      html << 'script.onload = function() {'
+      html << "   Trex.init('#{tml_application.key}', #{agent_config.to_json.html_safe});"
+      html << '};'
+      html << "window.document.getElementsByTagName('head')[0].appendChild(script);"
+      html << '})();'
+      html << '</script>'
+      html.join.html_safe
     end
 
     def tml_select_month(date, options = {}, html_options = {})
