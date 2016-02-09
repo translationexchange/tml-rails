@@ -39,7 +39,7 @@ Tml.configure do |config|
     config.application = {
         key:    '8e152124c6a243d151c0ae3e038325a64e1899f07a298773f8cf231432575d3a',
         token:  '053b656ad007d1d1ecdabd7fa8e277acfd3d1d796d0970f8d5c129fbd54ae111',
-        host:   'http://localhost:3000'
+        #host:   'http://localhost:3000'
     }
 
     # config.cache = {
@@ -90,11 +90,9 @@ Tml.configure do |config|
     #    :type     => :rails
     #}
 
-    config.agent = {
-      enabled:  true,
-      type:     'agent',
-      host:     'http://localhost:8282/dist/agent.js'
-    }
+    #config.agent = {
+      #host:     'http://localhost:8282/dist/agent.js'
+    #}
 
   else
 
