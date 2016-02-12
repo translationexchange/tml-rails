@@ -98,8 +98,27 @@ module TmlRails
     end
 
     def tml_scripts_tag(opts = {})
-      agent_config = Tml.config.respond_to?(:agent) ? Tml.config.agent : {}
+      if opts[:js]
+        js_opts = opts[:js].is_a?(Hash) ? opts[:js] : {}
+        js_host = js_opts[:host] || 'https://tools.translationexchange.com/tml/stable/tml.min.js'
+        html = []
+        html << "<script src='#{js_host}'></script>"
+        html << '<script>'
+        html << 'tml.init({'
+        html << "    key:    '#{tml_application.key}', "
+        html << "    token:  '#{tml_application.token}', "
+        html << "    debug: #{js_opts[:debug] || false},"
+        if js_opts[:onload]
+          html << '    onLoad: function() {'
+          html << "       #{js_opts[:onload]}"
+          html << '    }'
+        end
+        html << '});'
+        html << '</script>'
+        return html.join.html_safe
+      end
 
+      agent_config = Tml.config.respond_to?(:agent) ? Tml.config.agent : {}
       agent_host = agent_config[:host] || 'https://tools.translationexchange.com/agent/stable/agent.min.js'
       if agent_config[:cache]
         t = Time.now
