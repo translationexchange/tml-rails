@@ -37,8 +37,8 @@ Tml.configure do |config|
 
   if Rails.env.development?
     config.application = {
-        key:    '8e152124c6a243d151c0ae3e038325a64e1899f07a298773f8cf231432575d3a',
-        token:  '053b656ad007d1d1ecdabd7fa8e277acfd3d1d796d0970f8d5c129fbd54ae111',
+        key:    'c1e3c4d28f1abad029836554004f6aa0988eafa58e2fb376cca7a5230dabdf99',
+        token:  '380e7e4c45578dcd51d637169a6bb1985c7ad8c3600f2a88f5c8dfcdb5bbc9a5',
         host:   'http://localhost:3000'
     }
 
