@@ -134,6 +134,10 @@ module TmlRails
         end
       end
 
+      def tml_access_token
+        tml_cookie[:oauth] ? tml_cookie[:oauth][:token] : nil
+      end
+
       def tml_init
         return if Tml.config.disabled?
 
@@ -145,7 +149,8 @@ module TmlRails
             :source => tml_source,
             :locale => tml_locale,
             :user => tml_viewing_user,
-            :translator => tml_translator
+            :translator => tml_translator,
+            :access_token => tml_access_token
         )
 
         if I18n.backend.class.name == 'I18n::Backend::Tml'
