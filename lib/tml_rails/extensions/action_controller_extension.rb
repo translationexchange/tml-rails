@@ -32,6 +32,7 @@
 module TmlRails
   module ActionControllerExtension
 
+    # add functionality upon inclusion
     def self.included(base)
       base.send(:include, TmlRails::ActionCommonMethods)
       base.send(:include, InstanceMethods)
@@ -172,6 +173,7 @@ module TmlRails
         Tml.session.reset
         Tml.cache.reset_version
         Tml.logger.info("Request took #{@tml_finished_at - @tml_started_at} mls") if @tml_started_at
+        Tml.logger.info('-----------------------------------------------------------')
       end
 
       def tml_filter_reset
