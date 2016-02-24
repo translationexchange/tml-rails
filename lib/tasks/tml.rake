@@ -46,29 +46,43 @@ namespace :tml do
 
   namespace :cache do
 
-    desc 'upgrades shared translation cache'
-    task :upgrade => :environment do
-      Tml.cache.upgrade_version
+    namespace :shared do
+      ##########################################
+      ## Shared Cache Management
+      ##########################################
+
+      desc 'upgrades shared translation cache'
+      task :upgrade => :environment do
+        Tml.cache.upgrade_version
+      end
+
+      desc 'warms up dynamic cache'
+      task :warmup => :environment do
+        Tml.cache.warmup
+      end
     end
 
-    desc 'warms up dynamic cache'
-    task :warmup => :environment do
-      Tml.cache.warmup
-    end
+    namespace :local do
+      ##########################################
+      ## Local Cache Management
+      ##########################################
 
-    desc 'generates local file cache'
-    task :generate => :environment do
-      Tml::Generators::File.new.run
-    end
+      desc 'downloads local file cache'
+      task :download => :environment do
+        Tml.cache.download
+      end
 
-    desc 'rolls back to the previous version'
-    task :rollback => :environment do
-      Tml::Generators::File.new.rollback
-    end
+      desc 'rolls back to the previous version'
+      task :rollback => :environment do
+        raise "Not yet supported"
+        # Tml.cache.rollback
+      end
 
-    desc 'rolls up to the next version'
-    task :rollup => :environment do
-      Tml::Generators::File.new.rollup
+      desc 'rolls up to the next version'
+      task :rollup => :environment do
+        raise "Not yet supported"
+        # Tml.cache.rollup
+      end
     end
 
   end
