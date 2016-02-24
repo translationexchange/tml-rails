@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2015 Translation Exchange Inc. http://translationexchange.com
+# Copyright (c) 2016 Translation Exchange Inc. http://translationexchange.com
 #
 #  _______                  _       _   _             ______          _
 # |__   __|                | |     | | (_)           |  ____|        | |
@@ -49,6 +49,11 @@ namespace :tml do
     desc 'upgrades shared translation cache'
     task :upgrade => :environment do
       Tml.cache.upgrade_version
+    end
+
+    desc 'warms up dynamic cache'
+    task :warmup => :environment do
+      Tml.cache.warmup
     end
 
     desc 'generates local file cache'

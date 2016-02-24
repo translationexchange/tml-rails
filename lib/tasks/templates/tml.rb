@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2015 Translation Exchange Inc.
+# Copyright (c) 2016 Translation Exchange Inc.
 #
 # http://translationexchange.com
 #
@@ -35,15 +35,14 @@ I18n.backend = I18n::Backend::Tml.new
 
 Tml.configure do |config|
   config.application = {
-      token: 'YOUR TOKEN'
+      key: 'YOUR KEY'
   }
 
   # If you are using Rails.cache, use the following settings:
 
   config.cache = {
       :enabled    => true,
-      :adapter    => :rails,
-      :version    => 1
+      :adapter    => :rails
   }
 
   # If you are using File based pre-generated cache, use the following settings:

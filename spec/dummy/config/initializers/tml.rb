@@ -38,7 +38,6 @@ Tml.configure do |config|
   if Rails.env.development?
     config.application = {
         key:    'c1e3c4d28f1abad029836554004f6aa0988eafa58e2fb376cca7a5230dabdf99',
-        token:  '380e7e4c45578dcd51d637169a6bb1985c7ad8c3600f2a88f5c8dfcdb5bbc9a5',
         host:   'http://localhost:3000'
     }
 
@@ -57,23 +56,21 @@ Tml.configure do |config|
 
     # If you are using Redis, use the following settings:
 
-    config.cache = {
-      :enabled   => false,
-      :adapter   => 'redis',
-      :host      => 'localhost',
-      :port      => 6379,
-      :db        => 0,
-      :namespace => '23dc0805',
-    }
+    # config.cache = {
+    #   :enabled   => true,
+    #   :adapter   => 'redis',
+    #   :host      => 'localhost',
+    #   :port      => 6379,
+    #   :version_check_interval => 30
+    # }
 
     # If you are using Memcache, use the following settings:
 
-    # config.cache = {
-    #  :enabled    => true,
-    #  :adapter    => 'memcache',
-    #  :host       => 'localhost:11211',
-    #  :namespace  => '2dsfsd312312',
-    # }
+    config.cache = {
+     :enabled    => true,
+     :adapter    => 'memcache',
+     :host       => 'localhost:11211'
+    }
 
     # For debugging, uncomment the following lines:
 
@@ -91,16 +88,13 @@ Tml.configure do |config|
     #}
 
     config.agent = {
-      enabled:  true,
-      type:     'agent',
       host:     'http://localhost:8282/dist/agent.js'
     }
 
   else
 
     config.application = {
-        key:    '4581b9ba74f26387ec3f74d269e6a6424bac68978e608c18b4d47e39f84875be',
-        token:  'd6105e2f05548756b116d7eb8e07642422bc8510b580a4c1685037dfd8ca39b3'
+        key:    '4581b9ba74f26387ec3f74d269e6a6424bac68978e608c18b4d47e39f84875be'
     }
 
   end

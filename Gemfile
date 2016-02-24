@@ -49,7 +49,7 @@ gem 'rdoc', '~> 4.1'
 
 # gem 'tml', '~> 5.1'
 # gem 'tml', :git => 'git://github.com/translationexchange/tml-ruby.git', :branch => :develop
-# gem 'tml', :path => '../tml-ruby'
+gem 'tml', :path => '../tml-ruby'
 
 gem 'coveralls', '~> 0.7', require: false
 
