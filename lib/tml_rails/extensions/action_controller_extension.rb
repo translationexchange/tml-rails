@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2015 Translation Exchange Inc. http://translationexchange.com
+# Copyright (c) 2016 Translation Exchange Inc. http://translationexchange.com
 #
 #  _______                  _       _   _             ______          _
 # |__   __|                | |     | | (_)           |  ____|        | |
@@ -32,6 +32,7 @@
 module TmlRails
   module ActionControllerExtension
 
+    # add functionality upon inclusion
     def self.included(base)
       base.send(:include, TmlRails::ActionCommonMethods)
       base.send(:include, InstanceMethods)
@@ -134,6 +135,10 @@ module TmlRails
         end
       end
 
+      def tml_access_token
+        tml_cookie[:oauth] ? tml_cookie[:oauth][:token] : nil
+      end
+
       def tml_init
         return if Tml.config.disabled?
 
@@ -145,7 +150,8 @@ module TmlRails
             :source => tml_source,
             :locale => tml_locale,
             :user => tml_viewing_user,
-            :translator => tml_translator
+            :translator => tml_translator,
+            :access_token => tml_access_token
         )
 
         if I18n.backend.class.name == 'I18n::Backend::Tml'
@@ -167,6 +173,7 @@ module TmlRails
         Tml.session.reset
         Tml.cache.reset_version
         Tml.logger.info("Request took #{@tml_finished_at - @tml_started_at} mls") if @tml_started_at
+        Tml.logger.info('-----------------------------------------------------------')
       end
 
       def tml_filter_reset
