@@ -98,6 +98,8 @@ module TmlRails
     end
 
     def tml_scripts_tag(opts = {})
+      return '' unless Tml.config.enabled?
+
       if opts[:js]
         js_opts = opts[:js].is_a?(Hash) ? opts[:js] : {}
         js_host = js_opts[:host] || 'https://tools.translationexchange.com/tml/stable/tml.min.js'
