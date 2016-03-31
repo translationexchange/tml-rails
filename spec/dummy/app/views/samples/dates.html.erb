@@ -1,0 +1,31 @@
+<p>
+
+
+  <%= Date.today.tr %>
+
+  <br>
+
+  <%= Date.today.tr('%B %d, %Y') %>
+
+  <br>
+
+  <%= 'Hello World'.translate %>
+
+  <br>
+
+  <%= ['Apples', 'Oranges'].translate.join(', ').html_safe %>
+
+  <br>
+
+  <%= ['Apples', 'Oranges'].translate_and_join.html_safe %>
+
+  <br>
+
+  <%= ['Apples', 'Oranges', 'Bananas'].translate_sentence.html_safe %>
+
+  <br>
+
+  <%= ['Apples', 'Oranges', 'Bananas'].tro %>
+
+</p>
+

@@ -41,6 +41,10 @@ Tml.configure do |config|
         host:   'http://localhost:3000'
     }
 
+    config.agent = {
+        host:     'http://localhost:8282/dist/agent.js'
+    }
+
     # config.cache = {
     #     :enabled    => true,
     #     :adapter    => 'file',
@@ -87,9 +91,6 @@ Tml.configure do |config|
     #    :type     => :rails
     #}
 
-    config.agent = {
-      host:     'http://localhost:8282/dist/agent.js'
-    }
 
   else
 
