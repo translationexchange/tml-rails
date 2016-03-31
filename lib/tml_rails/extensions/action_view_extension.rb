@@ -191,7 +191,7 @@ module TmlRails
     def tml_when_string_tag(time, opts = {})
       elapsed_seconds = Time.now - time
       if elapsed_seconds < 0
-        tr('In the future, Marty!', 'Time reference')
+        tr('in {num || second}', 'Time reference', {num: elapsed_seconds * -1})
       elsif elapsed_seconds < 2.minutes
         tr('a moment ago', 'Time reference')
       elsif elapsed_seconds < 55.minutes
