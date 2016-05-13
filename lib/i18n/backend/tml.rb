@@ -64,17 +64,25 @@ module I18n
             return super(locale, key, scope, options)
           end
 
+          # if language is not available, return default value
+          target_language = application.language(locale.to_s)
+          target_language ||= application.language(application.default_locale)
+
+          unless target_language
+            return super(locale, key, scope, options)
+          end
+
           default_key = super(application.default_locale, key, scope, options)
           default_key ||= key.to_s.split('.').last.gsub('_', ' ').capitalize
 
           if default_key.is_a?(String)
-            translated_key = application.language(locale.to_s).translate(convert_to_tml(default_key), options, options)
+            translated_key = target_language.translate(convert_to_tml(default_key), options, options)
           elsif default_key.is_a?(Hash)
             translated_key = {}
 
             default_key.each do |key, value|
               if value.is_a?(String)
-                value = application.language(locale.to_s).translate(convert_to_tml(value), options, options)
+                value = target_language.translate(convert_to_tml(value), options, options)
               end
               translated_key[key] = value
             end
