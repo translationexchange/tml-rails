@@ -107,6 +107,10 @@ module TmlRails
       tml_session.application
     end
 
+    def tml_postoffice
+      Tml.postoffice
+    end
+
     def tml_current_user
       tml_session.current_user
     end
