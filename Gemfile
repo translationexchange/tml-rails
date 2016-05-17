@@ -47,7 +47,7 @@ gem 'rails', '~> 4.2'
 gem 'rake', '~> 10.3'
 gem 'rdoc', '~> 4.1'
 
-gem 'tml', '~> 5.4.5'
+gem 'tml', '~> 5.5'
 # gem 'tml', :git => 'git://github.com/translationexchange/tml-ruby.git', :branch => :develop
 # gem 'tml', :path => '../tml-ruby'
 
