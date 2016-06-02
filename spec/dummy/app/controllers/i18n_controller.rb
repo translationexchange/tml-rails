@@ -21,6 +21,10 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
-class SamplesController < ApplicationController
+class I18nController < ApplicationController
+
+  def index
+
+  end
 
 end

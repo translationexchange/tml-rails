@@ -252,7 +252,7 @@ module TmlRails
 
     # provides the locale of the language
     def tml_lang_attribute_tag(lang = tml_current_language)
-      return "lang='en-US'" if Tml.config.disabled?
+      return "lang='en'" if Tml.config.disabled?
       "lang='#{lang.locale}'".html_safe
     end
 
