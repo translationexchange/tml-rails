@@ -73,7 +73,9 @@ Tml.configure do |config|
     config.cache = {
      :enabled    => true,
      :adapter    => 'memcache',
-     :host       => 'localhost:11211'
+     :host       => 'localhost:11211',
+     :namespace  => 'c1e3c4d2'
+     # :version    => '20160223182118'
     }
 
     # For debugging, uncomment the following lines:

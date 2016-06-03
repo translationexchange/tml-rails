@@ -20,8 +20,8 @@ Rails.application.routes.draw do
   post 'emails' => 'emails#index'
 
   get 'samples/language_cases' => 'samples#language_cases'
-  get 'samples/i18n' => 'samples#i18n'
   get 'samples/dates' => 'samples#dates'
   get 'samples/ignored' => 'samples#ignored'
 
+  get 'i18n' => 'i18n#index'
 end
