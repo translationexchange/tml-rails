@@ -51,14 +51,14 @@ namespace :tml do
       ## Shared Cache Management
       ##########################################
 
-      desc 'upgrades shared translation cache'
+      desc 'Upgrades shared translation cache'
       task :upgrade => :environment do
         Tml.cache.upgrade_version
       end
 
-      desc 'warms up dynamic cache'
+      desc 'Warms up dynamic cache'
       task :warmup => :environment do
-        Tml.cache.warmup
+        Tml.cache.warmup(ENV['version'], ENV['path'])
       end
     end
 
@@ -67,20 +67,22 @@ namespace :tml do
       ## Local Cache Management
       ##########################################
 
-      desc 'downloads local file cache'
+      desc 'Downloads local file cache'
       task :download => :environment do
-        Tml.cache.download
+        cache_path = ENV['path'] || Tml.cache.default_cache_path
+        version = ENV['version']
+        Tml.cache.download(cache_path, version)
       end
 
-      desc 'rolls back to the previous version'
+      desc 'Rolls back to the previous version'
       task :rollback => :environment do
-        raise "Not yet supported"
+        raise 'Not yet supported'
         # Tml.cache.rollback
       end
 
-      desc 'rolls up to the next version'
+      desc 'Rolls up to the next version'
       task :rollup => :environment do
-        raise "Not yet supported"
+        raise 'Not yet supported'
         # Tml.cache.rollup
       end
     end
