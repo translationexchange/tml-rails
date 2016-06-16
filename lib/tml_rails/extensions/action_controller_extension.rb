@@ -161,7 +161,7 @@ module TmlRails
         end
         I18n.locale = Tml.session.current_language.locale
 
-        if Tml.session.current_translator.inline?
+        if tml_current_translator and tml_current_translator.inline?
           I18n.reload!
         end
       end
