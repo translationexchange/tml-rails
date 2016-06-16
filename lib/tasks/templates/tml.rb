@@ -31,64 +31,64 @@
 # WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 #++
 
+# If you are already using I18n or want to use it in parallel, set I18n::Backend::Tml as the backend
 I18n.backend = I18n::Backend::Tml.new
 
 Tml.configure do |config|
+
   config.application = {
-      key: 'YOUR KEY'
+      key: 'YOUR_APPLICATION_KEY'
   }
 
   # If you are using Rails.cache, use the following settings:
 
   config.cache = {
-      :enabled    => true,
-      :adapter    => :rails
+      enabled: true,
+      adapter: :rails
   }
 
   # If you are using File based pre-generated cache, use the following settings:
 
   #config.cache = {
-  #    :enabled    => true,
-  #    :adapter    => 'file',
-  #    :path       => 'config/tml',
-  #    :version    => 'current',
-  #    :segmented  => false
+  #     enabled:   true,
+  #     adapter:   'file',
+  #     path:      File.join(Rails.root, :config, :tml),
+  #     version:   'current',
+  #     segmented: false
   #}
 
   # If you are using Redis, use the following settings:
 
   #config.cache = {
-  #    :enabled   => true,
-  #    :adapter   => 'redis',
-  #    :host      => 'localhost',
-  #    :port      => 6379,
-  #    :db        => 0,
-  #    :namespace => 'translations',
+  #     enabled:    true,
+  #     adapter:    'redis',
+  #     host:       'localhost',
+  #     port:       6379,
+  #     namespace:  'translations',
   #}
 
   # If you are using Memcache, use the following settings:
 
   #config.cache = {
-  #  :enabled    => true,
-  #  :adapter    => 'memcache',
-  #  :host       => 'localhost:11211',
-  #  :version    => 1,
-  #  :namespace  => 'translations',
+  #     enabled:    true,
+  #     adapter:    'memcache',
+  #     host:       'localhost:11211',
+  #     namespace:  'translations',
   #}
 
   # For debugging, uncomment the following lines:
 
   #config.logger  = {
-  #    :enabled  => true,
-  #    :path     => "#{Rails.root}/log/tml.log",
-  #    :level    => 'debug'
+  #     enabled:    true,
+  #     path:       File.join(Rails.root, :log, 'tml.log'),
+  #     level:      'debug'
   #}
 
   # To use Rails logger instead, use:
 
   #config.logger  = {
-  #    :enabled  => true,
-  #    :type     => :rails
+  #    enabled:     true,
+  #    type:        :rails
   #}
 
 end

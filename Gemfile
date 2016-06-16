@@ -70,3 +70,5 @@ end
 gem 'redis-store'
 gem 'redis-rails'
 gem 'redis'
+
+gem 'rails-i18n', '~> 4.0.0'

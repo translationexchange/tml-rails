@@ -6,3 +6,7 @@ en:
   my:
     nested:
       key: "This is a nested key"
+
+  messages:
+    confirmed: You are confirmed
+    not_confirmed: You are not confirmed
