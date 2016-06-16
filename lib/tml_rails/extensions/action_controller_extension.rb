@@ -98,7 +98,9 @@ module TmlRails
               locale = tml_cookie[:locale]
               if locale.nil?
                 if Tml.config.locale[:subdomain]
-                  locale = request.subdomain
+                  locale = request.subdomains.first
+                elsif Tml.config.locale[:tld]
+                  locale = request.host.split('.').last
                 else
                   locale = tml_browser_accepted_locales
                 end
@@ -154,11 +156,13 @@ module TmlRails
             :access_token => tml_access_token
         )
 
-        if I18n.backend.class.name == 'I18n::Backend::Tml'
-          if defined? I18n.enforce_available_locales
-            I18n.enforce_available_locales = false
-          end
-          I18n.locale = Tml.session.current_language.locale
+        if defined? I18n.enforce_available_locales
+          I18n.enforce_available_locales = false
+        end
+        I18n.locale = Tml.session.current_language.locale
+
+        if Tml.session.current_translator.inline?
+          I18n.reload!
         end
       end
 
