@@ -40,55 +40,62 @@ module I18n
       module Implementation
         include Base, Flatten
 
+        # Returns current application
         def application
           ::Tml.session.application
         end
 
+        # List of all application available locales
         def available_locales
           application.locales
         end
 
-        def translate(locale, key, options = {})
-          translation = super(locale, key, options)
-          translation.is_a?(String) ? translation.html_safe : translation
+        # we will capture interpolation here - so we can process it ourselves using TML
+        def interpolate(locale, string, values = {})
+          string
         end
 
+        # TODO: this should be configurable. Our SDK supports both notations.
         def convert_to_tml(str)
           str.gsub('%{', '{')
         end
 
-        def lookup(locale, key, scope = [], options = {})
-          # pp [locale, key, scope, options]
-
-          if key.to_s.match(/^(support|i18n|number|human|distance)/)
-            return super(locale, key, scope, options)
-          end
-
-          # if language is not available, return default value
-          target_language = application.language(locale.to_s)
-          target_language ||= application.language(application.default_locale)
-
-          unless target_language
-            return super(locale, key, scope, options)
-          end
-
-          default_key = super(application.default_locale, key, scope, options)
-          default_key ||= key.to_s.split('.').last.gsub('_', ' ').capitalize
-
-          if default_key.is_a?(String)
-            translated_key = target_language.translate(convert_to_tml(default_key), options, options)
-          elsif default_key.is_a?(Hash)
-            translated_key = {}
-
-            default_key.each do |key, value|
-              if value.is_a?(String)
-                value = target_language.translate(convert_to_tml(value), options, options)
-              end
-              translated_key[key] = value
+        # Translates a hash of values
+        def translate_hash(target_language, hash, options)
+          hash.each do |key, value|
+            if value.is_a?(String)
+              hash[key] = target_language.translate(convert_to_tml(value), options, options)
+            elsif value.is_a?(Hash)
+              translate_hash(target_language, value, options)
             end
           end
 
-          translated_key
+          hash
+        end
+
+        # Translates a string
+        def translate(locale, key, options = {})
+          # TODO: we don't support this yet - but we should
+          return super if I18n.locale != locale
+
+          # look up the translation in default locale
+          translation = super(application.default_locale, key, options)
+
+          # pp [locale, key, options, translation]
+
+          # if no translation is available, ignore it
+          return translation if translation.nil? or translation == ''
+
+          # if language is not available, return default value
+          target_language = application.language(locale.to_s)
+
+          if translation.is_a?(String)
+            translation = target_language.translate(convert_to_tml(translation), options, options)
+          elsif translation.is_a?(Hash)
+            translation = translate_hash(target_language, translation, options)
+          end
+
+          translation
         end
 
       end
