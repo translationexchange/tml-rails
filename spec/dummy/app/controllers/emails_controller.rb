@@ -24,28 +24,45 @@
 class EmailsController < ApplicationController
 
   def index
-    begin
-      @template_options = tml_application.postoffice.templates.collect{|t| t['keyword']}
-    rescue Exception => ex
-      @template_options = ['None found']
+    emails
+  end
+
+  def deliver
+    if params[:email] == 'welcome_email'
+      UserMailer.welcome_email(User.first).deliver_later
     end
 
-    begin
-      @channel_options = tml_application.postoffice.channels.collect{|t| t['keyword']}
-    rescue Exception => ex
-      @channel_options = ['None found']
-    end
+    trfn('Email has been sent')
+    redirect_to(:action => :index)
+  end
 
-    if request.post?
-      tokens = params[:tokens].blank? ? {} : JSON.parse(params[:tokens])
-      params[:to].split(',').each do |to|
-        tml_application.postoffice.deliver(params[:template], to, tokens, {
-            locale: params[:message_locale],
-            via: params[:channel]
-        })
-      end
-      trfn('The email has been delivered')
-    end
+  # def postoffice
+  #   begin
+  #     @template_options = tml_application.postoffice.templates.collect{|t| t['keyword']}
+  #   rescue Exception => ex
+  #     @template_options = ['None found']
+  #   end
+  #
+  #   begin
+  #     @channel_options = tml_application.postoffice.channels.collect{|t| t['keyword']}
+  #   rescue Exception => ex
+  #     @channel_options = ['None found']
+  #   end
+  #
+  #   if request.post?
+  #     tokens = params[:tokens].blank? ? {} : JSON.parse(params[:tokens])
+  #     params[:to].split(',').each do |to|
+  #       tml_application.postoffice.deliver(params[:template], to, tokens, {
+  #           locale: params[:message_locale],
+  #           via: params[:channel]
+  #       })
+  #     end
+  #     trfn('The email has been delivered')
+  #   end
+  # end
+
+  def emails
+    @emails ||= [{title: 'Welcome', key: 'welcome_email'}]
   end
 
 end

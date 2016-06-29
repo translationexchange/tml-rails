@@ -14,7 +14,21 @@ Dummy::Application.configure do
   config.action_controller.perform_caching = false
 
   # Don't care if the mailer can't send.
-  config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.preview_path = File.join(Rails.root, '..', 'mailers', 'previews')
+  config.action_mailer.delivery_method = :smtp
+  config.action_mailer.perform_deliveries = true
+  config.action_mailer.raise_delivery_errors = true
+  config.action_mailer.default :charset => "utf-8"
+  config.action_mailer.smtp_settings = {
+      :user_name => '1779389065d5952e8',
+      :password => 'e0daf7e0d8ef71',
+      :address => 'mailtrap.io',
+      :domain => 'mailtrap.io',
+      :port => '465',
+      :authentication => :plain
+  }
+
+  config.action_mailer.default_url_options = { :host => "localhost:3000" }
 
   # Print deprecation notices to the Rails logger.
   config.active_support.deprecation = :log
@@ -26,6 +40,7 @@ Dummy::Application.configure do
   # This option may cause significant delays in view rendering with a large
   # number of complex assets.
   config.assets.debug = true
+
 
   #config.identity_cache_store = config.cache_store = :mem_cache_store, Dalli::Client.new('localhost:11211', {
   #    :namespace => 'dummy'
