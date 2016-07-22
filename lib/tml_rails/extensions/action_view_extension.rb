@@ -132,6 +132,7 @@ module TmlRails
       agent_config[:source] = tml_current_source
       agent_config[:css] = tml_application.css
       agent_config[:sdk] = Tml.respond_to?(:full_version) ? Tml.full_version : Tml::VERSION
+      agent_config[:locale_strategy] = Tml.config.locale
       agent_config[:languages] = []
 
       tml_application.languages.each do |lang|
