@@ -119,6 +119,10 @@ module TmlRails
       tml_session.current_translator
     end
 
+    def tml_default_locale
+      tml_session.application.default_locale
+    end
+
     def tml_current_locale
       tml_session.current_language.locale
     end

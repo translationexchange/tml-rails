@@ -77,33 +77,30 @@ module TmlRails
       # Locale is retrieved from method => params => cookie => subdomain => browser accepted locales
       # Alternatively, this method can be overwritten
       def tml_locale
-        locale = nil
-
-        # if user has a custom method for providing the locale, use it
-        unless Tml.config.locale[:method].blank?
-          begin
-            locale = self.send(Tml.config.locale[:method])
-          rescue
-            locale = nil
-          end
-          return locale if locale
-        end
-
         # if locale has been passed by a param, it will be in the params hash
-        if Tml.config.locale[:strategy] == 'param'
-          locale = params[Tml.config.locale[:param]]  # will be nil without ?locale=:locale
-        elsif Tml.config.locale[:strategy] == 'pre-path'
-          locale = params[Tml.config.locale[:param]]  # will be nil without /:locale
-        elsif Tml.config.locale[:strategy] == 'pre-domain'
-          locale = request.subdomains.first
-          if locale and not locale.match(/^[a-z]{2}(-[A-Z]{2,3})?$/)
-            locale = nil # will be nil unless proper subdomain
-          end
-        elsif Tml.config.locale[:strategy] == 'custom-domain'
-          locale = Tml.config.locale[:mapping].invert[request.host]  # will be nil if host is wrong
+        if Tml.config.locale_strategy == 'param'
+          return params[Tml.config.locale_param]  # will be nil without ?locale=:locale
         end
 
-        locale
+        if Tml.config.locale_strategy == 'pre-path'
+          return params[Tml.config.locale_param]  # will be nil without /:locale
+        end
+
+        if Tml.config.locale_strategy == 'pre-domain'
+          locale = request.subdomains.first
+          if locale.nil? or not locale.match(Tml.config.locale_expression)
+            locale = Tml.config.locale[:default]
+          end
+          return locale
+        end
+
+        if Tml.config.locale_strategy == 'custom-domain'
+          host = "#{request.host}#{[80, 443].include?(request.port) ? '' : ":#{request.port}"}"
+          locale = Tml.config.locale[:mapping].invert[host]  # will be nil if host is wrong
+          return locale
+        end
+
+        nil
       end
 
       def tml_viewing_user
@@ -137,17 +134,25 @@ module TmlRails
 
         requested_locale = desired_locale = tml_locale
 
-        locale_cookie_enabled = Tml.config.locale['cookie'].nil? or Tml.config.locale['cookie']
-        # check if we want to store the last selected locale in the cookie
-        desired_locale ||= tml_cookie[:locale] if locale_cookie_enabled
+        # if user has a custom method for providing the locale, use it
+        if Tml.config.current_locale_method
+          begin
+            desired_locale = self.send(Tml.config.current_locale_method)
+          rescue
+            desired_locale = requested_locale
+          end
+        end
+        # check if locale was previously stored in a cookie
+        desired_locale ||= Tml.config.locale_cookie_enabled? ? tml_cookie[:locale] : nil
+        # fallback onto the browser locale
+        desired_locale ||= Tml.config.locale_browser_enabled? ? Tml::Utils.browser_accepted_locales(
+            request.env['HTTP_ACCEPT_LANGUAGE']
+        ).join(',') : nil
 
         # pp requested_locale: requested_locale, desired_locale: desired_locale
         # pp cookie: tml_cookie
 
-        if Tml.config.locale[:browser].nil? || Tml.config.locale[:browser]
-          desired_locale ||= Tml::Utils.browser_accepted_locales(request.env['HTTP_ACCEPT_LANGUAGE']).join(',')
-        end
-
+        # init SDK with desired locale and get the actual locale supported in the app
         Tml.session.init(
             :source => tml_source,
             :locale => desired_locale,
@@ -164,42 +169,59 @@ module TmlRails
         # pp current_locale: tml_current_locale
 
         # check if we want to store the last selected locale in the cookie
-        if requested_locale == tml_current_locale and locale_cookie_enabled
-          tml_cookie[:locale] = requested_locale
+        if requested_locale == tml_current_locale and Tml.config.locale_cookie_enabled?
           cookies[Tml::Utils.cookie_name(Tml.config.application[:key])] = {
               :value => Tml::Utils.encode(tml_cookie),
               :expires => 1.year.from_now,
-              :domain => Tml.config.locale[:default_host]
+              :domain => Tml.config.locale[:domain]
           }
         end
 
         # pp cookie: tml_cookie
+        # pp redirect: Tml.config.locale_redirect_enabled?
 
-        if Tml.config.locale[:redirect].nil? or Tml.config.locale[:redirect]
-          if Tml.config.locale[:skip_default] and tml_current_locale == Tml.config.locale[:default]
-            # first lets see if we are in default locale and user doesn't want to show locale
-            if Tml.config.locale[:strategy] == 'pre-path' and not requested_locale.nil?
-              return redirect_to(locale: nil)
-            elsif Tml.config.locale[:strategy] == 'pre-domain'
-              return redirect_to(host: Tml.config.locale[:default_host])
-            elsif Tml.config.locale[:strategy] == 'custom-domain'
-              host = Tml.config.locale[:mapping][Tml.config.locale[:default]]
+        if Tml.config.locale_redirect_enabled?
+          if Tml.config.locale[:skip_default] and tml_current_locale == tml_default_locale
+            # first lets see if we are in default locale and user doesn't want to show locale in url
+            if Tml.config.locale_strategy == 'pre-path' and not requested_locale.nil?
+              return redirect_to(Tml.config.locale_param => nil)
+            end
+
+            if Tml.config.locale_strategy == 'pre-domain' and request.subdomains.any?
+              fragments = request.host.split('.')
+              if fragments.first.match(Tml.config.locale_expression)
+                if Tml.config.locale[:default_subdomain]
+                  fragments[0] = Tml.config.locale[:default_subdomain]
+                else
+                  fragments.shift
+                end
+              end
+              return redirect_to(host: fragments.join('.'))
+            end
+
+            if Tml.config.locale_strategy == 'custom-domain'
+              host = Tml.config.locale[:mapping][tml_default_locale]
               return redirect_to(host: host)
             end
           elsif requested_locale != tml_current_locale
             # otherwise, the locale is not the same as what was requested, deal with it
-            if Tml.config.locale[:strategy] == 'pre-path'
-              return redirect_to(locale: tml_current_locale)
-            elsif Tml.config.locale[:strategy] == 'pre-domain'
+            if Tml.config.locale_strategy == 'pre-path'
+              return redirect_to(Tml.config.locale_param => tml_current_locale)
+            end
+
+            if Tml.config.locale_strategy == 'pre-domain'
               fragments = request.host.split('.')
-              if request.subdomains.any? and fragments.first.match(/^[a-z]{2}(-[A-Z]{2,3})?$/)
+              if request.subdomains.any?
                 fragments[0] = tml_current_locale
               else
                 fragments.unshift(tml_current_locale)
               end
               return redirect_to(host: fragments.join('.'))
-            elsif Tml.config.locale[:strategy] == 'custom-domain'
-              host = Tml.config.locale[:mapping][Tml.config.locale[:default]]
+            end
+
+            if Tml.config.locale_strategy == 'custom-domain'
+              host = Tml.config.locale[:mapping][tml_current_locale]
+              host ||= Tml.config.locale[:mapping][tml_default_locale]
               return redirect_to(host: host)
             end
           end
