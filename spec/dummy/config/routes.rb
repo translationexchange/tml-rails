@@ -26,5 +26,7 @@ Rails.application.routes.draw do
   get 'samples/dates' => 'samples#dates'
   get 'samples/ignored' => 'samples#ignored'
 
+  get 'samples/locales' => 'samples#locales'
+
   get 'i18n' => 'i18n#index'
 end

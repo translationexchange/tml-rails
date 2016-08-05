@@ -170,6 +170,7 @@ module TmlRails
 
         # check if we want to store the last selected locale in the cookie
         if requested_locale == tml_current_locale and Tml.config.locale_cookie_enabled?
+          tml_cookie[:locale] = tml_current_locale
           cookies[Tml::Utils.cookie_name(Tml.config.application[:key])] = {
               :value => Tml::Utils.encode(tml_cookie),
               :expires => 1.year.from_now,
