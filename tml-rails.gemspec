@@ -48,5 +48,5 @@ Gem::Specification.new do |s|
   s.licenses = 'MIT-LICENSE'
 
   s.add_dependency 'rails', '~> 4'
-  s.add_dependency 'tml', '~> 5.5'
+  s.add_dependency 'tml', '~> 5.6'
 end
