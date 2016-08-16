@@ -52,18 +52,6 @@ module TmlRails
 
     module InstanceMethods
 
-      # Returns all browser accepted locales
-      def tml_browser_accepted_locales
-        @tml_browser_accepted_locales ||= Tml::Utils.browser_accepted_locales(request.env['HTTP_ACCEPT_LANGUAGE']).join(',')
-      end
-
-      # Overwrite this method in a controller to assign a custom source for all views
-      def tml_source
-        "/#{controller_name}/#{action_name}"
-      rescue
-        self.class.name
-      end
-
       # Returns data from cookie set by the agent
       def tml_cookie
         @tml_cookie ||= begin
@@ -79,61 +67,57 @@ module TmlRails
         {}
       end
 
+      # Overwrite this method in a controller to assign a custom source for all views
+      def tml_source
+        "/#{controller_name}/#{action_name}"
+      rescue
+        "/classes/#{self.class.name}"
+      end
+
       # Locale is retrieved from method => params => cookie => subdomain => browser accepted locales
       # Alternatively, this method can be overwritten
       def tml_locale
-        @tml_locale ||= begin
-          locale = nil
-
-          unless Tml.config.current_locale_method.blank?
-            begin
-              locale = self.send(Tml.config.current_locale_method)
-            rescue
-              locale = nil
-            end
-          end
-
-          if locale.nil?
-            if params[:locale].blank?
-              locale = tml_cookie[:locale]
-              if locale.nil?
-                if Tml.config.locale[:subdomain]
-                  locale = request.subdomains.first
-                elsif Tml.config.locale[:tld]
-                  locale = request.host.split('.').last
-                else
-                  locale = tml_browser_accepted_locales
-                end
-              end
-            else
-              locale = tml_cookie[:locale] = params[:locale]
-              cookies[Tml::Utils.cookie_name(Tml.config.application[:key])] = Tml::Utils.encode(tml_cookie, Tml.config.application[:token])
-            end
-          end
-
-          locale
+        # if locale has been passed by a param, it will be in the params hash
+        if Tml.config.locale_strategy == 'param'
+          return params[Tml.config.locale_param]  # will be nil without ?locale=:locale
         end
+
+        if Tml.config.locale_strategy == 'pre-path'
+          return params[Tml.config.locale_param]  # will be nil without /:locale
+        end
+
+        if Tml.config.locale_strategy == 'pre-domain'
+          locale = request.subdomains.first
+          if locale.nil? or not locale.match(Tml.config.locale_expression)
+            locale = Tml.config.locale[:default]
+          end
+          return locale
+        end
+
+        if Tml.config.locale_strategy == 'custom-domain'
+          host = "#{request.host}#{[80, 443].include?(request.port) ? '' : ":#{request.port}"}"
+          locale = Tml.config.locale[:mapping].invert[host]  # will be nil if host is wrong
+          return locale
+        end
+
+        nil
       end
 
       def tml_viewing_user
-        @tml_viewing_user ||= begin
-          unless Tml.config.current_user_method.blank?
-            begin
-              self.send(Tml.config.current_user_method)
-            rescue
-              {}
-            end
+        unless Tml.config.current_user_method.blank?
+          begin
+            self.send(Tml.config.current_user_method)
+          rescue
+            {}
           end
         end
       end
 
       def tml_translator
-        @tml_translator ||= begin
-          if tml_cookie[:translator]
-            Tml::Translator.new(tml_cookie[:translator])
-          else
-            nil
-          end
+        if tml_cookie[:translator]
+          Tml::Translator.new(tml_cookie[:translator])
+        else
+          nil
         end
       end
 
@@ -148,9 +132,30 @@ module TmlRails
 
         @tml_started_at = Time.now
 
+        requested_locale = desired_locale = tml_locale
+
+        # if user has a custom method for providing the locale, use it
+        if Tml.config.current_locale_method
+          begin
+            desired_locale = self.send(Tml.config.current_locale_method)
+          rescue
+            desired_locale = requested_locale
+          end
+        end
+        # check if locale was previously stored in a cookie
+        desired_locale ||= Tml.config.locale_cookie_enabled? ? tml_cookie[:locale] : nil
+        # fallback onto the browser locale
+        desired_locale ||= Tml.config.locale_browser_enabled? ? Tml::Utils.browser_accepted_locales(
+            request.env['HTTP_ACCEPT_LANGUAGE']
+        ).join(',') : nil
+
+        # pp requested_locale: requested_locale, desired_locale: desired_locale
+        # pp cookie: tml_cookie
+
+        # init SDK with desired locale and get the actual locale supported in the app
         Tml.session.init(
             :source => tml_source,
-            :locale => tml_locale,
+            :locale => desired_locale,
             :user => tml_viewing_user,
             :translator => tml_translator,
             :access_token => tml_access_token
@@ -159,7 +164,69 @@ module TmlRails
         if defined? I18n.enforce_available_locales
           I18n.enforce_available_locales = false
         end
-        I18n.locale = Tml.session.current_language.locale
+        I18n.locale = tml_current_locale
+
+        # pp current_locale: tml_current_locale
+
+        # check if we want to store the last selected locale in the cookie
+        if requested_locale == tml_current_locale and Tml.config.locale_cookie_enabled?
+          tml_cookie[:locale] = tml_current_locale
+          cookies[Tml::Utils.cookie_name(Tml.config.application[:key])] = {
+              :value => Tml::Utils.encode(tml_cookie),
+              :expires => 1.year.from_now,
+              :domain => Tml.config.locale[:domain]
+          }
+        end
+
+        # pp cookie: tml_cookie
+        # pp redirect: Tml.config.locale_redirect_enabled?
+
+        if Tml.config.locale_redirect_enabled?
+          if Tml.config.locale[:skip_default] and tml_current_locale == tml_default_locale
+            # first lets see if we are in default locale and user doesn't want to show locale in url
+            if Tml.config.locale_strategy == 'pre-path' and not requested_locale.nil?
+              return redirect_to(Tml.config.locale_param => nil)
+            end
+
+            if Tml.config.locale_strategy == 'pre-domain' and request.subdomains.any?
+              fragments = request.host.split('.')
+              if fragments.first.match(Tml.config.locale_expression)
+                if Tml.config.locale[:default_subdomain]
+                  fragments[0] = Tml.config.locale[:default_subdomain]
+                else
+                  fragments.shift
+                end
+              end
+              return redirect_to(host: fragments.join('.'))
+            end
+
+            if Tml.config.locale_strategy == 'custom-domain'
+              host = Tml.config.locale[:mapping][tml_default_locale]
+              return redirect_to(host: host)
+            end
+          elsif requested_locale != tml_current_locale
+            # otherwise, the locale is not the same as what was requested, deal with it
+            if Tml.config.locale_strategy == 'pre-path'
+              return redirect_to(Tml.config.locale_param => tml_current_locale)
+            end
+
+            if Tml.config.locale_strategy == 'pre-domain'
+              fragments = request.host.split('.')
+              if request.subdomains.any?
+                fragments[0] = tml_current_locale
+              else
+                fragments.unshift(tml_current_locale)
+              end
+              return redirect_to(host: fragments.join('.'))
+            end
+
+            if Tml.config.locale_strategy == 'custom-domain'
+              host = Tml.config.locale[:mapping][tml_current_locale]
+              host ||= Tml.config.locale[:mapping][tml_default_locale]
+              return redirect_to(host: host)
+            end
+          end
+        end
 
         if tml_current_translator and tml_current_translator.inline?
           I18n.reload!

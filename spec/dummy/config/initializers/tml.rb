@@ -38,7 +38,9 @@ Tml.configure do |config|
   if Rails.env.development?
     config.application = {
         key:    'c1e3c4d28f1abad029836554004f6aa0988eafa58e2fb376cca7a5230dabdf99',
-        host:   'http://localhost:3000'
+        # key:    'ed4793978ee86cae546a24c399c84bca531a9368644add424782e0b09f1dc7f6',
+        host:   'http://localhost:3000',
+        cdn_host: "https://trex-snapshots-dev.s3-us-west-1.amazonaws.com"
     }
 
     config.agent = {
@@ -71,11 +73,12 @@ Tml.configure do |config|
     # If you are using Memcache, use the following settings:
 
     config.cache = {
-     :enabled    => true,
-     :adapter    => 'memcache',
-     :host       => 'localhost:11211',
-     :namespace  => 'c1e3c4d2'
+      :enabled    => true,
+      :adapter    => 'memcache',
+      :host       => 'localhost:11211',
+      :namespace  => 'c1e3c4d28f1abad029836554',
      # :version    => '20160223182118'
+      :version_check_interval => 30
     }
 
     # For debugging, uncomment the following lines:

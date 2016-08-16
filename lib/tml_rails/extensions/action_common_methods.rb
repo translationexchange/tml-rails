@@ -31,15 +31,7 @@
 
 module TmlRails
   module ActionCommonMethods
-    ############################################################
-    # There are three ways to call the tr method
-    #
-    # tr(label, desc = '', tokens = {}, options = {})
-    # or
-    # tr(label, tokens = {}, options = {})
-    # or
-    # tr(:label => label, :description => '', :tokens => {}, :options => {})
-    ############################################################
+
     def tr(label, description = '', tokens = {}, options = {})
       params = Tml::Utils.normalize_tr_params(label, description, tokens, options)
       return params[:label].html_safe if params[:label].tml_translated?
@@ -51,26 +43,7 @@ module TmlRails
         params[:options][:host] = request.env['HTTP_HOST']
       end
 
-      if Tml.config.disabled?
-        return Tml.config.default_language.translate(params[:label], params[:tokens], params[:options]).tml_translated.html_safe
-      end
-
-      # Translate individual sentences
-      if params[:options][:split]
-        text = params[:label]
-        sentences = Tml::Utils.split_sentences(text)
-        sentences.each do |sentence|
-          text = text.gsub(sentence, tml_current_language.translate(sentence, params[:description], params[:tokens], params[:options]))
-        end
-        return text.tml_translated.html_safe
-      end
-
-      Tml.session.target_language.translate(params).tml_translated.html_safe
-    rescue Tml::Exception => ex
-      #pp ex, ex.backtrace
-      Tml.logger.error(ex.message)
-      #Tml.logger.error(ex.message + "\n=> " + ex.backtrace.join("\n=> "))
-      label
+      Tml.translate(params)
     end
 
     # for translating labels
@@ -117,6 +90,10 @@ module TmlRails
 
     def tml_current_translator
       tml_session.current_translator
+    end
+
+    def tml_default_locale
+      tml_session.application.default_locale
     end
 
     def tml_current_locale

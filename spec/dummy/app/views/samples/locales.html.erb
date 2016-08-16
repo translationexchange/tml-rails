@@ -1,0 +1,56 @@
+<p>
+
+  <%= tml_block(source: 'testing_locales', locale: 'en', target_locale: 'ru') do %>
+
+    <%= tr('Hello There') %>
+
+  <% end %>
+
+  <br>
+
+  <%= tml_block(source: 'testing_locales', locale: 'en', target_locale: 'zh') do %>
+
+    <%= tr('Hello There') %>
+
+  <% end %>
+
+  <br>
+
+  <%= tml_block(source: 'testing_locales', locale: 'en', target_locale: 'es') do %>
+
+    <%= tr('Hello There') %>
+
+  <% end %>
+
+  <br><br>
+
+  <% Tml.session.with_block_options(source: 'testing_locales', locale: 'en', target_locale: 'es') do %>
+    <%= tr('Hello There') %>
+  <% end %>
+
+  <br><br>
+
+  <% Tml.session.with_options(source: 'testing_locales') do %>
+    <%= tml_application.language('ru').tr('Hello There') %><br>
+    <%= tml_application.language('es').tr('Hello There') %><br>
+    <%= tml_application.language('zh').tr('Hello There') %><br>
+  <% end %>
+
+  <br><br>
+
+  <% Tml.session.with_options(source: 'testing_locales') do %>
+    <%= Tml.session.application.language('ru').tr('Hello There') %><br>
+    <%= Tml.session.application.language('es').tr('Hello There') %><br>
+    <%= Tml.session.application.language('zh').tr('Hello There') %><br>
+  <% end %>
+
+  <br><br>
+
+  <% Tml.with_options(source: 'testing_locales', target_locale: 'ru') do %>
+    <%= Tml.translate('Hello There') %><br>
+  <% end %>
+
+  <%= Tml.translate('Hello {user}', user: 'Michael') %>
+
+</p>
+

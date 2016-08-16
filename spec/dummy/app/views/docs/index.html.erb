@@ -13,13 +13,13 @@
 </div>
 
 <%
-   @michael = User.new("Michael", "male")
-   @alex = User.new("Alex", "male")
-   @anna = User.new("Anna", "female")
-   @jenny = User.new("Jenny", "female")
-   @peter = User.new("Peter", "male")
-   @karen = User.new("Karen", "female")
-   @thomas = User.new("Thomas", "male")
+   @michael = User.new(first_name: "Michael", gender: "male")
+   @alex = User.new(first_name: "Alex", gender: "male")
+   @anna = User.new(first_name: "Anna", gender: "female")
+   @jenny = User.new(first_name: "Jenny", gender: "female")
+   @peter = User.new(first_name: "Peter", gender: "male")
+   @karen = User.new(first_name: "Karen", gender: "female")
+   @thomas = User.new(first_name: "Thomas", gender: "male")
 %>
 
 <%= render :partial => "intro" %>

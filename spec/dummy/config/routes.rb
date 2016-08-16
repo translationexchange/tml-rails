@@ -17,11 +17,16 @@ Rails.application.routes.draw do
   get 'docs/editor' => 'docs#editor'
 
   get 'emails' => 'emails#index'
-  post 'emails' => 'emails#index'
+  get 'emails/deliver' => 'emails#deliver'
+
+  get 'emails/postoffice' => 'emails#postoffice'
+  post 'emails/postoffice' => 'emails#postoffice'
 
   get 'samples/language_cases' => 'samples#language_cases'
   get 'samples/dates' => 'samples#dates'
   get 'samples/ignored' => 'samples#ignored'
+
+  get 'samples/locales' => 'samples#locales'
 
   get 'i18n' => 'i18n#index'
 end

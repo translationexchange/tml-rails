@@ -128,10 +128,12 @@ module TmlRails
         agent_host += "?ts=#{t.to_i}"
       end
 
+      agent_config[:domain] = Tml.config.domain if Tml.config.domain
       agent_config[:locale] = tml_current_locale
       agent_config[:source] = tml_current_source
       agent_config[:css] = tml_application.css
       agent_config[:sdk] = Tml.respond_to?(:full_version) ? Tml.full_version : Tml::VERSION
+      agent_config[:locale_strategy] = Tml.config.agent_locale_strategy
       agent_config[:languages] = []
 
       tml_application.languages.each do |lang|

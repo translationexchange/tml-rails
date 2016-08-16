@@ -1,97 +1,15 @@
-<%= stylesheet_link_tag(tml_url_tag('/tml/console.css')) %>
-<%= javascript_include_tag('chosen.jquery.js') %>
-
-<style>
-  .table th, .table td {
-    border-top: none;
-  }
-</style>
-
-<div class='tml tml_container' <%=tml_dir_attribute_tag%>>
-
-  <h3><%=tr('Send Email Using Post Office') %></h3>
-
-  <%=form_tag({}, :method => :post, :id => :message_form) do %>
-    <table class='table'>
-      <tr>
-        <td><%= tr('Template:') %> </td>
-        <td>
-          <%= select_tag(:template, options_for_select(@template_options)) %>
-        </td>
-        <td><%= tr('Channel:') %> </td>
-        <td>
-          <%= select_tag(:channel, options_for_select(@channel_options)) %>
-        </td>
-        <td><%= tr('Language:') %> </td>
-        <td colspan="3">
-          <%= select_tag(:message_locale, options_for_select(tml_application.languages.collect{|lang| [lang.english_name, lang.locale]}, tml_current_language.locale)) %>
-        </td>
-      </tr>
-      <tr>
-        <td style='width:10%'>
-          <%= tr('To:', 'List of emails') %>
-        </td>
-        <td colspan="5">
-          <%= text_field_tag(:to, params[:to], :class => 'form-control', :style=>'width:99%', :autofocus => true, :placeholder => 'Enter emails separated by comma') %>
-        </td>
-      </tr>
-      <tr>
-        <td><%= tr('Tokens:') %> </td>
-        <td colspan="5">
-          <%=hidden_field_tag(:tokens, '') %>
-          <div class='tml_ace_editor' id='tml_tokens_editor' style='height:150px;'>{
-}</div>
-        </td>
-      </tr>
-
-      <tr>
-        <td></td>
-        <td>
-          <button type='button' class='btn btn-primary' onClick="deliverMessage()">
-            <%= tr('Deliver') %>
-          </button>
-        </td>
-      </tr>
-    </table>
-
-  <% end %>
-
-
-  <%= javascript_include_tag('ace/ace.js') %>
-  <%= javascript_include_tag('ace/theme-chrome.js') %>
-  <%= javascript_include_tag('ace/mode-json.js') %>
-
-  <script>
-    var tokens_editor = ace.edit('tml_tokens_editor');
-    tokens_editor.setTheme('ace/theme/chrome');
-    tokens_editor.getSession().setMode('ace/mode/json');
-    tokens_editor.getSession().setTabSize(2);
-    tokens_editor.getSession().setUseSoftTabs(true);
-
-    function deliverMessage() {
-      $("#message_form").submit();
-    }
-  </script>
-
-</div>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+<table class="table table-striped">
+  <tr>
+    <th><%= tr('Email Template') %></th>
+    <th></th>
+  </tr>
+<% @emails.each do |email| %>
+  <tr>
+    <td><%=email[:title] %></td>
+    <td style="text-align: right">
+      <%= link_to(tr('Preview'), "/rails/mailers/user_mailer/#{email[:key]}", target: '_email_preview', class:'btn btn-default') %>
+      <%= link_to(tr('Deliver'), {action: :deliver, email: email[:key]}, class:'btn btn-primary') %>
+    </td>
+  </tr>
+<% end %>
+</table>
