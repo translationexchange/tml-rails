@@ -128,6 +128,7 @@ module TmlRails
         agent_host += "?ts=#{t.to_i}"
       end
 
+      agent_config[:tools] = opts[:tools] || {}
       agent_config[:domain] = Tml.config.domain if Tml.config.domain
       agent_config[:locale] = tml_current_locale
       agent_config[:source] = tml_current_source
