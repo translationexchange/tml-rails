@@ -36,7 +36,7 @@ module TmlRails
       params = Tml::Utils.normalize_tr_params(label, description, tokens, options)
       return params[:label].html_safe if params[:label].tml_translated?
 
-      params[:options][:caller] = caller
+      params[:options][:caller] = caller(1, 1)
 
       if request
         params[:options][:url]  = request.url
