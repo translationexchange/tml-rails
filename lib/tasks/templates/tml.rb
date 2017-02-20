@@ -91,4 +91,12 @@ Tml.configure do |config|
   #    type:        :rails
   #}
 
+  # To use pre-path locale strategy:
+
+  #config.locale  = {
+  #     strategy:   'pre-path',
+  #     param:      'locale',
+  #     default:    'en'
+  #}
+
 end

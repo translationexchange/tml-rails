@@ -42,7 +42,7 @@ gem 'unicorn', '~> 4.8'
 gem 'dalli', '~> 2.7'
 
 # gem 'redis'
-gem 'rails', '~> 4.2'
+gem 'rails', '~> 5.0'
 
 gem 'rake', '~> 10.3'
 gem 'rdoc', '~> 4.1'
