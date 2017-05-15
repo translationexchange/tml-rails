@@ -89,6 +89,9 @@ module I18n
           # if language is not available, return default value
           target_language = application.language(locale.to_s)
 
+          # if target language not set, return default locale
+          return tranlsation unless target_language
+
           if translation.is_a?(String)
             translation = target_language.translate(convert_to_tml(translation), options, options)
           elsif translation.is_a?(Hash)
