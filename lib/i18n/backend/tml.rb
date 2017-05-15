@@ -90,7 +90,7 @@ module I18n
           target_language = application.language(locale.to_s)
 
           # if target language not set, return default locale
-          return tranlsation unless target_language
+          return translation unless target_language
 
           if translation.is_a?(String)
             translation = target_language.translate(convert_to_tml(translation), options, options)
