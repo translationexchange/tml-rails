@@ -64,8 +64,12 @@ class Tml::CacheAdapters::Rails < Tml::Cache
   end
 
   def store(key, data, opts = {})
-    info("Cache store: #{key}")
-    @cache.write(versioned_key(key, opts), strip_extensions(data))
+    if data.try(:[], 'version').to_i != 0
+      info("Cache store: #{key}")
+      @cache.write(versioned_key(key, opts), strip_extensions(data))
+    else
+      info("Cache store error: No data to store")
+    end
     data
   rescue Exception => ex
     warn("Failed to store data: #{ex.message}")
