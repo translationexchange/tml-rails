@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2016 Translation Exchange Inc.
+# Copyright (c) 2017 Translation Exchange Inc.
 #
 # http://translationexchange.com
 #

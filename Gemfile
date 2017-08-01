@@ -47,8 +47,8 @@ gem 'rails', '~> 5.0'
 gem 'rake', '~> 10.3'
 gem 'rdoc', '~> 4.1'
 
-gem 'tml', '~> 5.6'
-# gem 'tml', :git => 'git://github.com/translationexchange/tml-ruby.git', :branch => :develop
+# gem 'tml', '~> 5.6'
+gem 'tml', :git => 'git://github.com/translationexchange/tml-ruby.git', :branch => :develop
 # gem 'tml', :path => '../tml-ruby'
 
 gem 'coveralls', '~> 0.7', require: false

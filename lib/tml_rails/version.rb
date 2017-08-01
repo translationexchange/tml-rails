@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2016 Translation Exchange Inc. http://translationexchange.com
+# Copyright (c) 2017 Translation Exchange Inc. http://translationexchange.com
 #
 #  _______                  _       _   _             ______          _
 # |__   __|                | |     | | (_)           |  ____|        | |
@@ -30,5 +30,5 @@
 #++
 
 module TmlRails
-  VERSION = '5.6.2'
+  VERSION = '5.7.1'
 end

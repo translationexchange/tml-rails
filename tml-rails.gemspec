@@ -1,5 +1,5 @@
 #--
-# Copyright (c) 2015 Translation Exchange Inc. http://translationexchange.com
+# Copyright (c) 2017 Translation Exchange Inc. http://translationexchange.com
 #
 #  _______                  _       _   _             ______          _
 # |__   __|                | |     | | (_)           |  ____|        | |
@@ -48,5 +48,5 @@ Gem::Specification.new do |s|
   s.licenses = 'MIT-LICENSE'
 
   s.add_dependency 'rails', '> 3'
-  s.add_dependency 'tml', '~> 5.6'
+  s.add_dependency 'tml', '~> 5.7'
 end
