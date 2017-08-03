@@ -42,7 +42,7 @@ gem 'unicorn', '~> 4.8'
 gem 'dalli', '~> 2.7'
 
 # gem 'redis'
-gem 'rails', '~> 5.0'
+gem 'rails', '~> 4.2'
 
 gem 'rake', '~> 10.3'
 gem 'rdoc', '~> 4.1'
@@ -53,6 +53,10 @@ gem 'tml', '~> 5.7'
 
 gem 'coveralls', '~> 0.7', require: false
 
+group :assets do
+  gem 'sass-rails'
+end
+
 group :development, :test do
   gem 'sqlite3'
   gem 'rspec', '~> 3.1'
@@ -61,10 +65,6 @@ group :development, :test do
   gem 'rspec-rails', '~> 3.1'
   gem 'simplecov', '~> 0.9', :require => false
   gem 'simplecov-html', '~> 0.8', :require => false
-end
-
-group :assets do
-  gem 'sass-rails'
 end
 
 gem 'redis-store'

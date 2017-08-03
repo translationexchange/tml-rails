@@ -40,7 +40,6 @@ config/initializers/tml.rb
 Tml.configure do |config|
   config.application = {
     key:   YOUR_APPLICATION_KEY,
-    token: YOUR_APPLICATION_TOKEN,
   }
   config.cache = {
     enabled: true,
@@ -353,11 +352,13 @@ Links
 
 * Register on TranslationExchange.com: http://translationexchange.com
 
-* Read Translation Exchange documentation: http://translationexchange.com/docs
+* Read Translation Exchange documentation: http://docs.translationexchange.com
 
 * Follow TranslationExchange on Twitter: https://twitter.com/translationx
 
 * Connect with TranslationExchange on Facebook: https://www.facebook.com/translationexchange
+
+* Watch our demo videos on YouTube: https://www.youtube.com/channel/UC7gLEbvNO1IKPv5dxwzR3Iw
 
 * If you have any questions or suggestions, contact us: feedback@translationexchange.com
 
@@ -365,7 +366,7 @@ Links
 Copyright and license
 ==================
 
-Copyright (c) 2015 Translation Exchange Inc
+Copyright (c) 2017 Translation Exchange Inc
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
