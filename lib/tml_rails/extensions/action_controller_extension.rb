@@ -37,8 +37,8 @@ module TmlRails
       base.send(:include, TmlRails::ActionCommonMethods)
       base.send(:include, InstanceMethods)
 
-      base.before_filter :tml_filter_init
-      base.after_filter :tml_filter_reset
+      base.before_action :tml_filter_init
+      base.after_action :tml_filter_reset
 
       if defined? base.rescue_from
         base.rescue_from 'Tml::Exception' do |e|

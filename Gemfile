@@ -36,22 +36,21 @@ Encoding.default_internal = Encoding::UTF_8
 
 gemspec
 
+gem 'rails', '~> 5.1'
+
 gem 'bundler'
-gem 'puma', '~> 2.10'
-gem 'unicorn', '~> 4.8'
-gem 'dalli', '~> 2.7'
+gem 'puma'
+gem 'unicorn'
+gem 'dalli'
 
-# gem 'redis'
-gem 'rails', '~> 4.2'
-
-gem 'rake', '~> 10.3'
-gem 'rdoc', '~> 4.1'
+gem 'rake'
+gem 'rdoc'
 
 # gem 'tml', '~> 5.7'
 # gem 'tml', :git => 'git://github.com/translationexchange/tml-ruby.git', :branch => :develop
 # gem 'tml', :path => '../tml-ruby'
 
-gem 'coveralls', '~> 0.7', require: false
+gem 'coveralls'
 
 group :assets do
   gem 'sass-rails'
@@ -59,16 +58,16 @@ end
 
 group :development, :test do
   gem 'sqlite3'
-  gem 'rspec', '~> 3.1'
-  gem 'rspec-core', '~> 3.1'
-  gem 'rspec-mocks', '~> 3.1'
-  gem 'rspec-rails', '~> 3.1'
-  gem 'simplecov', '~> 0.9', :require => false
-  gem 'simplecov-html', '~> 0.8', :require => false
+  gem 'rspec'
+  gem 'rspec-core'
+  gem 'rspec-mocks'
+  gem 'rspec-rails'
+  gem 'simplecov'
+  gem 'simplecov-html'
 end
 
 gem 'redis-store'
 gem 'redis-rails'
 gem 'redis'
 
-gem 'rails-i18n', '~> 4.0.0'
+gem 'rails-i18n'

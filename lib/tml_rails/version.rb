@@ -30,5 +30,5 @@
 #++
 
 module TmlRails
-  VERSION = '5.7.3'
+  VERSION = '6.0.1'
 end
