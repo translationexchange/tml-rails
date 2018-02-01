@@ -7,6 +7,7 @@ Tml for Ruby on Rails
 [![Build Status](https://travis-ci.org/translationexchange/tml-rails.png?branch=master)](https://travis-ci.org/translationexchange/tml-rails)
 [![Coverage Status](https://coveralls.io/repos/translationexchange/tml-rails/badge.png)](https://coveralls.io/r/translationexchange/tml-rails)
 [![Gem Version](https://badge.fury.io/rb/tml-rails.svg)](http://badge.fury.io/rb/tml-rails)
+[![Open Source Helpers](https://www.codetriage.com/translationexchange/tml-rails/badges/users.svg)](https://www.codetriage.com/translationexchange/tml-rails)
 
 This Client SDK provides tools for translating Rails applications into any language using the TranslationExchange.com service.
 
